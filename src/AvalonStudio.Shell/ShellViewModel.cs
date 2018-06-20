@@ -300,5 +300,7 @@ namespace AvalonStudio.Shell
 				this.RaisePropertyChanged(nameof(SelectedDocument));
 			}
 		}
+
+		public Avalonia.Controls.IPanel Overlay { get; internal set; }
 	}
 }

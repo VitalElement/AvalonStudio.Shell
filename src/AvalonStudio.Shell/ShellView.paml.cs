@@ -7,9 +7,9 @@ using AvalonStudio.Shell.Controls;
 
 namespace AvalonStudio.Shell
 {
-	public class MainWindow : MetroWindow
+	public class ShellView : UserControl
 	{
-		public MainWindow()
+		public ShellView()
 		{
 			InitializeComponent();
 
@@ -21,8 +21,6 @@ namespace AvalonStudio.Shell
 
 			var generalSettings = Settings.GetSettings<GeneralSettings>();
 			ColorTheme.LoadTheme(generalSettings.Theme);
-
-			this.AttachDevTools();
 		}
 
 		private void InitializeComponent()
