@@ -73,15 +73,12 @@ namespace AvalonStudio.Shell
 
 			_keyBindings = new List<KeyBinding>();
 
-			var factory = new DefaultLayoutFactory();
-			Factory = factory;
-
 			ModalDialog = new ModalDialogViewModelBase("Dialog");
 
 			_documents = new List<IDocumentTabViewModel>();
 		}
 
-		public void Initialise()
+		public void Initialise(IDockFactory layoutFactory = null)
 		{
 			foreach (var extension in _extensions)
 			{
@@ -89,6 +86,15 @@ namespace AvalonStudio.Shell
 				{
 					activatable.BeforeActivation();
 				}
+			}
+
+			if (layoutFactory == null)
+			{
+				Factory = new DefaultLayoutFactory();
+			}
+			else
+			{
+				Factory = layoutFactory;
 			}
 
 			LoadLayout();
@@ -105,10 +111,25 @@ namespace AvalonStudio.Shell
 				}
 			});
 
-			_leftPane = (Factory as DefaultLayoutFactory).LeftDock;
-			_documentDock = (Factory as DefaultLayoutFactory).DocumentDock;
-			_rightPane = (Factory as DefaultLayoutFactory).RightDock;
-			_bottomPane = (Factory as DefaultLayoutFactory).BottomDock;
+			if (Layout.Factory.ViewLocator.ContainsKey("LeftDock"))
+			{
+				_leftPane = Layout.Factory.ViewLocator["LeftDock"]() as ToolDock;
+			}
+
+			if (Layout.Factory.ViewLocator.ContainsKey("DocumentDock"))
+			{
+				_documentDock = Layout.Factory.ViewLocator["DocumentDock"]() as DocumentDock;
+			}
+
+			if (Layout.Factory.ViewLocator.ContainsKey("RightDock"))
+			{
+				_rightPane = Layout.Factory.ViewLocator["RightDock"]() as ToolDock;
+			}
+
+			if (Layout.Factory.ViewLocator.ContainsKey("BottomDock"))
+			{
+				_bottomPane = Layout.Factory.ViewLocator["BottomDock"]() as ToolDock;
+			}
 
 			foreach (var extension in _extensions)
 			{
