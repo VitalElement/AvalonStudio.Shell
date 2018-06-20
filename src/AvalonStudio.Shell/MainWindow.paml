@@ -8,14 +8,14 @@
                       xmlns:beh="clr-namespace:AvalonStudio.Utils.Behaviors;assembly=AvalonStudio.Utils"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       Icon="resm:AvalonStudio.Shell.Assets.logo-256.png?assembly=AvalonStudio.Shell"
-                      Title="AvalonStudio" BorderThickness="1" BorderBrush="{DynamicResource AvalonBorderBrush}"
-                      FontFamily="{DynamicResource UiFont}" FontSize="14"                      
+                      Title="{Binding Title}" BorderThickness="1" BorderBrush="{DynamicResource AvalonBorderBrush}"
+                      FontFamily="{DynamicResource UiFont}" FontSize="14"
                       Foreground="{DynamicResource ThemeForegroundBrush}" WindowState="Maximized">
   <cont:MetroWindow.TitleBarContent>
   </cont:MetroWindow.TitleBarContent>
 
   <cont:MetroWindow.Resources>
-    <id:DockDropHandler x:Key="DockDropHandler0" Id="0"/>
+    <id:DockDropHandler x:Key="DockDropHandler0" Id="0" />
   </cont:MetroWindow.Resources>
 
   <i:Interaction.Behaviors>
@@ -74,13 +74,13 @@
     </Style>
   </cont:MetroWindow.Styles>
   <cont:MetroWindow.KeyBindings>
-    <KeyBinding Command="{Binding EnableDebugModeCommand}" Gesture="CTRL+SHIFT+D"/>
+    <KeyBinding Command="{Binding EnableDebugModeCommand}" Gesture="CTRL+SHIFT+D" />
   </cont:MetroWindow.KeyBindings>
   <Grid RowDefinitions="Auto,*,25">
     <i:Interaction.Behaviors>
-      <id:DropBehavior Context="{Binding Layout}" Handler="{StaticResource DockDropHandler0}"/>
+      <id:DropBehavior Context="{Binding Layout}" Handler="{StaticResource DockDropHandler0}" />
     </i:Interaction.Behaviors>
-    
+
     <Grid Grid.ColumnSpan="5" Margin="0 0 0 0">
       <Grid RowDefinitions="Auto, Auto">
         <menu:MainMenuView DataContext="{Binding MainMenu}" Margin="5 4 0 0"  Foreground="{DynamicResource ThemeForegroundBrush}" />
@@ -98,7 +98,6 @@
     </Grid>
 
     <Grid Grid.RowSpan="3" Grid.ColumnSpan="5" Name="PART_ExtensibleOverlay">
-      
     </Grid>
     <!--<cont:QuickCommander Width="450" MaxHeight="500" DataContext="{Binding QuickCommander}" VerticalAlignment="Top" />-->
   </Grid>

@@ -24,258 +24,260 @@ using System.Threading;
 
 namespace AvalonStudio.Shell
 {
-    [Export(typeof(ShellViewModel))]
-    [Export(typeof(IShell))]
-    [Shared]
-    public class ShellViewModel : ViewModel, IShell
-    {
-        public static ShellViewModel Instance { get; set; }
-        private List<KeyBinding> _keyBindings;
+	[Export(typeof(ShellViewModel))]
+	[Export(typeof(IShell))]
+	[Shared]
+	public class ShellViewModel : ViewModel, IShell
+	{
+		public static ShellViewModel Instance { get; set; }
+		private List<KeyBinding> _keyBindings;
 
-        private IEnumerable<ToolbarViewModel> _toolbars;
-        private IEnumerable<Lazy<IExtension>> _extensions;
-        private IEnumerable<Lazy<ToolViewModel>> _toolControls;
-        private CommandService _commandService;
-        private List<IDocumentTabViewModel> _documents;
+		private IEnumerable<ToolbarViewModel> _toolbars;
+		private IEnumerable<Lazy<IExtension>> _extensions;
+		private IEnumerable<Lazy<ToolViewModel>> _toolControls;
+		private CommandService _commandService;
+		private List<IDocumentTabViewModel> _documents;
 
-        private Lazy<StatusBarViewModel> _statusBar;
+		private Lazy<StatusBarViewModel> _statusBar;
 
-        private ModalDialogViewModelBase modalDialog;
+		private ModalDialogViewModelBase modalDialog;
 
-        private DocumentDock _documentDock;
-        private ToolDock _leftPane;
-        private ToolDock _rightPane;
-        private ToolDock _bottomPane;
+		private DocumentDock _documentDock;
+		private ToolDock _leftPane;
+		private ToolDock _rightPane;
+		private ToolDock _bottomPane;
 
-        private IDockFactory _factory;
-        private IDock _layout;
+		private IDockFactory _factory;
+		private IDock _layout;
 
-        [ImportingConstructor]
-        public ShellViewModel(
-            CommandService commandService,
-            Lazy<StatusBarViewModel> statusBar,
-            MainMenuService mainMenuService,
-            ToolbarService toolbarService,
-            [ImportMany] IEnumerable<Lazy<IExtension>> extensions,
-            [ImportMany] IEnumerable<Lazy<ToolViewModel>> toolControls)
-        {
-            _extensions = extensions;
-            _toolControls = toolControls;
+		[ImportingConstructor]
+		public ShellViewModel(
+			CommandService commandService,
+			Lazy<StatusBarViewModel> statusBar,
+			MainMenuService mainMenuService,
+			ToolbarService toolbarService,
+			[ImportMany] IEnumerable<Lazy<IExtension>> extensions,
+			[ImportMany] IEnumerable<Lazy<ToolViewModel>> toolControls)
+		{
+			_extensions = extensions;
+			_toolControls = toolControls;
 
-            _commandService = commandService;
+			_commandService = commandService;
 
-            MainMenu = mainMenuService.GetMainMenu();
+			MainMenu = mainMenuService.GetMainMenu();
 
-            var toolbars = toolbarService.GetToolbars();
-            //StandardToolbar = toolbars.Single(t => t.Key == "Standard").Value;
+			var toolbars = toolbarService.GetToolbars();
+			//StandardToolbar = toolbars.Single(t => t.Key == "Standard").Value;
 
-            _statusBar = statusBar;
+			_statusBar = statusBar;
 
-            _keyBindings = new List<KeyBinding>();
+			_keyBindings = new List<KeyBinding>();
 
-            var factory = new DefaultLayoutFactory();
-            Factory = factory;
+			var factory = new DefaultLayoutFactory();
+			Factory = factory;
 
-            ModalDialog = new ModalDialogViewModelBase("Dialog");
+			ModalDialog = new ModalDialogViewModelBase("Dialog");
 
-            _documents = new List<IDocumentTabViewModel>();
-        }
+			_documents = new List<IDocumentTabViewModel>();
+		}
 
-        public void Initialise()
-        {
-            foreach (var extension in _extensions)
-            {
-                if (extension.Value is IActivatableExtension activatable)
-                {
-                    activatable.BeforeActivation();
-                }
-            }
+		public void Initialise()
+		{
+			foreach (var extension in _extensions)
+			{
+				if (extension.Value is IActivatableExtension activatable)
+				{
+					activatable.BeforeActivation();
+				}
+			}
 
-            LoadLayout();
+			LoadLayout();
 
-            Layout.WhenAnyValue(l => l.FocusedView).Subscribe(focused =>
-            {
-                if (focused is IDocumentTabViewModel doc)
-                {
-                    SelectedDocument = doc;
-                }
-                else
-                {
-                    SelectedDocument = null;
-                }
-            });
+			Layout.WhenAnyValue(l => l.FocusedView).Subscribe(focused =>
+			{
+				if (focused is IDocumentTabViewModel doc)
+				{
+					SelectedDocument = doc;
+				}
+				else
+				{
+					SelectedDocument = null;
+				}
+			});
 
-            _leftPane = (Factory as DefaultLayoutFactory).LeftDock;
-            _documentDock = (Factory as DefaultLayoutFactory).DocumentDock;
-            _rightPane = (Factory as DefaultLayoutFactory).RightDock;
-            _bottomPane = (Factory as DefaultLayoutFactory).BottomDock;
+			_leftPane = (Factory as DefaultLayoutFactory).LeftDock;
+			_documentDock = (Factory as DefaultLayoutFactory).DocumentDock;
+			_rightPane = (Factory as DefaultLayoutFactory).RightDock;
+			_bottomPane = (Factory as DefaultLayoutFactory).BottomDock;
 
-            foreach (var extension in _extensions)
-            {
-                if (extension.Value is IActivatableExtension activatable)
-                {
-                    activatable.Activation();
-                }
-            }
+			foreach (var extension in _extensions)
+			{
+				if (extension.Value is IActivatableExtension activatable)
+				{
+					activatable.Activation();
+				}
+			}
 
-            foreach (var command in _commandService.GetKeyGestures())
-            {
-                foreach (var keyGesture in command.Value)
-                {
-                    _keyBindings.Add(new KeyBinding { Command = command.Key.Command, Gesture = KeyGesture.Parse(keyGesture) });
-                }
-            }
+			foreach (var command in _commandService.GetKeyGestures())
+			{
+				foreach (var keyGesture in command.Value)
+				{
+					_keyBindings.Add(new KeyBinding { Command = command.Key.Command, Gesture = KeyGesture.Parse(keyGesture) });
+				}
+			}
 
-            foreach (var tool in _toolControls)
-            {
-                switch (tool.Value.DefaultLocation)
-                {
-                    case Location.Bottom:
-                        DockView(_bottomPane, tool.Value);
-                        break;
+			foreach (var tool in _toolControls)
+			{
+				switch (tool.Value.DefaultLocation)
+				{
+					case Location.Bottom:
+						DockView(_bottomPane, tool.Value);
+						break;
 
-                    //case Location.BottomRight:
-                    //    BottomRightTabs.Tools.Add(tool);
-                    //    break;
+					//case Location.BottomRight:
+					//    BottomRightTabs.Tools.Add(tool);
+					//    break;
 
-                    //case Location.RightBottom:
-                    //    RightBottomTabs.Tools.Add(tool);
-                    //    break;
+					//case Location.RightBottom:
+					//    RightBottomTabs.Tools.Add(tool);
+					//    break;
 
-                    //case Location.RightMiddle:
-                    //    RightMiddleTabs.Tools.Add(tool);
-                    //    break;
+					//case Location.RightMiddle:
+					//    RightMiddleTabs.Tools.Add(tool);
+					//    break;
 
-                    //case Location.RightTop:
-                    //    RightTopTabs.Tools.Add(tool);
-                    //    break;
+					//case Location.RightTop:
+					//    RightTopTabs.Tools.Add(tool);
+					//    break;
 
-                    //case Location.MiddleTop:
-                    //    MiddleTopTabs.Tools.Add(tool);
-                    //    break;
+					//case Location.MiddleTop:
+					//    MiddleTopTabs.Tools.Add(tool);
+					//    break;
 
-                    case Location.Left:
-                        DockView(_leftPane, tool.Value);
-                        break;
+					case Location.Left:
+						DockView(_leftPane, tool.Value);
+						break;
 
-                    case Location.Right:
-                        DockView(_rightPane, tool.Value);
-                        break;
-                }
-            }
+					case Location.Right:
+						DockView(_rightPane, tool.Value);
+						break;
+				}
+			}
 
-            IoC.Get<IStatusBar>().ClearText();
-        }
+			IoC.Get<IStatusBar>().ClearText();
+		}
 
-        private void DockView(IDock dock, IView view, bool add = true)
-        {
-            if (add)
-            {
-                dock.Views.Add(view);
-                Factory.Update(view, view, dock);
-            }
-            else
-            {
-                Factory.Update(view, view, view.Parent);
-            }
+		public string Title => Platform.AppName;
 
-            Factory.SetCurrentView(view);
-        }
+		private void DockView(IDock dock, IView view, bool add = true)
+		{
+			if (add)
+			{
+				dock.Views.Add(view);
+				Factory.Update(view, view, dock);
+			}
+			else
+			{
+				Factory.Update(view, view, view.Parent);
+			}
 
-        public IReadOnlyList<IDocumentTabViewModel> Documents => _documents.AsReadOnly();
+			Factory.SetCurrentView(view);
+		}
 
-        public IDockFactory Factory
-        {
-            get => _factory;
-            set => this.RaiseAndSetIfChanged(ref _factory, value);
-        }
+		public IReadOnlyList<IDocumentTabViewModel> Documents => _documents.AsReadOnly();
 
-        public IDock Layout
-        {
-            get => _layout;
-            set => this.RaiseAndSetIfChanged(ref _layout, value);
-        }
+		public IDockFactory Factory
+		{
+			get => _factory;
+			set => this.RaiseAndSetIfChanged(ref _factory, value);
+		}
 
-        public void LoadLayout()
-        {
-            //string path = System.IO.Path.Combine(Platform.SettingsDirectory, "Layout.json");
+		public IDock Layout
+		{
+			get => _layout;
+			set => this.RaiseAndSetIfChanged(ref _layout, value);
+		}
 
-            //if (DockSerializer.Exists(path))
-            //{
-            //    //Layout = DockSerializer.Load<RootDock>(path);
-            //}
+		public void LoadLayout()
+		{
+			//string path = System.IO.Path.Combine(Platform.SettingsDirectory, "Layout.json");
 
-            if (Layout == null)
-            {
-                Layout = Factory.CreateLayout();
-                Factory.InitLayout(Layout, this);
-            }
-        }
+			//if (DockSerializer.Exists(path))
+			//{
+			//    //Layout = DockSerializer.Load<RootDock>(path);
+			//}
 
-        public void CloseLayout()
-        {
-            Factory.CloseLayout(Layout);
-        }
+			if (Layout == null)
+			{
+				Layout = Factory.CreateLayout();
+				Factory.InitLayout(Layout, this);
+			}
+		}
 
-        public void SaveLayout()
-        {
-            //string path = System.IO.Path.Combine(Platform.SettingsDirectory, "Layout.json");
-            //DockSerializer.Save(path, Layout);
-        }
+		public void CloseLayout()
+		{
+			Factory.CloseLayout(Layout);
+		}
 
-        public MenuViewModel MainMenu { get; }
+		public void SaveLayout()
+		{
+			//string path = System.IO.Path.Combine(Platform.SettingsDirectory, "Layout.json");
+			//DockSerializer.Save(path, Layout);
+		}
 
-        public StatusBarViewModel StatusBar => _statusBar.Value;
+		public MenuViewModel MainMenu { get; }
 
-        public IEnumerable<ToolbarViewModel> Toolbars => _toolbars;
+		public StatusBarViewModel StatusBar => _statusBar.Value;
 
-        private ToolbarViewModel StandardToolbar { get; }
+		public IEnumerable<ToolbarViewModel> Toolbars => _toolbars;
 
-        public IEnumerable<KeyBinding> KeyBindings => _keyBindings;
+		private ToolbarViewModel StandardToolbar { get; }
 
-        public void AddDocument(IDocumentTabViewModel document, bool temporary = false)
-        {
-            DockView(_documentDock, document, !Documents.Contains(document));
+		public IEnumerable<KeyBinding> KeyBindings => _keyBindings;
 
-            _documents.Add(document);
-        }
+		public void AddDocument(IDocumentTabViewModel document, bool temporary = false)
+		{
+			DockView(_documentDock, document, !Documents.Contains(document));
 
-        public void RemoveDocument(IDocumentTabViewModel document)
-        {
-            if (document == null)
-            {
-                return;
-            }
+			_documents.Add(document);
+		}
 
-            // TODO implement save on close.
+		public void RemoveDocument(IDocumentTabViewModel document)
+		{
+			if (document == null)
+			{
+				return;
+			}
 
-            if (document.Parent is IDock dock)
-            {
-                dock.Views.Remove(document);
-                Factory.Update(document, document, dock);
-            }
+			// TODO implement save on close.
 
-            _documents.Remove(document);
-        }
+			if (document.Parent is IDock dock)
+			{
+				dock.Views.Remove(document);
+				Factory.Update(document, document, dock);
+			}
 
-        public ModalDialogViewModelBase ModalDialog
-        {
-            get { return modalDialog; }
-            set { this.RaiseAndSetIfChanged(ref modalDialog, value); }
-        }
+			_documents.Remove(document);
+		}
 
-        public IDocumentTabViewModel SelectedDocument
-        {
-            get => Layout.FocusedView as IDocumentTabViewModel;
-            set
-            {
-                if (value != null)
-                {
-                    Factory.SetCurrentView(value);
-                }
+		public ModalDialogViewModelBase ModalDialog
+		{
+			get { return modalDialog; }
+			set { this.RaiseAndSetIfChanged(ref modalDialog, value); }
+		}
 
-                this.RaisePropertyChanged(nameof(SelectedDocument));
-            }
-        }
-    }
+		public IDocumentTabViewModel SelectedDocument
+		{
+			get => Layout.FocusedView as IDocumentTabViewModel;
+			set
+			{
+				if (value != null)
+				{
+					Factory.SetCurrentView(value);
+				}
+
+				this.RaisePropertyChanged(nameof(SelectedDocument));
+			}
+		}
+	}
 }
