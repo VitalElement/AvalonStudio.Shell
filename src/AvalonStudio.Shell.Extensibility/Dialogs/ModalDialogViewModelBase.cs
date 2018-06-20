@@ -4,70 +4,70 @@ using System.Threading.Tasks;
 
 namespace AvalonStudio.Extensibility.Dialogs
 {
-    public class ModalDialogViewModelBase : ReactiveObject
-    {
-        private bool cancelButtonVisible;
+	public class ModalDialogViewModelBase : ReactiveObject
+	{
+		private bool cancelButtonVisible;
 
-        private bool isVisible;
+		private bool isVisible;
 
-        private bool okayButtonVisible;
+		private bool okayButtonVisible;
 
-        private string title;
+		private string title;
 
-        private TaskCompletionSource<bool> dialogCloseCompletionSource;
+		private TaskCompletionSource<bool> dialogCloseCompletionSource;
 
-        public ModalDialogViewModelBase(string title, bool okayButton = true, bool cancelButton = true)
-        {
-            OKButtonVisible = okayButton;
-            CancelButtonVisible = cancelButton;
+		public ModalDialogViewModelBase(string title, bool okayButton = true, bool cancelButton = true)
+		{
+			OKButtonVisible = okayButton;
+			CancelButtonVisible = cancelButton;
 
-            isVisible = false;
-            this.title = title;
+			isVisible = false;
+			this.title = title;
 
-            CancelCommand = ReactiveCommand.Create(() => Close(false));
-        }
+			CancelCommand = ReactiveCommand.Create(() => Close(false));
+		}
 
-        public bool CancelButtonVisible
-        {
-            get { return cancelButtonVisible; }
-            set { this.RaiseAndSetIfChanged(ref cancelButtonVisible, value); }
-        }
+		public bool CancelButtonVisible
+		{
+			get { return cancelButtonVisible; }
+			set { this.RaiseAndSetIfChanged(ref cancelButtonVisible, value); }
+		}
 
-        public bool OKButtonVisible
-        {
-            get { return okayButtonVisible; }
-            set { this.RaiseAndSetIfChanged(ref okayButtonVisible, value); }
-        }
+		public bool OKButtonVisible
+		{
+			get { return okayButtonVisible; }
+			set { this.RaiseAndSetIfChanged(ref okayButtonVisible, value); }
+		}
 
-        public virtual ReactiveCommand OKCommand { get; protected set; }
-        public ReactiveCommand CancelCommand { get; }
+		public virtual ReactiveCommand OKCommand { get; protected set; }
+		public ReactiveCommand CancelCommand { get; }
 
-        public string Title
-        {
-            get { return title; }
-            private set { this.RaiseAndSetIfChanged(ref title, value); }
-        }
+		public string Title
+		{
+			get { return title; }
+			private set { this.RaiseAndSetIfChanged(ref title, value); }
+		}
 
-        public bool IsVisible
-        {
-            get { return isVisible; }
-            set { this.RaiseAndSetIfChanged(ref isVisible, value); }
-        }
+		public bool IsVisible
+		{
+			get { return isVisible; }
+			set { this.RaiseAndSetIfChanged(ref isVisible, value); }
+		}
 
-        public Task<bool> ShowDialog()
-        {
-            IsVisible = true;
+		public Task<bool> ShowDialogAsync()
+		{
+			IsVisible = true;
 
-            dialogCloseCompletionSource = new TaskCompletionSource<bool>();
+			dialogCloseCompletionSource = new TaskCompletionSource<bool>();
 
-            return dialogCloseCompletionSource.Task;
-        }
+			return dialogCloseCompletionSource.Task;
+		}
 
-        public void Close(bool success = true)
-        {
-            IsVisible = false;
+		public void Close(bool success = true)
+		{
+			IsVisible = false;
 
-            dialogCloseCompletionSource.SetResult(success);
-        }
-    }
+			dialogCloseCompletionSource.SetResult(success);
+		}
+	}
 }
