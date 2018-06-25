@@ -301,6 +301,53 @@ namespace AvalonStudio.Shell
 			}
 		}
 
+		public void AddOrSelectDocument<T>(T document) where T : IDocumentTabViewModel
+		{
+			IDocumentTabViewModel doc = Documents.FirstOrDefault(x => x.Equals(document));
+
+			if (doc != null)
+			{
+				SelectedDocument = doc;
+			}
+			else
+			{
+				AddDocument(document);
+			}
+		}
+
+		public void AddOrSelectDocument<T>(Func<T> factory) where T : IDocumentTabViewModel
+		{
+			IDocumentTabViewModel doc = Documents.FirstOrDefault(x => x is T);
+
+			if (doc != default)
+			{
+				SelectedDocument = doc;
+			}
+			else
+			{
+				AddDocument(factory());
+			}
+		}
+
+		public T GetOrCreate<T>() where T : IDocumentTabViewModel, new()
+		{
+			T document = default;
+
+			IDocumentTabViewModel doc = Documents.FirstOrDefault(x => x is T);
+
+			if (doc != default)
+			{
+				document = (T)doc;
+				SelectedDocument = doc;
+			}
+			else
+			{
+				document = new T();
+				AddDocument(document);
+			}
+			return document;
+		}
+
 		public Avalonia.Controls.IPanel Overlay { get; internal set; }
 	}
 }

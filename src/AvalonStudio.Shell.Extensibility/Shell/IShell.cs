@@ -2,9 +2,7 @@ using Avalonia.Controls;
 using AvalonStudio.Documents;
 using AvalonStudio.Extensibility.Dialogs;
 using Dock.Model;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace AvalonStudio.Shell
 {
