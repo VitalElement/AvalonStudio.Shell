@@ -2,8 +2,12 @@
 
 namespace AvalonStudio.Documents
 {
-    public interface IDocumentTabViewModel : IDocumentTab
-    {
-        void Close();
-    }
+	public interface IDocumentTabViewModel : IDocumentTab
+	{
+		void OnSelected();
+
+		void OnDeselected();
+
+		void Close();
+	}
 }

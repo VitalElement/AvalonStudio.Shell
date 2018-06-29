@@ -32,6 +32,8 @@ namespace AvalonStudio.Shell
 		public static ShellViewModel Instance { get; set; }
 		private List<KeyBinding> _keyBindings;
 
+		private IDocumentTabViewModel _selectedDocument;
+
 		private IEnumerable<ToolbarViewModel> _toolbars;
 		private IEnumerable<Lazy<IExtension>> _extensions;
 		private IEnumerable<Lazy<ToolViewModel>> _toolControls;
@@ -289,13 +291,19 @@ namespace AvalonStudio.Shell
 
 		public IDocumentTabViewModel SelectedDocument
 		{
-			get => Layout.FocusedView as IDocumentTabViewModel;
+			get => _selectedDocument;
 			set
 			{
+				(_selectedDocument as IDocumentTabViewModel)?.OnDeselected();
+
 				if (value != null)
 				{
 					Factory.SetCurrentView(value);
 				}
+
+				_selectedDocument = value;
+
+				(_selectedDocument as IDocumentTabViewModel)?.OnSelected();
 
 				this.RaisePropertyChanged(nameof(SelectedDocument));
 			}
