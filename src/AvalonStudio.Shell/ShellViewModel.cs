@@ -34,7 +34,6 @@ namespace AvalonStudio.Shell
 
 		private IDocumentTabViewModel _selectedDocument;
 
-		private IEnumerable<ToolbarViewModel> _toolbars;
 		private IEnumerable<Lazy<IExtension>> _extensions;
 		private IEnumerable<Lazy<ToolViewModel>> _toolControls;
 		private CommandService _commandService;
@@ -251,8 +250,6 @@ namespace AvalonStudio.Shell
 		public MenuViewModel MainMenu { get; }
 
 		public StatusBarViewModel StatusBar => _statusBar.Value;
-
-		public IEnumerable<ToolbarViewModel> Toolbars => _toolbars;
 
 		private ToolbarViewModel StandardToolbar { get; }
 
