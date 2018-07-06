@@ -32,7 +32,7 @@ namespace AvalonStudio
                         var extension = new ExtensionManifest(extensionManifest);
                         extensions.Add(extension);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         // todo: log exception
                     }
