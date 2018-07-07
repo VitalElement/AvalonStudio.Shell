@@ -1,7 +1,7 @@
 ﻿<Styles xmlns:local="clr-namespace:AvalonStudio.Controls;assembly=AvalonStudio.Shell.Extensibility" xmlns="https://github.com/avaloniaui">
     <Style Selector="local|DocumentTabControl">
-        <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="0"/>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="0" />
         <Setter Property="Focusable" Value="True" />
         <Setter Property="Template">
             <ControlTemplate>
@@ -23,7 +23,7 @@
                         <ContentControl Content="{TemplateBinding HeaderSeperatorContent}" />
                     </StackPanel>
 
-                    <Carousel Name="PART_Carousel"  Items="{TemplateBinding Items}" SelectedIndex="{TemplateBinding Path=SelectedIndex}" IsVirtualized="false" ItemTemplate="{TemplateBinding ItemTemplate}" />
+                    <Carousel Name="PART_Carousel"  Items="{TemplateBinding Items}" SelectedIndex="{TemplateBinding SelectedIndex}" IsVirtualized="false" ItemTemplate="{TemplateBinding ItemTemplate}" />
                 </DockPanel>
             </ControlTemplate>
         </Setter>
