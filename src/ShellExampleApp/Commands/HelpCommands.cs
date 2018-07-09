@@ -23,7 +23,7 @@ namespace ShellExampleApp.Commands
         private void ShowAboutDialog()
         {
             _shell.ModalDialog = new AboutDialogViewModel();
-            _shell.ModalDialog.ShowDialog();
+            _shell.ModalDialog.ShowDialogAsync();
         }
     }
 }
