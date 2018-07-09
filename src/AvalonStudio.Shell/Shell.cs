@@ -29,7 +29,7 @@ namespace AvalonStudio.Shell
 
 		public static void StartShellApp<TAppBuilder>(this TAppBuilder builder, string appName, IDockFactory layoutFactory = null, Func<object> dataContextProvider = null) where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
 		{
-			StartShellApp<TAppBuilder>(builder, appName, layoutFactory, dataContextProvider);
+			StartShellApp<TAppBuilder, MainWindow>(builder, appName, layoutFactory, dataContextProvider);
 		}
 	}
 }

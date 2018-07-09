@@ -1,5 +1,4 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:cont="clr-namespace:AvalonStudio.Controls;assembly=AvalonStudio.Extensibility"
              Background="{DynamicResource ThemeAccentBrush}" 
              Foreground="{DynamicResource ApplicationAccentForegroundBrush}">
   <Grid ColumnDefinitions="*,100, 60,60,60,60,60,15,15">
