@@ -8,12 +8,12 @@ namespace AvalonStudio.Extensibility.Theme
     {
         public void Activation()
         {
-            ColorTheme.Register(ColorTheme.VisualStudioDark);
-            ColorTheme.Register(ColorTheme.VisualStudioLight);
         }
 
         public void BeforeActivation()
         {
+            ColorTheme.Register(ColorTheme.VisualStudioDark);
+            ColorTheme.Register(ColorTheme.VisualStudioLight);
         }
     }
 
