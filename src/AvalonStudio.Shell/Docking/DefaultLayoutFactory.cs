@@ -25,7 +25,7 @@ namespace AvalonStudio.Docking
 			{
 				Id = "LeftPaneTop",
 				Dock = "Left",
-				Width = 340,
+				Width = double.NaN,
 				Height = double.NaN,
 				Title = "LeftPaneTop",
 				CurrentView = null,
@@ -38,7 +38,7 @@ namespace AvalonStudio.Docking
 			{
 				Id = "RightDock",
 				Dock = "Right",
-				Width = 300,
+				Width = double.NaN,
 				Height = double.NaN,
 				Title = "RightDock",
 				CurrentView = null,
@@ -50,7 +50,7 @@ namespace AvalonStudio.Docking
 				Id = "BottomDock",
 				Dock = "Bottom",
 				Width = double.NaN,
-				Height = 300,
+				Height = double.NaN,
 				Title = "BottomDock",
 				CurrentView = null,
 				Views = new ObservableCollection<IView>()
