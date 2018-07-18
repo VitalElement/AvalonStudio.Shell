@@ -238,7 +238,7 @@ namespace AvalonStudio.Shell
 
 		public void CloseLayout()
 		{
-			Factory.CloseLayout(Layout);
+            Layout.Close();
 		}
 
 		public void SaveLayout()

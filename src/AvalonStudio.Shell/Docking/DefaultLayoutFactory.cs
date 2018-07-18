@@ -16,101 +16,121 @@ namespace AvalonStudio.Docking
 		public ToolDock RightDock { get; private set; }
 		public ToolDock BottomDock { get; private set; }
 
-		/// <inheritdoc/>
-		public override IDock CreateLayout()
+        public LayoutDock LeftPane { get; private set; }
+        public LayoutDock RightPane { get; private set; }
+        public LayoutDock CenterPane { get; private set; }
+
+        /// <inheritdoc/>
+        public override IDock CreateLayout()
 		{
-			// Left Pane
+            LeftDock = new ToolDock
+            {
+                Id = "LeftPaneTop",
+                Proportion = double.NaN,
+                Title = "LeftPaneTop",
+                CurrentView = null,
+                Views = new ObservableCollection<IView>()
+            };
 
-			LeftDock = new ToolDock
-			{
-				Id = "LeftPaneTop",
-				Dock = "Left",
-				Width = double.NaN,
-				Height = double.NaN,
-				Title = "LeftPaneTop",
-				CurrentView = null,
-				Views = new ObservableCollection<IView>()
-			};
+            // Left Pane
+            LeftPane = new LayoutDock
+            {
+                Id = "LeftPane",
+                Proportion = 0.2,
+                Orientation = Orientation.Vertical,
+                Title = "LeftPane",
+                CurrentView = null,
+                Views = CreateList<IView>
+                (
+                    LeftDock
+                )
+            };
 
-			// Right Pane
+            RightDock = new ToolDock
+            {
+                Id = "RightDock",
+                Title = "RightDock",
+                CurrentView = null,
+                Views = new ObservableCollection<IView>()
+            };
 
-			RightDock = new ToolDock
-			{
-				Id = "RightDock",
-				Dock = "Right",
-				Width = double.NaN,
-				Height = double.NaN,
-				Title = "RightDock",
-				CurrentView = null,
-				Views = new ObservableCollection<IView>()
-			};
+            var RightPane = new LayoutDock
+            {
+                Id = "RightPane",
+                Proportion = 0.2,
+                Orientation = Orientation.Vertical,
+                Title = "LeftPane",
+                CurrentView = null,
+                Views = CreateList<IView>
+               (
+                   RightDock
+               )
+            };
 
-			BottomDock = new ToolDock
-			{
-				Id = "BottomDock",
-				Dock = "Bottom",
-				Width = double.NaN,
-				Height = double.NaN,
-				Title = "BottomDock",
-				CurrentView = null,
-				Views = new ObservableCollection<IView>()
-			};
+            BottomDock = new ToolDock
+            {
+                Id = "BottomDock",
+                Title = "BottomDock",
+                CurrentView = null,
+                Views = new ObservableCollection<IView>()
+            };
 
-			// Documents
+            // Documents
 
-			DocumentDock = new DocumentDock
-			{
-				Id = "DocumentsPane",
-				Dock = "",
-				Width = double.NaN,
-				Height = double.NaN,
-				Title = "DocumentsPane",
-				CurrentView = null,
-				Views = new ObservableCollection<IView>()
-			};
+            DocumentDock = new DocumentDock
+            {
+                Id = "DocumentsPane",
+                Proportion = double.NaN,
+                Title = "DocumentsPane",
+                CurrentView = null,
+                Views = new ObservableCollection<IView>()
+            };
+
+            CenterPane = new LayoutDock
+            {
+                Id = "CenterPane",
+                Proportion = double.NaN,
+                Orientation = Orientation.Vertical,
+                Title = "LeftPane",
+                CurrentView = null,
+                Views = CreateList<IView>
+               (
+                   DocumentDock,
+                   new SplitterDock(),
+                   BottomDock
+               )
+            };
 
 			// Main
 
 			var mainLayout = new LayoutDock
 			{
 				Id = "MainLayout",
-				Dock = "",
-				Width = double.NaN,
-				Height = double.NaN,
+                Proportion = double.NaN,
+				Orientation = Orientation.Horizontal,
 				Title = "MainLayout",
 				CurrentView = null,
 				Views = new ObservableCollection<IView>
 				{
-					LeftDock,
+					LeftPane,
 					new SplitterDock()
 					{
 						Id = "LeftSplitter",
-						Dock = "Left",
 						Title = "LeftSplitter"
 					},
-					RightDock,
+                    CenterPane,
 					new SplitterDock()
 					{
 						Id = "RightSplitter",
-						Dock = "Right",
 						Title = "RightSplitter"
 					},
-					BottomDock,
-					new SplitterDock()
-					{
-						Id = "BottomSplitter",
-						Dock = "Bottom",
-						Title = "BottomSplitter"
-					},
-					DocumentDock
+                    RightPane
 				}
 			};
 
 			var mainView = new MainView
 			{
 				Id = "Main",
-				Width = double.NaN,
-				Height = double.NaN,
 				Title = "Main",
 				CurrentView = mainLayout,
 				Views = new ObservableCollection<IView>
@@ -124,8 +144,6 @@ namespace AvalonStudio.Docking
 			var root = new RootDock
 			{
 				Id = "Root",
-				Width = double.NaN,
-				Height = double.NaN,
 				Title = "Root",
 				CurrentView = mainView,
 				DefaultView = mainView,
