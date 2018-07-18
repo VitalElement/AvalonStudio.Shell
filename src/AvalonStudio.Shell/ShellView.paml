@@ -72,9 +72,9 @@
     <KeyBinding Command="{Binding EnableDebugModeCommand}" Gesture="CTRL+SHIFT+D" />
   </UserControl.KeyBindings>
   <Grid RowDefinitions="Auto,*">
-    <!--<i:Interaction.Behaviors>
+    <i:Interaction.Behaviors>
       <id:DropBehavior Context="{Binding Layout}" Handler="{StaticResource DockDropHandler0}" />
-    </i:Interaction.Behaviors>-->
+    </i:Interaction.Behaviors>
 
     <Grid Grid.ColumnSpan="5" Margin="0 0 0 0">
       <Grid RowDefinitions="Auto, Auto">
