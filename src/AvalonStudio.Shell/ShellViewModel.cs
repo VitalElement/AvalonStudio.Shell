@@ -306,6 +306,18 @@ namespace AvalonStudio.Shell
 			}
 		}
 
+        public void Select (object view)
+        {
+            if(view is IDocumentTabViewModel doc)
+            {
+                SelectedDocument = doc;
+            }
+            else if (view is ToolViewModel tool)
+            {
+                Layout.Factory.SetCurrentView(tool);
+            }
+        }
+
 		public void AddOrSelectDocument<T>(T document) where T : IDocumentTabViewModel
 		{
 			IDocumentTabViewModel doc = Documents.FirstOrDefault(x => x.Equals(document));

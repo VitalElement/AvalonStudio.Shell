@@ -10,7 +10,9 @@ namespace AvalonStudio.Shell
 	{
 		IDocumentTabViewModel SelectedDocument { get; set; }
 
-		ModalDialogViewModelBase ModalDialog { get; set; }
+        void Select(object view);
+
+        ModalDialogViewModelBase ModalDialog { get; set; }
 
 		void AddDocument(IDocumentTabViewModel document, bool temporary = true);
 

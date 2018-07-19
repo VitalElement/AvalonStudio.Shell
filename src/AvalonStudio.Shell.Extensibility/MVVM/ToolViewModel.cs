@@ -1,4 +1,6 @@
-﻿using Dock.Model;
+﻿using AvalonStudio.Extensibility;
+using AvalonStudio.Shell;
+using Dock.Model;
 using Dock.Model.Controls;
 using ReactiveUI;
 using System;
@@ -42,6 +44,11 @@ namespace AvalonStudio.MVVM
                 _isSelected = value;
 
                 this.RaisePropertyChanged();
+
+                if (value)
+                {
+                    IoC.Get<IShell>().Select(this);
+                }
 
                 if(value && OnSelect != null)
                 {
