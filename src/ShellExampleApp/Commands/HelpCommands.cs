@@ -2,6 +2,7 @@
 using AvalonStudio.Extensibility;
 using AvalonStudio.Shell;
 using ReactiveUI;
+using System.Composition;
 
 namespace ShellExampleApp.Commands
 {
@@ -12,18 +13,19 @@ namespace ShellExampleApp.Commands
 
         private IShell _shell;
 
-        public HelpCommands()
+        [ImportingConstructor]
+        public HelpCommands(CommandIconService commandIconService)
         {
             _shell = IoC.Get<IShell>();
 
             AboutCommand = new CommandDefinition(
-                "About", null, ReactiveCommand.Create(ShowAboutDialog));
+                "About", commandIconService.GetCompletionKindImage("Undo"), ReactiveCommand.Create(ShowAboutDialog));
         }
 
         private void ShowAboutDialog()
         {
             _shell.ModalDialog = new AboutDialogViewModel();
-            _shell.ModalDialog.ShowDialog();
+            _shell.ModalDialog.ShowDialogAsync();
         }
     }
 }

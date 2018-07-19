@@ -33,7 +33,7 @@
 
       <ItemsControl.DataTemplates>
         <DataTemplate DataType="mod:MenuItemSeparatorModel">
-          <Grid Width="1" Height="{TemplateBinding Height}" Background="#3F3F46" Margin="4,0" />
+          <Grid Width="1" Background="#3F3F46" Margin="4,0" />
         </DataTemplate>
 
         <DataTemplate DataType="mod:MenuItemModel">

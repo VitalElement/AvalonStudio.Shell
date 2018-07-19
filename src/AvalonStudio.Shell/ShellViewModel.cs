@@ -68,7 +68,7 @@ namespace AvalonStudio.Shell
 			MainMenu = mainMenuService.GetMainMenu();
 
 			var toolbars = toolbarService.GetToolbars();
-			//StandardToolbar = toolbars.Single(t => t.Key == "Standard").Value;
+			StandardToolbar = toolbars.Single(t => t.Key == "Standard").Value;
 
 			_statusBar = statusBar;
 
@@ -238,7 +238,7 @@ namespace AvalonStudio.Shell
 
 		public void CloseLayout()
 		{
-			Factory.CloseLayout(Layout);
+            Layout.Close();
 		}
 
 		public void SaveLayout()

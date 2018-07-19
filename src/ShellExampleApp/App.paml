@@ -15,6 +15,7 @@
     <StyleInclude Source="resm:AvalonStudio.Shell.Extensibility.Controls.ControlTheme.paml?assembly=AvalonStudio.Shell.Extensibility" />
     <StyleInclude Source="resm:AvalonStudio.Shell.Styles.GlobalStyles.xaml?assembly=AvalonStudio.Shell" />        
     <StyleInclude Source="resm:Dock.Avalonia.Controls.DockPanelSplitter.xaml?assembly=Dock.Avalonia"/>
+    <StyleInclude Source="resm:Dock.Avalonia.Controls.ProportionalStackPanelSplitter.xaml?assembly=Dock.Avalonia"/>
     <StyleInclude Source="resm:Dock.Avalonia.Controls.DockTarget.xaml?assembly=Dock.Avalonia"/>
     <StyleInclude Source="resm:Dock.Avalonia.Controls.DockToolChrome.xaml?assembly=Dock.Avalonia"/>
     <StyleInclude Source="resm:Dock.Avalonia.Controls.MetroWindow.xaml?assembly=Dock.Avalonia"/>

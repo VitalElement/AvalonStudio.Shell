@@ -26,10 +26,5 @@ namespace AvalonStudio.Shell
 				ShellViewModel.Instance.Initialise(layoutFactory);
 			}).Start<TMainWindow>(dataContextProvider);
 		}
-
-		public static void StartShellApp<TAppBuilder>(this TAppBuilder builder, string appName, IDockFactory layoutFactory = null, Func<object> dataContextProvider = null) where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
-		{
-			StartShellApp<TAppBuilder>(builder, appName, layoutFactory, dataContextProvider);
-		}
 	}
 }
