@@ -78,10 +78,6 @@
     </cont:MetroWindow.KeyBindings>
 
     <Grid RowDefinitions="*,25">
-        <i:Interaction.Behaviors>
-            <id:DropBehavior Context="{Binding Layout}" Handler="{StaticResource DockDropHandler0}" />
-        </i:Interaction.Behaviors>
-
         <shell:ShellView DataContext="{Binding Shell}" />
 
         <Grid Grid.Row="1" Grid.ColumnSpan="5">
