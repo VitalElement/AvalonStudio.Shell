@@ -1,8 +1,5 @@
 ﻿using AvalonStudio.Extensibility;
 using AvalonStudio.Shell;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ShellExampleApp
 {
@@ -11,6 +8,9 @@ namespace ShellExampleApp
         public MainWindowViewModel()
         {
             Shell = IoC.Get<IShell>();
+
+            Shell.AddOrSelectDocument(() => new DocumentViewModel());
+            Shell.AddOrSelectDocument(() => new WelcomeScreenViewModel());
         }
 
         public IShell Shell { get; }

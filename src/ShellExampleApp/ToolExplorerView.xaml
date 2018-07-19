@@ -1,0 +1,4 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"             
+             Background="{DynamicResource ThemeBackgroundBrush}">
+    <TextBlock Text="Tool Explorer Control" />
+</UserControl>

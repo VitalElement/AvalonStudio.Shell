@@ -19,7 +19,37 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="AboutDialogView - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ConsoleView - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ConsoleView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="DocumentView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="SolutionExplorerView - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="SolutionExplorerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ToolExplorerView - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ToolExplorerView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="WelcomeScreenView - Copy.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="WelcomeScreenView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>
