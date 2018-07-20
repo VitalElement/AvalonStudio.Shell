@@ -87,10 +87,16 @@ namespace AvalonStudio.Controls
 		{
 		}
 
-		/// <summary>
-		/// Gets or sets view id.
-		/// </summary>
-		public string Id { get; set; }
+        public virtual bool OnClose()
+        {
+            IoC.Get<IShell>().RemoveDocument(this);
+            return true;
+        }
+
+        /// <summary>
+        /// Gets or sets view id.
+        /// </summary>
+        public string Id { get; set; }
 
 		/// <summary>
 		/// Gets or sets view context.

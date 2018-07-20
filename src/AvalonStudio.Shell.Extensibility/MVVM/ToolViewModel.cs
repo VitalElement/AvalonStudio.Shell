@@ -90,5 +90,14 @@ namespace AvalonStudio.MVVM
         /// </summary>
         /// <remarks>If parrent is <see cref="null"/> than view is root.</remarks>
         public IView Parent { get; set; }
+
+        public virtual bool OnClose()
+        {
+            return true;
+        }
+
+        public virtual void OnSelected()
+        {
+        }
     }
 }
