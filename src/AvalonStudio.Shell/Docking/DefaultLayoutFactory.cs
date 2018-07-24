@@ -1,4 +1,5 @@
 ﻿using AvaloniaDemo.ViewModels.Views;
+using AvalonStudio.Shell;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -8,82 +9,55 @@ using System.Collections.ObjectModel;
 
 namespace AvalonStudio.Docking
 {
+    public class AvalonStudioDocumentDock : DocumentDock
+    {
+        public override bool OnClose()
+        {
+            ShellViewModel.Instance.RemoveDock(this);
+            return base.OnClose();
+        }
+    }
+
+    public class AvalonStudioToolDock : ToolDock
+    {
+        public override bool OnClose()
+        {
+            ShellViewModel.Instance.RemoveDock(this);
+            return base.OnClose();
+        }
+    }
+
     /// <inheritdoc/>
     public class DefaultLayoutFactory : DockFactory
     {
         public DocumentDock DocumentDock { get; private set; }
-        public ToolDock LeftDock { get; private set; }
         public ToolDock RightDock { get; private set; }
         public ToolDock BottomDock { get; private set; }
 
-        public LayoutDock LeftPane { get; private set; }
         public LayoutDock RightPane { get; private set; }
         public LayoutDock CenterPane { get; private set; }
+
+        public override IToolDock CreateToolDock()
+        {
+            return new AvalonStudioToolDock();
+        }
+
+        public override IDocumentDock CreateDocumentDock()
+        {
+            return new AvalonStudioDocumentDock();
+        }
 
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
-            LeftDock = new ToolDock
-            {
-                Id = "LeftPaneTop",
-                Proportion = double.NaN,
-                Title = "LeftPaneTop",
-                CurrentView = null,
-                Views = new ObservableCollection<IView>()
-            };
-
-            // Left Pane
-            LeftPane = new LayoutDock
-            {
-                Id = "LeftPane",
-                Proportion = 0.15,
-                Orientation = Orientation.Vertical,
-                Title = "LeftPane",
-                CurrentView = null,
-                Views = CreateList<IView>
-                (
-                    LeftDock
-                )
-            };
-
-            RightDock = new ToolDock
-            {
-                Id = "RightDock",
-                Title = "RightDock",
-                CurrentView = null,
-                Views = new ObservableCollection<IView>()
-            };
-
-            var RightPane = new LayoutDock
-            {
-                Id = "RightPane",
-                Proportion = 0.15,
-                Orientation = Orientation.Vertical,
-                Title = "LeftPane",
-                CurrentView = null,
-                Views = CreateList<IView>
-               (
-                   RightDock
-               )
-            };
-
-            BottomDock = new ToolDock
-            {
-                Id = "BottomDock",
-                Title = "BottomDock",
-                CurrentView = null,
-                Proportion = 0.3,
-                Views = new ObservableCollection<IView>()
-            };
-
             // Documents
-
             DocumentDock = new DocumentDock
             {
                 Id = "DocumentsPane",
                 Proportion = double.NaN,
                 Title = "DocumentsPane",
                 CurrentView = null,
+                IsCollapsable = false,
                 Views = new ObservableCollection<IView>()
             };
 
@@ -96,14 +70,11 @@ namespace AvalonStudio.Docking
                 CurrentView = null,
                 Views = CreateList<IView>
                (
-                   DocumentDock,
-                   new SplitterDock(),
-                   BottomDock
+                   DocumentDock
                )
             };
 
             // Main
-
             var mainLayout = new LayoutDock
             {
                 Id = "MainLayout",
@@ -113,19 +84,7 @@ namespace AvalonStudio.Docking
                 CurrentView = null,
                 Views = new ObservableCollection<IView>
                 {
-                    LeftPane,
-                    new SplitterDock()
-                    {
-                        Id = "LeftSplitter",
-                        Title = "LeftSplitter"
-                    },
-                    CenterPane,
-                    new SplitterDock()
-                    {
-                        Id = "RightSplitter",
-                        Title = "RightSplitter"
-                    },
-                    RightPane
+                    CenterPane
                 }
             };
 
@@ -214,7 +173,6 @@ namespace AvalonStudio.Docking
             this.ViewLocator = new Dictionary<string, Func<IView>>
             {
                 [nameof(RightDock)] = () => RightDock,
-                [nameof(LeftDock)] = () => LeftDock,
                 [nameof(BottomDock)] = () => BottomDock,
                 [nameof(DocumentDock)] = () => DocumentDock
             };

@@ -38,6 +38,7 @@ namespace AvalonStudio.Shell
 		private IEnumerable<Lazy<ToolViewModel>> _toolControls;
 		private CommandService _commandService;
 		private List<IDocumentTabViewModel> _documents;
+        private List<IToolViewModel> _tools;
 
 		private Lazy<StatusBarViewModel> _statusBar;
 
@@ -77,7 +78,153 @@ namespace AvalonStudio.Shell
 			ModalDialog = new ModalDialogViewModelBase("Dialog");
 
 			_documents = new List<IDocumentTabViewModel>();
+
+            _tools = new List<IToolViewModel>();
 		}
+
+        public void RemoveDock (IDock dock)
+        {
+            if(dock == _left)
+            {
+                _left = null;
+            }
+            else if (dock == _right)
+            {
+                _right = null;
+            }
+            else if(dock == _bottom)
+            {
+                _bottom = null;
+            }
+        }
+
+        private IDock DockOrCreate (IToolViewModel view)
+        {
+            switch(view.DefaultLocation)
+            {
+                case Location.Left:
+                    if(_left != null)
+                    {
+                        DockView(_left, view);
+                        return _left;
+                    }
+                    break;
+
+                case Location.Right:
+                    if(_right != null)
+                    {
+                        DockView(_right, view);
+                        return _right;
+                    }
+                    break;
+
+                case Location.Bottom:
+                    if(_bottom != null)
+                    {
+                        DockView(_bottom, view);
+                        return _bottom;
+                    }
+                    break;
+            }
+
+            var orientation = Orientation.Horizontal;
+            var dockOperation = DockOperation.Left;
+            
+            switch(view.DefaultLocation)
+            {
+                case Location.Bottom:
+                    orientation = Orientation.Vertical;
+                    break;
+            }
+
+            switch(view.DefaultLocation)
+            {
+                case Location.Right:
+                    dockOperation = DockOperation.Right;
+                    break;
+
+                case Location.Bottom:
+                    dockOperation = DockOperation.Bottom;
+                    break;
+
+            }
+
+            var parentDock = _documentDock.Parent as ILayoutDock;
+            var containedElement = _documentDock as IDock;
+
+            while (true)
+            {
+                if (parentDock.Orientation == orientation)
+                {
+                    break;
+                }
+
+                containedElement = parentDock;
+                parentDock = parentDock.Parent as ILayoutDock;
+            }
+
+            var index = parentDock.Views.IndexOf(containedElement);
+
+            void advanceIndex ()
+            {
+                switch (view.DefaultLocation)
+                {
+                    case Location.Left:
+                        index--;
+                        break;
+
+                    case Location.Right:
+                    case Location.Bottom:
+                        index++;
+                        break;
+
+                }
+            }
+
+            advanceIndex();
+
+            if (index < 0 || index >= parentDock.Views.Count)
+            {
+                var factory = _documentDock.Factory;
+                var toolDock = factory.CreateToolDock();
+                toolDock.Id = nameof(IToolDock);
+                toolDock.Title = nameof(IToolDock);
+                toolDock.CurrentView = view;
+                toolDock.Views = factory.CreateList<IView>();
+                toolDock.Views.Add(view);
+
+                factory.Split(_documentDock, toolDock, dockOperation);
+                toolDock.Proportion = 0.15;
+
+                switch (view.DefaultLocation)
+                {
+                    case Location.Left:
+                        if (_left == null)
+                        {
+                            _left = toolDock;
+                        }
+                        break;
+
+                    case Location.Right:
+                        if (_right == null)
+                        {
+                            _right = toolDock;
+                        }
+                        break;
+
+                    case Location.Bottom:
+                        if (_bottom == null)
+                        {
+                            _bottom = toolDock;
+                        }
+                        break;
+                }
+
+                return toolDock;
+            }
+
+            throw new NotSupportedException();
+        }
 
 		public void Initialise(IDockFactory layoutFactory = null)
 		{
@@ -110,6 +257,15 @@ namespace AvalonStudio.Shell
 				{
 					SelectedDocument = null;
 				}
+
+                if(focused is ToolViewModel tool)
+                {
+                    SelectedTool = tool;
+                }
+                else
+                {
+                    SelectedTool = null;
+                }
 			});
 
 			if (Layout.Factory.ViewLocator.ContainsKey("LeftDock"))
@@ -148,46 +304,20 @@ namespace AvalonStudio.Shell
 				}
 			}
 
-			foreach (var tool in _toolControls)
+			foreach (var tool in _toolControls.Select(t => t.Value)
+                .Where(t => t.DefaultLocation == Location.Left || t.DefaultLocation == Location.Right)
+                .Concat(_toolControls.Select(t => t.Value).Where(t => t.DefaultLocation == Location.Bottom)))
 			{
-				switch (tool.Value.DefaultLocation)
-				{
-					case Location.Bottom:
-						DockView(_bottomPane, tool.Value);
-						break;
+                AddTool(tool);
+            }
 
-					//case Location.BottomRight:
-					//    BottomRightTabs.Tools.Add(tool);
-					//    break;
-
-					//case Location.RightBottom:
-					//    RightBottomTabs.Tools.Add(tool);
-					//    break;
-
-					//case Location.RightMiddle:
-					//    RightMiddleTabs.Tools.Add(tool);
-					//    break;
-
-					//case Location.RightTop:
-					//    RightTopTabs.Tools.Add(tool);
-					//    break;
-
-					//case Location.MiddleTop:
-					//    MiddleTopTabs.Tools.Add(tool);
-					//    break;
-
-					case Location.Left:
-						DockView(_leftPane, tool.Value);
-						break;
-
-					case Location.Right:
-						DockView(_rightPane, tool.Value);
-						break;
-				}
-			}
-
-			IoC.Get<IStatusBar>().ClearText();
+            IoC.Get<IStatusBar>().ClearText();
 		}
+
+        private IDock _left;
+        private IDock _right;
+        private IDock _top;
+        private IDock _bottom;
 
 		public string Title => Platform.AppName;
 
@@ -207,6 +337,8 @@ namespace AvalonStudio.Shell
 		}
 
 		public IReadOnlyList<IDocumentTabViewModel> Documents => _documents.AsReadOnly();
+
+        public IReadOnlyList<IToolViewModel> Tools => _tools.AsReadOnly();
 
 		public IDockFactory Factory
 		{
@@ -255,6 +387,27 @@ namespace AvalonStudio.Shell
 
 		public IEnumerable<KeyBinding> KeyBindings => _keyBindings;
 
+        public void AddTool (IToolViewModel tool)
+        {
+            if (!_tools.Contains(tool))
+            {
+                _tools.Add(tool);
+            }
+
+            DockOrCreate(tool);
+        }
+
+        public void RemoveTool (IToolViewModel tool)
+        {
+            if(tool.Parent is IDock dock)
+            {
+                dock.Views.Remove(tool);
+                Factory.Update(tool, tool, dock);
+            }
+
+            _tools.Remove(tool);
+        }
+
 		public void AddDocument(IDocumentTabViewModel document, bool temporary = false)
 		{
 			DockView(_documentDock, document, !Documents.Contains(document));
@@ -285,6 +438,28 @@ namespace AvalonStudio.Shell
 			get { return modalDialog; }
 			set { this.RaiseAndSetIfChanged(ref modalDialog, value); }
 		}
+
+        private IToolViewModel _selectedTool;
+
+        public IToolViewModel SelectedTool
+        {
+            get => _selectedTool;
+            set
+            {
+                _selectedTool?.OnDeselected();
+
+                if(value != null)
+                {
+                    Factory.SetCurrentView(value);
+                }
+
+                _selectedTool = value;
+
+                _selectedTool?.OnSelected();
+
+                this.RaisePropertyChanged(nameof(SelectedTool));
+            }
+        }
 
 		public IDocumentTabViewModel SelectedDocument
 		{

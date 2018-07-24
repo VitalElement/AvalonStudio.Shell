@@ -8,7 +8,16 @@ using System.Reactive.Linq;
 
 namespace AvalonStudio.MVVM
 {
-    public abstract class ToolViewModel : ViewModel, IToolTab
+    public interface IToolViewModel : IToolTab
+    {
+        Location DefaultLocation { get; }
+
+        void OnDeselected();
+
+        //void Close();
+    }
+
+    public abstract class ToolViewModel : ViewModel, IToolViewModel
     {
         private bool _isVisible;
         private bool _isSelected;
@@ -93,11 +102,17 @@ namespace AvalonStudio.MVVM
 
         public virtual bool OnClose()
         {
+            IoC.Get<IShell>().RemoveTool(this);
             return true;
         }
 
         public virtual void OnSelected()
         {
+        }
+
+        public void OnDeselected()
+        {
+            //IsSelected = false;
         }
     }
 }

@@ -1,6 +1,7 @@
 using Avalonia.Controls;
 using AvalonStudio.Documents;
 using AvalonStudio.Extensibility.Dialogs;
+using AvalonStudio.MVVM;
 using Dock.Model;
 using System.Collections.Generic;
 
@@ -10,6 +11,8 @@ namespace AvalonStudio.Shell
 	{
 		IDocumentTabViewModel SelectedDocument { get; set; }
 
+        IToolViewModel SelectedTool { get; set; }
+
         void Select(object view);
 
         ModalDialogViewModelBase ModalDialog { get; set; }
@@ -18,7 +21,13 @@ namespace AvalonStudio.Shell
 
 		void RemoveDocument(IDocumentTabViewModel document);
 
+        void AddTool(IToolViewModel tool);
+
+        void RemoveTool(IToolViewModel tool);
+
 		IReadOnlyList<IDocumentTabViewModel> Documents { get; }
+
+        IReadOnlyList<IToolViewModel> Tools { get; }
 
 		IDock Layout { get; }
 
