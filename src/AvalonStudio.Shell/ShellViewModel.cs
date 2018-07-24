@@ -304,13 +304,6 @@ namespace AvalonStudio.Shell
 				}
 			}
 
-			foreach (var tool in _toolControls.Select(t => t.Value)
-                .Where(t => t.DefaultLocation == Location.Left || t.DefaultLocation == Location.Right)
-                .Concat(_toolControls.Select(t => t.Value).Where(t => t.DefaultLocation == Location.Bottom)))
-			{
-                AddTool(tool);
-            }
-
             IoC.Get<IStatusBar>().ClearText();
 		}
 
