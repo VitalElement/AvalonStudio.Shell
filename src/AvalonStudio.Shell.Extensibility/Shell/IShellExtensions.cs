@@ -27,7 +27,7 @@ namespace AvalonStudio.Shell
 
             if(currentTool != null)
             {
-               // me.SelectedTool = currentTool;
+               me.SelectedTool = currentTool;
             }
             else
             {
@@ -41,7 +41,7 @@ namespace AvalonStudio.Shell
 
             if (currentTool != default)
             {
-                //me.SelectedTool = currentTool;
+                me.SelectedTool = currentTool;
             }
             else
             {

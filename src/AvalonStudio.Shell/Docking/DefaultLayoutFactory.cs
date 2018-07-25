@@ -97,55 +97,35 @@ namespace AvalonStudio.Docking
             }, centerPane, _documentDock);
         }
 
+        public override void Update(IView view, object context, IView parent)
+        {
+            view.Parent = parent;
+
+            if (view is IDock dock)
+            {
+                dock.Factory = this;
+
+                if (dock.Views != null)
+                {
+                    foreach (var child in dock.Views)
+                    {
+                        Update(child, context, view);
+                    }
+                }
+
+                if (dock.Windows != null)
+                {
+                    foreach (var child in dock.Windows)
+                    {
+                        Update(child, context, view);
+                    }
+                }
+            }
+        }
+
         /// <inheritdoc/>
         public override void InitLayout(IView layout, object context)
         {
-            this.ContextLocator = new Dictionary<string, Func<object>>
-            {
-                // Defaults
-                [nameof(IRootDock)] = () => context,
-                [nameof(ILayoutDock)] = () => context,
-                [nameof(IDocumentDock)] = () => context,
-                [nameof(IToolDock)] = () => context,
-                [nameof(ISplitterDock)] = () => context,
-                [nameof(IDockWindow)] = () => context,
-                // Documents
-                ["Document1"] = () => context,
-                ["Document2"] = () => context,
-                ["Document3"] = () => context,
-                // Tools
-                ["Editor"] = () => layout,
-                ["LeftTop1"] = () => context,
-                ["LeftTop2"] = () => context,
-                ["LeftTop3"] = () => context,
-                ["LeftBottom1"] = () => context,
-                ["LeftBottom2"] = () => context,
-                ["LeftBottom3"] = () => context,
-                ["RightTop1"] = () => context,
-                ["RightTop2"] = () => context,
-                ["RightTop3"] = () => context,
-                ["RightBottom1"] = () => context,
-                ["RightBottom2"] = () => context,
-                ["RightBottom3"] = () => context,
-                ["LeftPane"] = () => context,
-                ["LeftPaneTop"] = () => context,
-                ["LeftPaneTopSplitter"] = () => context,
-                ["LeftPaneBottom"] = () => context,
-                ["RightPane"] = () => context,
-                ["RightPaneTop"] = () => context,
-                ["RightPaneTopSplitter"] = () => context,
-                ["RightPaneBottom"] = () => context,
-                ["DocumentsPane"] = () => context,
-                ["MainLayout"] = () => context,
-                ["LeftSplitter"] = () => context,
-                ["RightSplitter"] = () => context,
-                // Layouts
-                ["MainLayout"] = () => context,
-                // Views
-                ["Home"] = () => layout,
-                ["Main"] = () => context
-            };
-
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
             {
                 [nameof(IDockWindow)] = () => new HostWindow()

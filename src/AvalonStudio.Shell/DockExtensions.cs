@@ -1,22 +1,102 @@
-﻿using Dock.Model;
+﻿using AvalonStudio.Documents;
+using AvalonStudio.MVVM;
+using Dock.Model;
+using Dock.Model.Controls;
+using System.Linq;
+using ReactiveUI;
+using System;
 
 namespace AvalonStudio.Shell
 {
+    abstract class AvalonStudioTab<T> : ViewModel, ITab where T : IDockableViewModel
+    {
+        T _model;
+
+        public AvalonStudioTab(T model)
+        {
+            _model = model;
+            Context = model;
+            Id = "ASTab";
+        }
+
+        public string Id { get; set; }
+        public string Title
+        {
+            get => _model.Title;
+            set { }
+        }
+
+        private object _context;
+
+        public object Context
+        {
+            get { return _context; }
+            set { this.RaiseAndSetIfChanged(ref _context, value); }
+        }
+
+        public IView Parent { get; set; }
+
+        public bool OnClose()
+        {
+            return _model.OnClose();
+        }
+
+        public void OnSelected()
+        {
+            
+        }
+    }
+
+    class AvalonStudioDocumentTab : AvalonStudioTab<IDocumentTabViewModel>, IDocumentTab
+    {
+        public AvalonStudioDocumentTab(IDocumentTabViewModel model) : base(model)
+        {
+        }
+    }
+
+    class AvalonStudioToolTab : AvalonStudioTab<IToolViewModel>, IToolTab
+    {
+        public AvalonStudioToolTab(IToolViewModel model) : base (model)
+        {
+        }
+    }
+
     public static class DockExtensions
     {
-        public static void Dock(this IDock dock, IView view, bool add = true)
+        public static IView Dock(this IDock dock, IDockableViewModel model, bool add = true)
         {
+            IView currentTab = null;
+
             if (add)
             {
-                dock.Views.Add(view);
-                dock.Factory.Update(view, view, dock);
+                if (model is IToolViewModel toolModel)
+                {
+                    currentTab = new AvalonStudioToolTab(toolModel);
+                }
+                else if(model is IDocumentTabViewModel documentModel)
+                {
+                    currentTab = new AvalonStudioDocumentTab(documentModel);
+                }
+
+                dock.Views.Add(currentTab);
+                dock.Factory.Update(currentTab, currentTab.Context, dock);
             }
             else
             {
-                dock.Factory.Update(view, view, view.Parent);
+                currentTab = dock.Views.FirstOrDefault(v => v.Context == model);
+
+                if (currentTab != null)
+                {
+                    dock.Factory.Update(currentTab, currentTab.Context, currentTab.Parent);
+                }
             }
 
-            dock.Factory.SetCurrentView(view);
+            if(currentTab != null)
+            { 
+                dock.Factory.SetCurrentView(currentTab);
+            }
+
+            return currentTab;
         }
     }
 }

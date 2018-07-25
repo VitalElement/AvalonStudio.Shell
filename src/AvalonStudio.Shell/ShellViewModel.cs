@@ -119,13 +119,13 @@ namespace AvalonStudio.Shell
 					SelectedDocument = null;
 				}
 
-                if(focused is ToolViewModel tool)
+                if(focused is IToolViewModel tool)
                 {
-                    SelectedTool = tool;
+                    CurrentPerspective.SelectedTool = tool;
                 }
                 else
                 {
-                    SelectedTool = null;
+                    CurrentPerspective.SelectedTool = null;
                 }
 			});
 
@@ -207,7 +207,7 @@ namespace AvalonStudio.Shell
         public IPerspective CreatePerspective()
         {
             var newPerspectiveLayout = (Root.Factory as DefaultLayoutFactory).CreatePerspectiveLayout("Name");
-            Root.Factory.AddView(Root, newPerspectiveLayout.root, this);
+            Root.Factory.AddView(Root, newPerspectiveLayout.root, null);
 
             return new AvalonStudioPerspective(newPerspectiveLayout.root, newPerspectiveLayout.centerPane, newPerspectiveLayout.documentDock);
         }
@@ -235,11 +235,11 @@ namespace AvalonStudio.Shell
 
             // TODO implement save on close.
 
-            if (document.Parent is IDock dock)
+            /*if (document.Parent is IDock dock)
             {
                 dock.Views.Remove(document);
                 Factory.Update(document, document, dock);
-            }
+            }*/
 
             _documents.Remove(document);
         }
@@ -248,28 +248,6 @@ namespace AvalonStudio.Shell
         {
             get { return modalDialog; }
             set { this.RaiseAndSetIfChanged(ref modalDialog, value); }
-        }
-
-        private IToolViewModel _selectedTool;
-
-        public IToolViewModel SelectedTool
-        {
-            get => _selectedTool;
-            set
-            {
-                _selectedTool?.OnDeselected();
-
-                if (value != null)
-                {
-                    Factory.SetCurrentView(value);
-                }
-
-                _selectedTool = value;
-
-                _selectedTool?.OnSelected();
-
-                this.RaisePropertyChanged(nameof(SelectedTool));
-            }
         }
 
         public IDocumentTabViewModel SelectedDocument
@@ -281,12 +259,12 @@ namespace AvalonStudio.Shell
 
                 if (value != null)
                 {
-                    Factory.SetCurrentView(value);
+                    //Factory.SetCurrentView(value);
                 }
 
                 _selectedDocument = value;
 
-                (_selectedDocument as IDocumentTabViewModel)?.OnSelected();
+                //(_selectedDocument as IDocumentTabViewModel)?.OnSelected();
 
                 this.RaisePropertyChanged(nameof(SelectedDocument));
             }
@@ -300,7 +278,7 @@ namespace AvalonStudio.Shell
             }
             else if (view is ToolViewModel tool)
             {
-                Root.Factory.SetCurrentView(tool);
+                //Root.Factory.SetCurrentView(tool);
             }
         }
 

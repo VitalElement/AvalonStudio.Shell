@@ -23,13 +23,15 @@ namespace AvalonStudio.Shell
         ILayoutDock CenterPane { get; }
 
         IDocumentDock DocumentDock { get; }
+
+        IToolViewModel SelectedTool { get; set; }
     }
 
 	public interface IShell
 	{
 		IDocumentTabViewModel SelectedDocument { get; set; }
 
-        IToolViewModel SelectedTool { get; set; }
+        //IToolViewModel SelectedTool { get; set; }
 
         void Select(object view);
 

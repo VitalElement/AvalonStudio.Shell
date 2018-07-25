@@ -1,14 +1,12 @@
-﻿using Avalonia.Controls;
-using AvalonStudio.Documents;
+﻿using AvalonStudio.Documents;
 using AvalonStudio.Extensibility;
 using AvalonStudio.MVVM;
 using AvalonStudio.Shell;
-using Dock.Model;
 using ReactiveUI;
 
 namespace AvalonStudio.Controls
 {
-	public abstract class DocumentTabViewModel<T> : ViewModel<T>, IDocumentTabViewModel where T : class
+    public abstract class DocumentTabViewModel<T> : ViewModel<T>, IDocumentTabViewModel where T : class
 	{
 		private Avalonia.Controls.Dock dock;
 		private string title;
@@ -21,9 +19,6 @@ namespace AvalonStudio.Controls
 			Dock = Avalonia.Controls.Dock.Left;
 
 			IsVisible = true;
-
-			Width = double.NaN;
-			Height = double.NaN;
 		}
 
 		public Avalonia.Controls.Dock Dock
@@ -91,32 +86,6 @@ namespace AvalonStudio.Controls
         {
             IoC.Get<IShell>().RemoveDocument(this);
             return true;
-        }
-
-        /// <summary>
-        /// Gets or sets view id.
-        /// </summary>
-        public string Id { get; set; }
-
-		/// <summary>
-		/// Gets or sets view context.
-		/// </summary>
-		public object Context { get; set; }
-
-		/// <summary>
-		/// Gets or sets view width.
-		/// </summary>
-		public double Width { get; set; }
-
-		/// <summary>
-		/// Gets or sets view height.
-		/// </summary>
-		public double Height { get; set; }
-
-		/// <summary>
-		/// Gets or sets view parent.
-		/// </summary>
-		/// <remarks>If parrent is <see cref="null"/> than view is root.</remarks>
-		public IView Parent { get; set; }
+        }       
 	}
 }

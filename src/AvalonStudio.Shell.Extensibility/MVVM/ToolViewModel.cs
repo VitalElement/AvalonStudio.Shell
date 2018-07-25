@@ -8,13 +8,20 @@ using System.Reactive.Linq;
 
 namespace AvalonStudio.MVVM
 {
-    public interface IToolViewModel : IToolTab
+    public interface IToolViewModel : IDockableViewModel
     {
         Location DefaultLocation { get; }
+    }
+
+    public interface IDockableViewModel
+    {
+        void OnSelected();
 
         void OnDeselected();
 
-        //void Close();
+        bool OnClose();
+
+        string Title { get; }
     }
 
     public abstract class ToolViewModel : ViewModel, IToolViewModel
@@ -29,10 +36,7 @@ namespace AvalonStudio.MVVM
         {
             _isVisible = true;
 
-            IsVisibleObservable = this.ObservableForProperty(x => x.IsVisible).Select(x => x.Value);
-
-            Height = double.NaN;
-            Width = double.NaN;            
+            IsVisibleObservable = this.ObservableForProperty(x => x.IsVisible).Select(x => x.Value);         
         }
 
         public Action OnSelect { get; set; }
@@ -74,33 +78,7 @@ namespace AvalonStudio.MVVM
             set { this.RaiseAndSetIfChanged(ref _title, value); }
         }
 
-        /// <summary>
-        /// Gets or sets view id.
-        /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets view context.
-        /// </summary>
-        public object Context { get; set; }
-
-        /// <summary>
-        /// Gets or sets view width.
-        /// </summary>
-        public double Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets view height.
-        /// </summary>
-        public double Height { get; set; }
-
-        /// <summary>
-        /// Gets or sets view parent.
-        /// </summary>
-        /// <remarks>If parrent is <see cref="null"/> than view is root.</remarks>
-        public IView Parent { get; set; }
-
-        public virtual bool OnClose()
+        public bool OnClose()
         {
             IoC.Get<IShell>().CurrentPerspective.RemoveTool(this);
             return true;

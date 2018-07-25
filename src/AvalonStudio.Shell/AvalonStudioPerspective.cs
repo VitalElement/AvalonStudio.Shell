@@ -9,6 +9,7 @@ namespace AvalonStudio.Shell
     public class AvalonStudioPerspective : IPerspective
     {
         private List<IToolViewModel> _tools;
+        private Dictionary<IToolViewModel, IView> _tabTools;
         private IDock _left;
         private IDock _right;
         private IDock _top;
@@ -20,6 +21,7 @@ namespace AvalonStudio.Shell
             CenterPane = centerPane;
             Root = root;
             _tools = new List<IToolViewModel>();
+            _tabTools = new Dictionary<IToolViewModel, IView>();
         }
 
         public IReadOnlyList<IToolViewModel> Tools => _tools.AsReadOnly();
@@ -48,50 +50,76 @@ namespace AvalonStudio.Shell
 
         public void AddTool(IToolViewModel tool)
         {
-            if (!_tools.Contains(tool))
+            if(!_tabTools.ContainsKey(tool))
             {
+                _tabTools.Add(tool, DockOrCreate(tool));
                 _tools.Add(tool);
             }
-
-            DockOrCreate(tool);
+            else
+            {
+                DockOrCreate(tool);
+            }
         }
 
         public void RemoveTool(IToolViewModel tool)
         {
-            if (tool.Parent is IDock dock)
+            if(_tabTools.ContainsKey(tool))
             {
-                dock.Views.Remove(tool);
-                dock.Factory.Update(tool, tool, dock);
-            }
+                if(_tabTools[tool].Parent is IDock dock)
+                {
+                    dock.Views.Remove(_tabTools[tool]);
+                    dock.Factory.Update(_tabTools[tool], _tabTools[tool].Context, dock);
+                }
 
-            _tools.Remove(tool);
+                _tabTools.Remove(tool);
+                _tools.Remove(tool);
+            }
         }
 
-        private IDock DockOrCreate(IToolViewModel view)
+        private IToolViewModel _selectedTool;
+
+        public IToolViewModel SelectedTool
+        {
+            get => _selectedTool;
+            set
+            {
+                _selectedTool?.OnDeselected();
+
+                if (value != null)
+                {
+                    CenterPane.Factory.SetCurrentView(_tabTools[value]);
+                }
+
+                _selectedTool = value;
+
+                _selectedTool?.OnSelected();
+
+                //this.RaisePropertyChanged(nameof(SelectedTool));
+            }
+        }
+
+        private IView DockOrCreate(IToolViewModel view)
         {
             switch (view.DefaultLocation)
             {
                 case Location.Left:
                     if (_left != null)
                     {
-                        _left.Dock(view);
-                        return _left;
+                        return _left.Dock(view);
                     }
                     break;
 
                 case Location.Right:
                     if (_right != null)
                     {
-                        _right.Dock(view);
-                        return _right;
+                        return _right.Dock(view);
                     }
                     break;
 
                 case Location.Bottom:
                     if (_bottom != null)
                     {
-                        _bottom.Dock(view);
-                        return _bottom;
+                        return _bottom.Dock(view);
                     }
                     break;
             }
@@ -158,9 +186,12 @@ namespace AvalonStudio.Shell
                 var toolDock = factory.CreateToolDock();
                 toolDock.Id = nameof(IToolDock);
                 toolDock.Title = nameof(IToolDock);
-                toolDock.CurrentView = view;
                 toolDock.Views = factory.CreateList<IView>();
-                toolDock.Views.Add(view);
+                toolDock.Factory = factory;
+
+                var currentView = toolDock.Dock(view);
+                //toolDock.CurrentView = view;
+                //toolDock.Views.Add(view);
 
                 factory.Split(CenterPane, toolDock, dockOperation);
                 toolDock.Proportion = 0.15;
@@ -189,7 +220,7 @@ namespace AvalonStudio.Shell
                         break;
                 }
 
-                return toolDock;
+                return currentView;
             }
 
             throw new NotSupportedException();
