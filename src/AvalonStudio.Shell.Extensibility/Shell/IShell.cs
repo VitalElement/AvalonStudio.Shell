@@ -3,10 +3,28 @@ using AvalonStudio.Documents;
 using AvalonStudio.Extensibility.Dialogs;
 using AvalonStudio.MVVM;
 using Dock.Model;
+using Dock.Model.Controls;
 using System.Collections.Generic;
 
 namespace AvalonStudio.Shell
 {
+    public interface IPerspective
+    {
+        void AddTool(IToolViewModel tool);
+
+        void RemoveTool(IToolViewModel tool);
+
+        void RemoveDock(IDock dock);
+
+        IReadOnlyList<IToolViewModel> Tools { get; }
+
+        IView Root { get; }
+
+        ILayoutDock CenterPane { get; }
+
+        IDocumentDock DocumentDock { get; }
+    }
+
 	public interface IShell
 	{
 		IDocumentTabViewModel SelectedDocument { get; set; }
@@ -21,15 +39,13 @@ namespace AvalonStudio.Shell
 
 		void RemoveDocument(IDocumentTabViewModel document);
 
-        void AddTool(IToolViewModel tool);
+        IPerspective MainPerspective { get; }
 
-        void RemoveTool(IToolViewModel tool);
+        IPerspective CreatePerspective();
 
-		IReadOnlyList<IDocumentTabViewModel> Documents { get; }
+        IPerspective CurrentPerspective { get; set; }
 
-        IReadOnlyList<IToolViewModel> Tools { get; }
-
-		IDock Layout { get; }
+        IReadOnlyList<IDocumentTabViewModel> Documents { get; }
 
 		IPanel Overlay { get; }
 	}

@@ -85,7 +85,7 @@
     </Grid>
 
     <Grid Grid.Row="1" Margin="6 2">
-      <idc:DockControl DataContext="{Binding Layout}" Margin="4" />
+      <idc:DockControl DataContext="{Binding Root}" Margin="4" />
     </Grid>
 
     <Grid Grid.RowSpan="2" Grid.ColumnSpan="5" Name="PART_ExtensibleOverlay">

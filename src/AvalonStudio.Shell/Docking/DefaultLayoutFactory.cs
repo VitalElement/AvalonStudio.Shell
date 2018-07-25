@@ -1,5 +1,4 @@
 ﻿using AvaloniaDemo.ViewModels.Views;
-using AvalonStudio.Shell;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -9,33 +8,12 @@ using System.Collections.ObjectModel;
 
 namespace AvalonStudio.Docking
 {
-    public class AvalonStudioDocumentDock : DocumentDock
-    {
-        public override bool OnClose()
-        {
-            ShellViewModel.Instance.RemoveDock(this);
-            return base.OnClose();
-        }
-    }
-
-    public class AvalonStudioToolDock : ToolDock
-    {
-        public override bool OnClose()
-        {
-            ShellViewModel.Instance.RemoveDock(this);
-            return base.OnClose();
-        }
-    }
-
     /// <inheritdoc/>
     public class DefaultLayoutFactory : DockFactory
     {
-        public DocumentDock DocumentDock { get; private set; }
-        public ToolDock RightDock { get; private set; }
-        public ToolDock BottomDock { get; private set; }
+        private DocumentDock _documentDock;
 
-        public LayoutDock RightPane { get; private set; }
-        public LayoutDock CenterPane { get; private set; }
+        public RootDock Root { get; private set; }
 
         public override IToolDock CreateToolDock()
         {
@@ -50,70 +28,73 @@ namespace AvalonStudio.Docking
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
+            var documents = new ObservableCollection<IView>();
+
             // Documents
-            DocumentDock = new DocumentDock
+            _documentDock = new DocumentDock
             {
                 Id = "DocumentsPane",
                 Proportion = double.NaN,
                 Title = "DocumentsPane",
                 CurrentView = null,
                 IsCollapsable = false,
-                Views = new ObservableCollection<IView>()
+                Views = documents
             };
 
-            CenterPane = new LayoutDock
-            {
-                Id = "CenterPane",
-                Proportion = double.NaN,
-                Orientation = Orientation.Vertical,
-                Title = "LeftPane",
-                CurrentView = null,
-                Views = CreateList<IView>
-               (
-                   DocumentDock
-               )
-            };
-
-            // Main
-            var mainLayout = new LayoutDock
-            {
-                Id = "MainLayout",
-                Proportion = double.NaN,
-                Orientation = Orientation.Horizontal,
-                Title = "MainLayout",
-                CurrentView = null,
-                Views = new ObservableCollection<IView>
-                {
-                    CenterPane
-                }
-            };
-
-            var mainView = new MainView
-            {
-                Id = "Main",
-                Title = "Main",
-                CurrentView = mainLayout,
-                Views = new ObservableCollection<IView>
-                {
-                   mainLayout
-                }
-            };
-
+          //  MainLayout = CreatePerspectiveLayout("Main").root;
             // Root
 
-            var root = new RootDock
+            Root = new RootDock
             {
                 Id = "Root",
                 Title = "Root",
-                CurrentView = mainView,
-                DefaultView = mainView,
                 Views = new ObservableCollection<IView>
                 {
-                    mainView,
+                    
                 }
             };
 
-            return root;
+            return Root;
+        }
+
+        public (DockBase root, ILayoutDock centerPane, IDocumentDock documentDock) CreatePerspectiveLayout(string identifier)
+        {
+            var centerPane = new LayoutDock
+            {
+                Id = $"{identifier}CenterPane",
+                Proportion = double.NaN,
+                Orientation = Orientation.Vertical,
+                Title = $"{identifier}CenterPane",
+                CurrentView = null,
+                Views = CreateList<IView>
+                (
+                    _documentDock
+                )
+            };
+
+            var debugLayout = new LayoutDock
+            {
+                Id = $"{identifier}Layout",
+                Proportion = double.NaN,
+                Orientation = Orientation.Horizontal,
+                Title = $"{identifier}Layout",
+                CurrentView = null,
+                Views = new ObservableCollection<IView>
+                {
+                    centerPane
+                }
+            };
+
+            return (new MainView
+            {
+                Id = identifier,
+                Title = identifier,
+                CurrentView = debugLayout,
+                Views = new ObservableCollection<IView>
+                {
+                    debugLayout
+                }
+            }, centerPane, _documentDock);
         }
 
         /// <inheritdoc/>
@@ -172,9 +153,8 @@ namespace AvalonStudio.Docking
 
             this.ViewLocator = new Dictionary<string, Func<IView>>
             {
-                [nameof(RightDock)] = () => RightDock,
-                [nameof(BottomDock)] = () => BottomDock,
-                [nameof(DocumentDock)] = () => DocumentDock
+                //[nameof(DebugCenterPane)] = () => DebugCenterPane,
+                //[nameof(MainCenterPane)] = () => MainCenterPane,
             };
 
             this.Update(layout, context, null);

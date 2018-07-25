@@ -21,13 +21,13 @@ namespace AvalonStudio.Shell
 			}
 		}
 
-        public static void AddOrSelectTool<T>(this IShell me, T tool) where T : IToolViewModel
+        public static void AddOrSelectTool<T>(this IPerspective me, T tool) where T : IToolViewModel
         {
             var currentTool = me.Tools.FirstOrDefault(t => t.Equals(tool));
 
             if(currentTool != null)
             {
-                me.SelectedTool = currentTool;
+               // me.SelectedTool = currentTool;
             }
             else
             {
@@ -35,13 +35,13 @@ namespace AvalonStudio.Shell
             }
         }
 
-        public static void AddOrSelectTool<T>(this IShell me, Func<T> factory) where T : IToolViewModel
+        public static void AddOrSelectTool<T>(this IPerspective me, Func<T> factory) where T : IToolViewModel
         {
             var currentTool = me.Tools.FirstOrDefault(t => t is T);
 
             if (currentTool != default)
             {
-                me.SelectedTool = currentTool;
+                //me.SelectedTool = currentTool;
             }
             else
             {

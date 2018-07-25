@@ -102,7 +102,7 @@ namespace AvalonStudio.MVVM
 
         public virtual bool OnClose()
         {
-            IoC.Get<IShell>().RemoveTool(this);
+            IoC.Get<IShell>().CurrentPerspective.RemoveTool(this);
             return true;
         }
 
