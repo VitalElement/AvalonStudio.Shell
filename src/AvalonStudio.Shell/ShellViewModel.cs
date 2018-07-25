@@ -37,6 +37,7 @@ namespace AvalonStudio.Shell
         private IEnumerable<Lazy<IExtension>> _extensions;
         private IEnumerable<Lazy<ToolViewModel>> _toolControls;
         private CommandService _commandService;
+        private Dictionary<IDocumentTabViewModel, IView> _documentViews;
         private List<IDocumentTabViewModel> _documents;
 
         private Lazy<StatusBarViewModel> _statusBar;
@@ -45,6 +46,7 @@ namespace AvalonStudio.Shell
 
         private IDockFactory _factory;
         private IRootDock _root;
+        private IDock _layout;
 
         [ImportingConstructor]
         public ShellViewModel(
@@ -72,6 +74,7 @@ namespace AvalonStudio.Shell
             ModalDialog = new ModalDialogViewModelBase("Dialog");
 
             _documents = new List<IDocumentTabViewModel>();
+            _documentViews = new Dictionary<IDocumentTabViewModel, IView>();
 
             this.WhenAnyValue(x => x.CurrentPerspective).Subscribe(perspective =>
             {
@@ -108,9 +111,9 @@ namespace AvalonStudio.Shell
                 }
             }
 
-            Root.WhenAnyValue(l => l.FocusedView).Subscribe(focused =>
+            _layout.WhenAnyValue(l => l.FocusedView).Subscribe(focused =>
 			{
-				if (focused is IDocumentTabViewModel doc)
+				if (focused?.Context is IDocumentTabViewModel doc)
 				{
 					SelectedDocument = doc;
 				}
@@ -118,15 +121,6 @@ namespace AvalonStudio.Shell
 				{
 					SelectedDocument = null;
 				}
-
-                if(focused is IToolViewModel tool)
-                {
-                    CurrentPerspective.SelectedTool = tool;
-                }
-                else
-                {
-                    CurrentPerspective.SelectedTool = null;
-                }
 			});
 
             foreach (var extension in _extensions)
@@ -167,10 +161,10 @@ namespace AvalonStudio.Shell
             //    //Layout = DockSerializer.Load<RootDock>(path);
             //}
 
-            var layout = Factory.CreateLayout();
-            Factory.InitLayout(layout, this);
+            _layout = Factory.CreateLayout();
+            Factory.InitLayout(_layout, this);
 
-            Root = layout as IRootDock;
+            Root = _layout as IRootDock;
 
             MainPerspective = CreatePerspective();
 
@@ -221,9 +215,13 @@ namespace AvalonStudio.Shell
 
         public void AddDocument(IDocumentTabViewModel document, bool temporary = false)
         {
-            CurrentPerspective.DocumentDock.Dock(document, !Documents.Contains(document));
+            var view = CurrentPerspective.DocumentDock.Dock(document, !Documents.Contains(document));
 
             _documents.Add(document);
+
+            _documentViews.Add(document, view);
+
+            Factory.SetCurrentView(view);
         }
 
         public void RemoveDocument(IDocumentTabViewModel document)
@@ -242,6 +240,7 @@ namespace AvalonStudio.Shell
             }*/
 
             _documents.Remove(document);
+            _documentViews.Remove(document);
         }
 
         public ModalDialogViewModelBase ModalDialog
@@ -257,14 +256,14 @@ namespace AvalonStudio.Shell
             {
                 (_selectedDocument as IDocumentTabViewModel)?.OnDeselected();
 
-                if (value != null)
+                if (value != null && _documentViews.ContainsKey(value))
                 {
-                    //Factory.SetCurrentView(value);
+                    _layout.Factory.SetCurrentView(_documentViews[value]);
                 }
 
                 _selectedDocument = value;
 
-                //(_selectedDocument as IDocumentTabViewModel)?.OnSelected();
+                _selectedDocument?.OnSelected();
 
                 this.RaisePropertyChanged(nameof(SelectedDocument));
             }
@@ -276,9 +275,9 @@ namespace AvalonStudio.Shell
             {
                 SelectedDocument = doc;
             }
-            else if (view is ToolViewModel tool)
+            else if (view is IToolViewModel tool)
             {
-                //Root.Factory.SetCurrentView(tool);
+                CurrentPerspective.SelectedTool = tool;
             }
         }
 

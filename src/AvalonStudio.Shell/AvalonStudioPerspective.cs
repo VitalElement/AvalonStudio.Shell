@@ -3,6 +3,7 @@ using Dock.Model;
 using Dock.Model.Controls;
 using System;
 using System.Collections.Generic;
+using ReactiveUI;
 
 namespace AvalonStudio.Shell
 {
@@ -22,6 +23,18 @@ namespace AvalonStudio.Shell
             Root = root;
             _tools = new List<IToolViewModel>();
             _tabTools = new Dictionary<IToolViewModel, IView>();
+
+            CenterPane.WhenAnyValue(l => l.FocusedView).Subscribe(focused =>
+            {
+                if (focused?.Context is IToolViewModel tool)
+                {
+                    SelectedTool = tool;
+                }
+                else
+                {
+                    SelectedTool = null;
+                }
+            });
         }
 
         public IReadOnlyList<IToolViewModel> Tools => _tools.AsReadOnly();
@@ -59,6 +72,8 @@ namespace AvalonStudio.Shell
             {
                 DockOrCreate(tool);
             }
+
+            CenterPane.Factory.SetCurrentView(_tabTools[tool]);
         }
 
         public void RemoveTool(IToolViewModel tool)

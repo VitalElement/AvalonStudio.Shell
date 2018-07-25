@@ -91,11 +91,6 @@ namespace AvalonStudio.Shell
                 }
             }
 
-            if(currentTab != null)
-            { 
-                dock.Factory.SetCurrentView(currentTab);
-            }
-
             return currentTab;
         }
     }
