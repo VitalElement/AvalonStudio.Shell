@@ -43,9 +43,6 @@ namespace AvalonStudio.Shell
 
         private ModalDialogViewModelBase modalDialog;
 
-        private LayoutDock _mainLayoutCenterPane;
-        private LayoutDock _debugLayoutCenterPane;
-
         private IDockFactory _factory;
         private IRootDock _root;
 
@@ -92,14 +89,6 @@ namespace AvalonStudio.Shell
 
         public void Initialise(IDockFactory layoutFactory = null)
         {
-            foreach (var extension in _extensions)
-            {
-                if (extension.Value is IActivatableExtension activatable)
-                {
-                    activatable.BeforeActivation();
-                }
-            }
-
             if (layoutFactory == null)
             {
                 Factory = new DefaultLayoutFactory();
@@ -111,7 +100,15 @@ namespace AvalonStudio.Shell
 
             LoadLayout();
 
-            /*Layout.WhenAnyValue(l => l.FocusedView).Subscribe(focused =>
+            foreach (var extension in _extensions)
+            {
+                if (extension.Value is IActivatableExtension activatable)
+                {
+                    activatable.BeforeActivation();
+                }
+            }
+
+            Root.WhenAnyValue(l => l.FocusedView).Subscribe(focused =>
 			{
 				if (focused is IDocumentTabViewModel doc)
 				{
@@ -130,7 +127,7 @@ namespace AvalonStudio.Shell
                 {
                     SelectedTool = null;
                 }
-			});*/
+			});
 
             foreach (var extension in _extensions)
             {
