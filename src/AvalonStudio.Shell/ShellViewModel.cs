@@ -39,6 +39,7 @@ namespace AvalonStudio.Shell
         private CommandService _commandService;
         private Dictionary<IDocumentTabViewModel, IView> _documentViews;
         private List<IDocumentTabViewModel> _documents;
+        private List<IPerspective> _perspectives;
 
         private Lazy<StatusBarViewModel> _statusBar;
 
@@ -75,6 +76,7 @@ namespace AvalonStudio.Shell
 
             _documents = new List<IDocumentTabViewModel>();
             _documentViews = new Dictionary<IDocumentTabViewModel, IView>();
+            _perspectives = new List<IPerspective>();
 
             this.WhenAnyValue(x => x.CurrentPerspective).Subscribe(perspective =>
             {
@@ -203,7 +205,11 @@ namespace AvalonStudio.Shell
             var newPerspectiveLayout = (Root.Factory as DefaultLayoutFactory).CreatePerspectiveLayout("Name");
             Root.Factory.AddView(Root, newPerspectiveLayout.root, null);
 
-            return new AvalonStudioPerspective(newPerspectiveLayout.root, newPerspectiveLayout.centerPane, newPerspectiveLayout.documentDock);
+            var result = new AvalonStudioPerspective(newPerspectiveLayout.root, newPerspectiveLayout.centerPane, newPerspectiveLayout.documentDock);
+
+            _perspectives.Add(result);
+
+            return result;
         }
 
         private IPerspective _currentPerspective;
@@ -258,7 +264,10 @@ namespace AvalonStudio.Shell
 
                 if (value != null && _documentViews.ContainsKey(value))
                 {
-                    _layout.Factory.SetCurrentView(_documentViews[value]);
+                    foreach(var perspective in _perspectives)
+                    {
+                        perspective.DocumentDock.CurrentView = _documentViews[value];
+                    }
                 }
 
                 _selectedDocument = value;
