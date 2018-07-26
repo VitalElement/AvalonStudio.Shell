@@ -266,7 +266,13 @@ namespace AvalonStudio.Shell
                 {
                     foreach(var perspective in _perspectives)
                     {
-                        perspective.DocumentDock.CurrentView = _documentViews[value];
+                        if(_documentViews[value].Parent is IDock dock)
+                        {
+                            if(dock.Views.Contains(_documentViews[value]))
+                            {
+                                dock.CurrentView = _documentViews[value];
+                            }
+                        }
                     }
                 }
 
