@@ -17,14 +17,22 @@ namespace AvalonStudio.Shell
             _model = model;
             Context = model;
             Id = "ASTab";
+
+            model.WhenAnyValue(x => x.Title)
+                .Subscribe(title => Title = title);
         }
 
         public string Id { get; set; }
+
+
+        private string _title;
+
         public string Title
         {
-            get => _model.Title;
-            set { }
+            get { return _title; }
+            set { this.RaiseAndSetIfChanged(ref _title, value); }
         }
+
 
         private object _context;
 

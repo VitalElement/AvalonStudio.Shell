@@ -11,7 +11,7 @@ namespace AvalonStudio.Docking
     /// <inheritdoc/>
     public class DefaultLayoutFactory : DockFactory
     {
-        private DocumentDock _documentDock;
+        private ObservableCollection<IView> _documents = new ObservableCollection<IView>();
 
         public RootDock Root { get; private set; }
 
@@ -28,19 +28,6 @@ namespace AvalonStudio.Docking
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
-            var documents = new ObservableCollection<IView>();
-
-            // Documents
-            _documentDock = new DocumentDock
-            {
-                Id = "DocumentsPane",
-                Proportion = double.NaN,
-                Title = "DocumentsPane",
-                CurrentView = null,
-                IsCollapsable = false,
-                Views = documents
-            };
-
           //  MainLayout = CreatePerspectiveLayout("Main").root;
             // Root
 
@@ -59,6 +46,17 @@ namespace AvalonStudio.Docking
 
         public (DockBase root, ILayoutDock centerPane, IDocumentDock documentDock) CreatePerspectiveLayout(string identifier)
         {
+            // Documents
+            var documentDock = new DocumentDock
+            {
+                Id = "DocumentsPane",
+                Proportion = double.NaN,
+                Title = "DocumentsPane",
+                CurrentView = null,
+                IsCollapsable = false,
+                Views = _documents
+            };
+
             var centerPane = new LayoutDock
             {
                 Id = $"{identifier}CenterPane",
@@ -68,7 +66,7 @@ namespace AvalonStudio.Docking
                 CurrentView = null,
                 Views = CreateList<IView>
                 (
-                    _documentDock
+                    documentDock
                 )
             };
 
@@ -94,7 +92,7 @@ namespace AvalonStudio.Docking
                 {
                     debugLayout
                 }
-            }, centerPane, _documentDock);
+            }, centerPane, documentDock);
         }
 
         public override void Update(IView view, object context, IView parent)
