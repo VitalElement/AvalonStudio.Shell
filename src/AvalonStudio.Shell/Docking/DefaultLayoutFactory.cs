@@ -95,7 +95,7 @@ namespace AvalonStudio.Docking
             }, centerPane, documentDock);
         }
 
-        public override void Update(IView view, object context, IView parent)
+        public override void Update(IView view, IView parent)
         {
             view.Parent = parent;
 
@@ -107,7 +107,7 @@ namespace AvalonStudio.Docking
                 {
                     foreach (var child in dock.Views)
                     {
-                        Update(child, context, view);
+                        Update(child, view);
                     }
                 }
 
@@ -115,14 +115,14 @@ namespace AvalonStudio.Docking
                 {
                     foreach (var child in dock.Windows)
                     {
-                        Update(child, context, view);
+                        Update(child, view);
                     }
                 }
             }
         }
 
         /// <inheritdoc/>
-        public override void InitLayout(IView layout, object context)
+        public override void InitLayout(IView layout)
         {
             this.HostLocator = new Dictionary<string, Func<IDockHost>>
             {
@@ -135,7 +135,7 @@ namespace AvalonStudio.Docking
                 //[nameof(MainCenterPane)] = () => MainCenterPane,
             };
 
-            this.Update(layout, context, null);
+            this.Update(layout, null);
 
             if (layout is IDock layoutWindowsHost)
             {

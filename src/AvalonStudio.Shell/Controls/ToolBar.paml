@@ -27,7 +27,7 @@
     <ItemsControl Items="{Binding Items}">
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
-          <StackPanel Orientation="Horizontal" Gap="1" />
+          <StackPanel Orientation="Horizontal" Spacing="1" />
         </ItemsPanelTemplate>
       </ItemsControl.ItemsPanel>
 

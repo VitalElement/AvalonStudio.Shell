@@ -164,7 +164,7 @@ namespace AvalonStudio.Shell
             //}
 
             _layout = Factory.CreateLayout();
-            Factory.InitLayout(_layout, this);
+            Factory.InitLayout(_layout);
 
             Root = _layout as IRootDock;
 
@@ -203,7 +203,7 @@ namespace AvalonStudio.Shell
         public IPerspective CreatePerspective()
         {
             var newPerspectiveLayout = (Root.Factory as DefaultLayoutFactory).CreatePerspectiveLayout("Name");
-            Root.Factory.AddView(Root, newPerspectiveLayout.root, null);
+            Root.Factory.AddView(Root, newPerspectiveLayout.root);
 
             var result = new AvalonStudioPerspective(newPerspectiveLayout.root, newPerspectiveLayout.centerPane, newPerspectiveLayout.documentDock);
 

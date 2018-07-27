@@ -87,7 +87,7 @@ namespace AvalonStudio.Shell
                 }
 
                 dock.Views.Add(currentTab);
-                dock.Factory.Update(currentTab, currentTab.Context, dock);
+                dock.Factory.Update(currentTab, dock);
             }
             else
             {
@@ -95,7 +95,7 @@ namespace AvalonStudio.Shell
 
                 if (currentTab != null)
                 {
-                    dock.Factory.Update(currentTab, currentTab.Context, currentTab.Parent);
+                    dock.Factory.Update(currentTab, currentTab.Parent);
                 }
             }
 

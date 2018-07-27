@@ -83,7 +83,7 @@ namespace AvalonStudio.Shell
                 if(_tabTools[tool].Parent is IDock dock)
                 {
                     dock.Views.Remove(_tabTools[tool]);
-                    dock.Factory.Update(_tabTools[tool], _tabTools[tool].Context, dock);
+                    dock.Factory.Update(_tabTools[tool], dock);
                 }
 
                 _tabTools.Remove(tool);
