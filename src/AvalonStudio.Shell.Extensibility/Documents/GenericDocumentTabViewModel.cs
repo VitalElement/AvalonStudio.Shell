@@ -3,25 +3,53 @@ using AvalonStudio.Extensibility;
 using AvalonStudio.MVVM;
 using AvalonStudio.Shell;
 using ReactiveUI;
+using System;
 
 namespace AvalonStudio.Controls
 {
     public abstract class DocumentTabViewModel<T> : ViewModel<T>, IDocumentTabViewModel where T : class
 	{
 		private Avalonia.Controls.Dock dock;
-		private string title;
+		private string _title;
 		private bool _isTemporary;
 		private bool _isHidden;
 		private bool _isSelected;
+        private bool _isDirty;
+        private bool _isReadOnly;
 
-		public DocumentTabViewModel(T model) : base(model)
+        public DocumentTabViewModel(T model) : base(model)
 		{
 			Dock = Avalonia.Controls.Dock.Left;
 
 			IsVisible = true;
-		}
 
-		public Avalonia.Controls.Dock Dock
+            this.WhenAnyValue(x => x.IsDirty).Subscribe(dirty =>
+            {
+                this.RaisePropertyChanged(nameof(Title));
+            });
+        }
+
+        public bool IsDirty
+        {
+            get => _isDirty;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _isDirty, value);
+
+                if (value && IsTemporary)
+                {
+                    IsTemporary = false;
+                }
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return _isReadOnly; }
+            set { this.RaiseAndSetIfChanged(ref _isReadOnly, value); }
+        }
+
+        public Avalonia.Controls.Dock Dock
 		{
 			get { return dock; }
 			set { this.RaiseAndSetIfChanged(ref dock, value); }
@@ -29,11 +57,8 @@ namespace AvalonStudio.Controls
 
 		public string Title
 		{
-			get => title;
-			set
-			{
-				this.RaiseAndSetIfChanged(ref title, value);
-			}
+			get => IsDirty ? _title + "*" : _title;
+			set=> this.RaiseAndSetIfChanged(ref _title, value);
 		}
 
 		public bool IsTemporary

@@ -5,7 +5,9 @@ namespace AvalonStudio.Documents
 {
 	public interface IDocumentTabViewModel : IDockableViewModel
 	{
-		void OnDeselected();
+        bool IsDirty { get; set; }
+
+        void OnDeselected();
 
         bool OnClose();
 
