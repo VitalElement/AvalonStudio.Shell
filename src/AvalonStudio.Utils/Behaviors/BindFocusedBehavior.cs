@@ -22,10 +22,7 @@ namespace AvalonStudio.Utils.Behaviors
             {
                 if(focused)
                 {
-                    Dispatcher.UIThread.InvokeAsync(() =>
-                    {                        
-                        AssociatedObject.Focus();
-                    }, DispatcherPriority.Loaded);
+                    AssociatedObject.Focus();
                 }
             }),
             Observable.FromEventPattern(AssociatedObject, nameof(AssociatedObject.LostFocus)).Subscribe(_ =>
