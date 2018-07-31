@@ -98,10 +98,9 @@ namespace AvalonStudio.Shell
             get => _selectedTool;
             set
             {
-                _selectedTool?.OnDeselected();
-
-                if (value != null)
+                if (value != null && _tabTools.ContainsKey(value))
                 {
+                    _selectedTool?.OnDeselected();
                     CenterPane.Factory.SetCurrentView(_tabTools[value]);
                 }
 
