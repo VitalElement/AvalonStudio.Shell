@@ -7,10 +7,6 @@ namespace AvalonStudio.Documents
 	{
         bool IsDirty { get; set; }
 
-        void OnDeselected();
-
-        bool OnClose();
-
 		void Close();
 	}
 }
