@@ -208,7 +208,7 @@ namespace AvalonStudio.Shell
                 //toolDock.Views.Add(view);
 
                 factory.Split(CenterPane, toolDock, dockOperation);
-                toolDock.Proportion = 0.15;
+                toolDock.Proportion = 0.2;
 
                 switch (view.DefaultLocation)
                 {
