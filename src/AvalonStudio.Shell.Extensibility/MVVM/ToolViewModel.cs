@@ -32,9 +32,16 @@ namespace AvalonStudio.MVVM
         // TODO This should use ToolControl
         private string _title;
 
-        protected ToolViewModel()
+        protected ToolViewModel() : this(null)
+        {
+
+        }
+
+        protected ToolViewModel(string title)
         {
             _isVisible = true;
+
+            _title = title;
 
             IsVisibleObservable = this.ObservableForProperty(x => x.IsVisible).Select(x => x.Value);         
         }
