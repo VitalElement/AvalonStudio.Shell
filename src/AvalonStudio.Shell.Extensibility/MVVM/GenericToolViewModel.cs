@@ -6,7 +6,12 @@
     {
         private T _model;
 
-        protected ToolViewModel(T model)
+        protected ToolViewModel(T model) : this(null, model)
+        {
+
+        }
+
+        protected ToolViewModel(string title, T model) : base (title)
         {
             _model = model;
         }

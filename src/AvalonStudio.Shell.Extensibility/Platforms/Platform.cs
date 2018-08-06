@@ -9,7 +9,7 @@ namespace AvalonStudio.Shell.Extensibility.Platforms
     {
         public static string AppName { get; set; }
 
-        public static string SettingsDirectory => Path.Combine(BaseDirectory, "Settings");
+        public static string SettingsDirectory => BaseDirectory != null ? Path.Combine(BaseDirectory, "Settings") : null;
 
         public static void Initialise()
         {
@@ -71,7 +71,7 @@ namespace AvalonStudio.Shell.Extensibility.Platforms
                         break;
                 }
 
-                return Path.Combine(userDir, AppName);
+                return AppName != null ? Path.Combine(userDir, AppName) : null;
             }
         }
     }

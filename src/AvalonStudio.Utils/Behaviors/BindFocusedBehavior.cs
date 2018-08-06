@@ -5,6 +5,7 @@ using Avalonia.Threading;
 using Avalonia.Xaml.Interactivity;
 using System;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 
 namespace AvalonStudio.Utils.Behaviors
 {
@@ -21,11 +22,16 @@ namespace AvalonStudio.Utils.Behaviors
             {
                 if(focused)
                 {
-                    Dispatcher.UIThread.InvokeAsync(() =>
-                    {                        
-                        AssociatedObject.Focus();
-                    }, DispatcherPriority.Loaded);
+                    AssociatedObject.Focus();
                 }
+            }),
+            Observable.FromEventPattern(AssociatedObject, nameof(AssociatedObject.LostFocus)).Subscribe(_ =>
+            {
+                IsFocused = false;
+            }),
+            Observable.FromEventPattern(AssociatedObject, nameof(AssociatedObject.GotFocus)).Subscribe(_ =>
+            {
+                IsFocused = true;
             })};
         }
 

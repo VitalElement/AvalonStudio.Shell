@@ -27,7 +27,7 @@ namespace AvalonStudio.GlobalSettings
             }
         }
 
-        private static string GlobalSettingsFile => Path.Combine(Platform.SettingsDirectory, "GlobalSettings.json");
+        private static string GlobalSettingsFile => Platform.SettingsDirectory != null ? Path.Combine(Platform.SettingsDirectory, "GlobalSettings.json") : null;
 
         public static Settings Instance { get; set; }
 
@@ -38,13 +38,16 @@ namespace AvalonStudio.GlobalSettings
 
         private static Settings Load()
         {
-            if (File.Exists(GlobalSettingsFile))
+            if (GlobalSettingsFile != null)
             {
-                var deserialized = SerializedObject.Deserialize<Settings>(GlobalSettingsFile);
-
-                if(deserialized != null)
+                if (File.Exists(GlobalSettingsFile))
                 {
-                    return deserialized;
+                    var deserialized = SerializedObject.Deserialize<Settings>(GlobalSettingsFile);
+
+                    if (deserialized != null)
+                    {
+                        return deserialized;
+                    }
                 }
             }
 
@@ -57,7 +60,10 @@ namespace AvalonStudio.GlobalSettings
 
         public void Save()
         {
-            SerializedObject.Serialize(GlobalSettingsFile, this);
+            if (GlobalSettingsFile != null)
+            {
+                SerializedObject.Serialize(GlobalSettingsFile, this);
+            }
         }
 
         private T GetSettingsImpl<T>() where T : new()

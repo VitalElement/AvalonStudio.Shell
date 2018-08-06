@@ -1,4 +1,5 @@
 ﻿using AvalonStudio.Documents;
+using AvalonStudio.MVVM;
 using System;
 using System.Linq;
 
@@ -8,7 +9,7 @@ namespace AvalonStudio.Shell
 	{
 		public static void AddOrSelectDocument<T>(this IShell me, T document) where T : IDocumentTabViewModel
 		{
-			IDocumentTabViewModel doc = me.Documents.FirstOrDefault(x => x.Equals(document));
+			var doc = me.Documents.FirstOrDefault(x => x.Equals(document));
 
 			if (doc != null)
 			{
@@ -20,9 +21,37 @@ namespace AvalonStudio.Shell
 			}
 		}
 
-		public static void AddOrSelectDocument<T>(this IShell me, Func<T> factory) where T : IDocumentTabViewModel
+        public static void AddOrSelectTool<T>(this IPerspective me, T tool) where T : IToolViewModel
+        {
+            var currentTool = me.Tools.FirstOrDefault(t => t.Equals(tool));
+
+            if(currentTool != null)
+            {
+               me.SelectedTool = currentTool;
+            }
+            else
+            {
+                me.AddTool(tool);
+            }
+        }
+
+        public static void AddOrSelectTool<T>(this IPerspective me, Func<T> factory) where T : IToolViewModel
+        {
+            var currentTool = me.Tools.FirstOrDefault(t => t is T);
+
+            if (currentTool != default)
+            {
+                me.SelectedTool = currentTool;
+            }
+            else
+            {
+                me.AddTool(factory());
+            }
+        }
+
+        public static void AddOrSelectDocument<T>(this IShell me, Func<T> factory) where T : IDocumentTabViewModel
 		{
-			IDocumentTabViewModel doc = me.Documents.FirstOrDefault(x => x is T);
+			var doc = me.Documents.FirstOrDefault(x => x is T);
 
 			if (doc != default)
 			{

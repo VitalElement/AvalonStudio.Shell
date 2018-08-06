@@ -1,12 +1,11 @@
-﻿using Dock.Model.Controls;
+﻿using AvalonStudio.MVVM;
+using Dock.Model.Controls;
 
 namespace AvalonStudio.Documents
 {
-	public interface IDocumentTabViewModel : IDocumentTab
+	public interface IDocumentTabViewModel : IDockableViewModel
 	{
-		void OnSelected();
-
-		void OnDeselected();
+        bool IsDirty { get; set; }
 
 		void Close();
 	}

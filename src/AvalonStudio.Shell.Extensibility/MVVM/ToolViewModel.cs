@@ -8,7 +8,23 @@ using System.Reactive.Linq;
 
 namespace AvalonStudio.MVVM
 {
-    public abstract class ToolViewModel : ViewModel, IToolTab
+    public interface IToolViewModel : IDockableViewModel
+    {
+        Location DefaultLocation { get; }
+    }
+
+    public interface IDockableViewModel
+    {
+        void OnSelected();
+
+        void OnDeselected();
+
+        bool OnClose();
+
+        string Title { get; }
+    }
+
+    public abstract class ToolViewModel : ViewModel, IToolViewModel
     {
         private bool _isVisible;
         private bool _isSelected;
@@ -16,14 +32,18 @@ namespace AvalonStudio.MVVM
         // TODO This should use ToolControl
         private string _title;
 
-        protected ToolViewModel()
+        protected ToolViewModel() : this(null)
+        {
+
+        }
+
+        protected ToolViewModel(string title)
         {
             _isVisible = true;
 
-            IsVisibleObservable = this.ObservableForProperty(x => x.IsVisible).Select(x => x.Value);
+            _title = title;
 
-            Height = double.NaN;
-            Width = double.NaN;            
+            IsVisibleObservable = this.ObservableForProperty(x => x.IsVisible).Select(x => x.Value);         
         }
 
         public Action OnSelect { get; set; }
@@ -65,39 +85,19 @@ namespace AvalonStudio.MVVM
             set { this.RaiseAndSetIfChanged(ref _title, value); }
         }
 
-        /// <summary>
-        /// Gets or sets view id.
-        /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets view context.
-        /// </summary>
-        public object Context { get; set; }
-
-        /// <summary>
-        /// Gets or sets view width.
-        /// </summary>
-        public double Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets view height.
-        /// </summary>
-        public double Height { get; set; }
-
-        /// <summary>
-        /// Gets or sets view parent.
-        /// </summary>
-        /// <remarks>If parrent is <see cref="null"/> than view is root.</remarks>
-        public IView Parent { get; set; }
-
-        public virtual bool OnClose()
+        public bool OnClose()
         {
+            IoC.Get<IShell>().CurrentPerspective.RemoveTool(this);
             return true;
         }
 
         public virtual void OnSelected()
         {
+        }
+
+        public void OnDeselected()
+        {
+            //IsSelected = false;
         }
     }
 }

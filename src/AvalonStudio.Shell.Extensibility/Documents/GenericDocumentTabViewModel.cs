@@ -1,32 +1,55 @@
-﻿using Avalonia.Controls;
-using AvalonStudio.Documents;
+﻿using AvalonStudio.Documents;
 using AvalonStudio.Extensibility;
 using AvalonStudio.MVVM;
 using AvalonStudio.Shell;
-using Dock.Model;
 using ReactiveUI;
+using System;
 
 namespace AvalonStudio.Controls
 {
-	public abstract class DocumentTabViewModel<T> : ViewModel<T>, IDocumentTabViewModel where T : class
+    public abstract class DocumentTabViewModel<T> : ViewModel<T>, IDocumentTabViewModel where T : class
 	{
 		private Avalonia.Controls.Dock dock;
-		private string title;
+		private string _title;
 		private bool _isTemporary;
 		private bool _isHidden;
 		private bool _isSelected;
+        private bool _isDirty;
+        private bool _isReadOnly;
 
-		public DocumentTabViewModel(T model) : base(model)
+        public DocumentTabViewModel(T model) : base(model)
 		{
 			Dock = Avalonia.Controls.Dock.Left;
 
 			IsVisible = true;
 
-			Width = double.NaN;
-			Height = double.NaN;
-		}
+            this.WhenAnyValue(x => x.IsDirty).Subscribe(dirty =>
+            {
+                this.RaisePropertyChanged(nameof(Title));
+            });
+        }
 
-		public Avalonia.Controls.Dock Dock
+        public bool IsDirty
+        {
+            get => _isDirty;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _isDirty, value);
+
+                if (value && IsTemporary)
+                {
+                    IsTemporary = false;
+                }
+            }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return _isReadOnly; }
+            set { this.RaiseAndSetIfChanged(ref _isReadOnly, value); }
+        }
+
+        public Avalonia.Controls.Dock Dock
 		{
 			get { return dock; }
 			set { this.RaiseAndSetIfChanged(ref dock, value); }
@@ -34,11 +57,8 @@ namespace AvalonStudio.Controls
 
 		public string Title
 		{
-			get => title;
-			set
-			{
-				this.RaiseAndSetIfChanged(ref title, value);
-			}
+			get => IsDirty ? _title + "*" : _title;
+			set=> this.RaiseAndSetIfChanged(ref _title, value);
 		}
 
 		public bool IsTemporary
@@ -91,32 +111,6 @@ namespace AvalonStudio.Controls
         {
             IoC.Get<IShell>().RemoveDocument(this);
             return true;
-        }
-
-        /// <summary>
-        /// Gets or sets view id.
-        /// </summary>
-        public string Id { get; set; }
-
-		/// <summary>
-		/// Gets or sets view context.
-		/// </summary>
-		public object Context { get; set; }
-
-		/// <summary>
-		/// Gets or sets view width.
-		/// </summary>
-		public double Width { get; set; }
-
-		/// <summary>
-		/// Gets or sets view height.
-		/// </summary>
-		public double Height { get; set; }
-
-		/// <summary>
-		/// Gets or sets view parent.
-		/// </summary>
-		/// <remarks>If parrent is <see cref="null"/> than view is root.</remarks>
-		public IView Parent { get; set; }
+        }       
 	}
 }
