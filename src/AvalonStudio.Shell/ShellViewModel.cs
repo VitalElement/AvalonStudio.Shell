@@ -66,7 +66,7 @@ namespace AvalonStudio.Shell
             MainMenu = mainMenuService.GetMainMenu();
 
             var toolbars = toolbarService.GetToolbars();
-            StandardToolbar = toolbars.Single(t => t.Key == "Standard").Value;
+            StandardToolbar = toolbars.SingleOrDefault(t => t.Key == "Standard").Value;
 
             _statusBar = statusBar;
 
