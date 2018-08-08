@@ -13,7 +13,6 @@ namespace AvalonStudio.Shell
         private Dictionary<IToolViewModel, IView> _tabTools;
         private IDock _left;
         private IDock _right;
-        private IDock _top;
         private IDock _bottom;
 
         public AvalonStudioPerspective (IView root, ILayoutDock centerPane, IDocumentDock documentDock)
