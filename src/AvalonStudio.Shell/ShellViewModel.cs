@@ -221,13 +221,16 @@ namespace AvalonStudio.Shell
 
         public void AddDocument(IDocumentTabViewModel document, bool temporary = false)
         {
-            var view = CurrentPerspective.DocumentDock.Dock(document, !Documents.Contains(document));
+			if (!_documentViews.ContainsKey(document))
+			{
+				var view = CurrentPerspective.DocumentDock.Dock(document, !Documents.Contains(document));
 
-            _documents.Add(document);
+				_documents.Add(document);
 
-            _documentViews.Add(document, view);
+				_documentViews.Add(document, view);
+			}
 
-            Factory.SetCurrentView(view);
+            Factory.SetCurrentView(_documentViews[document]);
         }
 
         public void RemoveDocument(IDocumentTabViewModel document)
@@ -237,17 +240,15 @@ namespace AvalonStudio.Shell
                 return;
             }
 
-            // TODO implement save on close.
+			if(_documentViews[document].Parent is IDock dock)
+			{
+				dock.Views.Remove(_documentViews[document]);
+				dock.Factory.Update(_documentViews[document], dock);
+			}
 
-            /*if (document.Parent is IDock dock)
-            {
-                dock.Views.Remove(document);
-                Factory.Update(document, document, dock);
-            }*/
-
-            _documents.Remove(document);
             _documentViews.Remove(document);
-        }
+			_documents.Remove(document);
+		}
 
         public ModalDialogViewModelBase ModalDialog
         {
