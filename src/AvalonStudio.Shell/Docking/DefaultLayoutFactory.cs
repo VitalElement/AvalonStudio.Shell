@@ -11,7 +11,37 @@ namespace AvalonStudio.Docking
     /// <inheritdoc/>
     public class DefaultLayoutFactory : DockFactory
     {
-        private ObservableCollection<IView> _documents = new ObservableCollection<IView>();
+        private ObservableCollection<IView> _documents;
+        private IDocumentDock _documentDock;
+        private ILayoutDock _centerPane;
+
+        public DefaultLayoutFactory()
+        {
+            _documents = new ObservableCollection<IView>();
+
+            _documentDock = new DocumentDock
+            {
+                Id = "DocumentsPane",
+                Proportion = double.NaN,
+                Title = "DocumentsPane",
+                CurrentView = null,
+                IsCollapsable = false,
+                Views = _documents
+            };
+
+            _centerPane = new LayoutDock
+            {
+                Id = $"CenterPane",
+                Proportion = double.NaN,
+                Orientation = Orientation.Vertical,
+                Title = $"CenterPane",
+                CurrentView = null,
+                Views = CreateList<IView>
+                (
+                    _documentDock
+                )
+            };
+        }
 
         public RootDock Root { get; private set; }
 
@@ -46,40 +76,29 @@ namespace AvalonStudio.Docking
 
         public (DockBase root, ILayoutDock centerPane, IDocumentDock documentDock) CreatePerspectiveLayout(string identifier)
         {
-            // Documents
-            var documentDock = new DocumentDock
-            {
-                Id = "DocumentsPane",
-                Proportion = double.NaN,
-                Title = "DocumentsPane",
-                CurrentView = null,
-                IsCollapsable = false,
-                Views = _documents
-            };
-
-            var centerPane = new LayoutDock
-            {
-                Id = $"{identifier}CenterPane",
-                Proportion = double.NaN,
-                Orientation = Orientation.Vertical,
-                Title = $"{identifier}CenterPane",
-                CurrentView = null,
-                Views = CreateList<IView>
-                (
-                    documentDock
-                )
-            };
-
             var debugLayout = new LayoutDock
             {
                 Id = $"{identifier}Layout",
                 Proportion = double.NaN,
-                Orientation = Orientation.Horizontal,
+                Orientation = Orientation.Vertical,
                 Title = $"{identifier}Layout",
                 CurrentView = null,
                 Views = new ObservableCollection<IView>
                 {
-                    centerPane
+                    _centerPane
+                }
+            };
+
+            var container = new LayoutDock
+            {
+                Id = $"{identifier}Container",
+                Proportion = double.NaN,
+                Orientation = Orientation.Horizontal,
+                Title = $"{identifier}Container",
+                CurrentView = null,
+                Views = new ObservableCollection<IView>
+                {
+                    debugLayout
                 }
             };
 
@@ -87,12 +106,12 @@ namespace AvalonStudio.Docking
             {
                 Id = identifier,
                 Title = identifier,
-                CurrentView = debugLayout,
+                CurrentView = container,
                 Views = new ObservableCollection<IView>
                 {
-                    debugLayout
+                    container
                 }
-            }, centerPane, documentDock);
+            }, debugLayout, _documentDock);
         }
 
         public override void Update(IView view, IView parent)
