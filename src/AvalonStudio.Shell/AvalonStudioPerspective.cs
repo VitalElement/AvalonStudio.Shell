@@ -194,7 +194,7 @@ namespace AvalonStudio.Shell
 
             advanceIndex();
 
-            if (index < 0 || index >= parentDock.Views.Count)
+            if (index <= 0 || index >= parentDock.Views.Count)
             {
                 var factory = CenterPane.Factory;
                 var toolDock = factory.CreateToolDock();
