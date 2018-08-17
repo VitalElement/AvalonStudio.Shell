@@ -8,11 +8,7 @@ namespace AvalonStudio.MVVM
         Left,
         Right,
         Bottom,
-        BottomRight,
-        RightBottom,
-        RightMiddle,
-        RightTop,
-        MiddleTop,
+        Top,
     }
 
     public abstract class ViewModel : ViewModel<object>

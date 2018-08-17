@@ -59,6 +59,10 @@ namespace AvalonStudio.Shell
             {
                 _bottom = null;
             }
+            else if(dock == _top)
+            {
+                _top = null;
+            }
         }
 
         public void AddTool(IToolViewModel tool)
@@ -136,6 +140,13 @@ namespace AvalonStudio.Shell
                         return _bottom.Dock(view);
                     }
                     break;
+
+                case Location.Top:
+                    if(_top != null)
+                    {
+                        return _top.Dock(view);
+                    }
+                    break;
             }
 
             var orientation = Orientation.Horizontal;
@@ -143,6 +154,7 @@ namespace AvalonStudio.Shell
 
             switch (view.DefaultLocation)
             {
+                case Location.Top:
                 case Location.Bottom:
                     orientation = Orientation.Vertical;
                     break;
@@ -150,6 +162,10 @@ namespace AvalonStudio.Shell
 
             switch (view.DefaultLocation)
             {
+                case Location.Top:
+                    dockOperation = DockOperation.Top;
+                    break;
+
                 case Location.Right:
                     dockOperation = DockOperation.Right;
                     break;
@@ -180,6 +196,7 @@ namespace AvalonStudio.Shell
             {
                 switch (view.DefaultLocation)
                 {
+                    case Location.Top:
                     case Location.Left:
                         index--;
                         break;
@@ -230,6 +247,13 @@ namespace AvalonStudio.Shell
                         if (_bottom == null)
                         {
                             _bottom = toolDock;
+                        }
+                        break;
+
+                    case Location.Top:
+                        if(_top == null)
+                        {
+                            _top = toolDock;
                         }
                         break;
                 }

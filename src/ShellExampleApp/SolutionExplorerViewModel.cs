@@ -13,7 +13,7 @@ namespace ShellExampleApp
     [Shared]
     public class SolutionExplorerViewModel : ToolViewModel, IExtension
     {
-        public override Location DefaultLocation => Location.Right;
+        public override Location DefaultLocation => Location.Top;
 
         public SolutionExplorerViewModel()
         {
