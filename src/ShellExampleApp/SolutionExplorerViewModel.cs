@@ -1,5 +1,6 @@
 ﻿using AvalonStudio.Extensibility;
 using AvalonStudio.MVVM;
+using AvalonStudio.Shell;
 using System;
 using System.Collections.Generic;
 using System.Composition;
@@ -11,13 +12,22 @@ namespace ShellExampleApp
     [Export]
     [ExportToolControl]
     [Shared]
-    public class SolutionExplorerViewModel : ToolViewModel, IExtension
+    public class SolutionExplorerViewModel : ToolViewModel, IActivatableExtension
     {
-        public override Location DefaultLocation => Location.Top;
+        public override Location DefaultLocation => Location.Right;
 
         public SolutionExplorerViewModel()
         {
             Title = "Solution Explorer";
+        }
+
+        public void BeforeActivation()
+        {
+        }
+
+        public void Activation()
+        {
+            IoC.Get<IShell>().MainPerspective.AddOrSelectTool(this);
         }
     }
 }

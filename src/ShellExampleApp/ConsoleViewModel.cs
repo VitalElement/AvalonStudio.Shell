@@ -1,5 +1,6 @@
 ﻿using AvalonStudio.Extensibility;
 using AvalonStudio.MVVM;
+using AvalonStudio.Shell;
 using System.Composition;
 
 namespace ShellExampleApp
@@ -8,13 +9,22 @@ namespace ShellExampleApp
     [Export]
     [ExportToolControl]
     [Shared]
-    public class ConsoleViewModel : ToolViewModel, IExtension
+    public class ConsoleViewModel : ToolViewModel, IActivatableExtension
     {
-        public override Location DefaultLocation => Location.Left;
+        public override Location DefaultLocation => Location.Bottom;
 
         public ConsoleViewModel()
         {
             Title = "Console";
+        }
+
+        public void BeforeActivation()
+        {
+        }
+
+        public void Activation()
+        {
+            IoC.Get<IShell>().MainPerspective.AddOrSelectTool(this);
         }
     }
 }
