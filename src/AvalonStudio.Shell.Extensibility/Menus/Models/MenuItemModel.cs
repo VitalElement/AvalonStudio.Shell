@@ -2,6 +2,7 @@ using Avalonia.Media;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 
 namespace AvalonStudio.Menus.Models
@@ -22,7 +23,7 @@ namespace AvalonStudio.Menus.Models
         {
             _menuItem = menuItem;
 
-            Children = children;
+            Children = children?.ToList();
         }
     }
 }
