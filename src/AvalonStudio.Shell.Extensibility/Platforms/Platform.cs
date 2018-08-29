@@ -7,6 +7,7 @@ namespace AvalonStudio.Shell.Extensibility.Platforms
 {
     public class Platform
     {
+        private static string _baseDirectory;
         public static string AppName { get; set; }
 
         public static string SettingsDirectory => BaseDirectory != null ? Path.Combine(BaseDirectory, "Settings") : null;
@@ -58,20 +59,27 @@ namespace AvalonStudio.Shell.Extensibility.Platforms
         {
             get
             {
-                string userDir = string.Empty;
-
-                switch (PlatformIdentifier)
+                if(string.IsNullOrEmpty(_baseDirectory) )
                 {
-                    case PlatformID.Win32NT:
-                        userDir = Environment.GetEnvironmentVariable("UserProfile");
-                        break;
+                    string userDir = string.Empty;
 
-                    default:
-                        userDir = Environment.GetEnvironmentVariable("HOME");
-                        break;
+                    switch (PlatformIdentifier)
+                    {
+                        case PlatformID.Win32NT:
+                            userDir = Environment.GetEnvironmentVariable("UserProfile");
+                            break;
+
+                        default:
+                            userDir = Environment.GetEnvironmentVariable("HOME");
+                            break;
+                    }
+                    _baseDirectory = AppName != null ? Path.Combine(userDir, AppName) : null;
                 }
-
-                return AppName != null ? Path.Combine(userDir, AppName) : null;
+                return _baseDirectory;
+            }
+            set
+            {
+                _baseDirectory = value;
             }
         }
     }
