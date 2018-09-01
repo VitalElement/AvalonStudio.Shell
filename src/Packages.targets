@@ -7,6 +7,7 @@
     <PackageReference Update="Avalonia.Xaml.Behaviors" Version="$(AvaloniaBehaviorsVersion)" />
     <PackageReference Update="Avalonia.Xaml.Interactions" Version="$(AvaloniaBehaviorsVersion)" />
     <PackageReference Update="Avalonia.Xaml.Interactions.Custom" Version="$(AvaloniaBehaviorsVersion)" />
+    <PackageReference Update="Microsoft.VisualStudio.Composition" Version="$(MicrosoftVisualStudioCompositionVersion)" />
     <PackageReference Update="Newtonsoft.Json" Version="$(NewtonsoftJsonVersion)" />
     <PackageReference Update="ReactiveUI" Version="$(ReactiveUIVersion)" />
   </ItemGroup>
