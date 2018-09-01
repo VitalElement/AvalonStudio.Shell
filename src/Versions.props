@@ -3,6 +3,7 @@
   <PropertyGroup>
     <AvaloniaBehaviorsVersion>0.6.2-build536</AvaloniaBehaviorsVersion>
     <AvaloniaVersion>0.6.2-build5984-beta</AvaloniaVersion>
+    <MicrosoftVisualStudioCompositionVersion>15.8.98</MicrosoftVisualStudioCompositionVersion>
     <NewtonsoftJsonVersion>10.0.3</NewtonsoftJsonVersion>
     <ReactiveUIVersion>8.0.1</ReactiveUIVersion>
   </PropertyGroup>

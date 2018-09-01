@@ -17,7 +17,8 @@ namespace AvalonStudio.Shell
 				Platform.Initialise();
 
 				var extensionManager = new ExtensionManager();
-				var container = CompositionRoot.CreateContainer(extensionManager);
+                // we shouldn't do this, instead a progress dialog should be shown
+				var container = CompositionRoot.CreateExportProviderAsync(extensionManager).Result;
 
 				IoC.Initialise(container);
 

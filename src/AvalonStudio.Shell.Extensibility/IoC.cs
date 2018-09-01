@@ -1,19 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Composition.Hosting;
 using System.Linq;
+using Microsoft.VisualStudio.Composition;
 
 namespace AvalonStudio.Extensibility
 {
     public static class IoC
     {
-        private static CompositionHost s_compositionHost;
+        private static ExportProvider s_exportProvider;
 
         public static object Get(Type t, string contract = null)
         {
-            if (s_compositionHost != null)
+            if (s_exportProvider != null)
             {
-                return s_compositionHost.GetExport(t, contract);
+                return s_exportProvider.AsExportProvider().GetExports(t, null, contract).SingleOrDefault();
             }
 
             return default;
@@ -21,9 +21,9 @@ namespace AvalonStudio.Extensibility
 
         public static T Get<T>(string contract)
         {
-            if (s_compositionHost != null)
+            if (s_exportProvider != null)
             {
-                return s_compositionHost.GetExport<T>(contract);
+                return s_exportProvider.GetExportedValue<T>(contract);
             }
 
             return default;
@@ -31,9 +31,9 @@ namespace AvalonStudio.Extensibility
 
         public static T Get<T>()
         {
-            if (s_compositionHost != null)
+            if (s_exportProvider != null)
             {
-                return s_compositionHost.GetExport<T>();
+                return s_exportProvider.GetExportedValue<T>();
             }
 
             return default;
@@ -41,9 +41,9 @@ namespace AvalonStudio.Extensibility
 
         public static IEnumerable<T> GetInstances<T>()
         {
-            if (s_compositionHost != null)
+            if (s_exportProvider != null)
             {
-                return s_compositionHost.GetExports<T>();
+                return s_exportProvider.GetExportedValues<T>();
             }
 
             return Enumerable.Empty<T>();
@@ -51,17 +51,17 @@ namespace AvalonStudio.Extensibility
 
         public static IEnumerable<T> GetInstances<T>(string contract)
         {
-            if (s_compositionHost != null)
+            if (s_exportProvider != null)
             {
-                return s_compositionHost.GetExports<T>(contract);
+                return s_exportProvider.GetExportedValues<T>(contract);
             }
 
             return Enumerable.Empty<T>();
         }
 
-        public static void Initialise(CompositionHost host)
+        public static void Initialise(ExportProvider exportProvider)
         {
-            s_compositionHost = host;
+            s_exportProvider = exportProvider;
         }
     }
 }
