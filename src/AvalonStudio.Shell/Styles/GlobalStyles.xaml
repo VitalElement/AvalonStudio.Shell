@@ -8,6 +8,12 @@
       </Setter.Value>
     </Setter>
     <Setter Property="Foreground" Value="#007ACC" />
+    <Setter Property="Opacity" Value="0.75" />
+    <Setter Property="Transitions">
+      <Transitions>
+        <DoubleTransition Property="Opacity" Duration="0:0:0.1"/>
+      </Transitions>
+    </Setter>
   </Style>
 
   <Style Selector="TextBox">
@@ -23,7 +29,8 @@
   </Style>
   
   <Style Selector="Button:pointerover.hyperlink">
-    <Setter Property="Foreground" Value="#67CCFE" />
+    <!--<Setter Property="Foreground" Value="#67CCFE" />-->
+    <Setter Property="Opacity" Value="1" />
   </Style>
 
     <Style Selector="TextBlock.h1">
