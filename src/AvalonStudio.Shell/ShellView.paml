@@ -80,9 +80,6 @@
     <Grid Grid.Row="1" Margin="6 2">
       <idc:DockControl DataContext="{Binding Root}" Margin="4" />
     </Grid>
-
-    <Grid Grid.RowSpan="2" Grid.ColumnSpan="5" Name="PART_ExtensibleOverlay">
-    </Grid>
     <!--<cont:QuickCommander Width="450" MaxHeight="500" DataContext="{Binding QuickCommander}" VerticalAlignment="Top" />-->
   </Grid>
 </UserControl>
