@@ -19,7 +19,7 @@ namespace AvalonStudio.Controls
 
         static EditableTextBlock()
         {
-            PseudoClass(InEditModeProperty, ":editing");
+            PseudoClass<EditableTextBlock>(InEditModeProperty, ":editing");
         }
 
         public EditableTextBlock()
