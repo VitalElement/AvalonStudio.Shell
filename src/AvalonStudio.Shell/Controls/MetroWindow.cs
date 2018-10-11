@@ -11,26 +11,35 @@ namespace AvalonStudio.Shell.Controls
 {
     public class MetroWindow : Window, IStyleable
     {
+		public MetroWindow()
+		{
+			if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+			{
+				// do this in code or we get a delay in osx.
+				HasSystemDecorations = false;
+			}
+		}
+
 		public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
             AvaloniaProperty.Register<MetroWindow, Control>(nameof(TitleBarContent));
 
-        private Grid bottomHorizontalGrip;
-        private Grid bottomLeftGrip;
-        private Grid bottomRightGrip;
-        private Button closeButton;
-        private Image icon;
-        private Grid leftVerticalGrip;
-        private Button minimiseButton;
+        private Grid _bottomHorizontalGrip;
+        private Grid _bottomLeftGrip;
+        private Grid _bottomRightGrip;
+        private Button _closeButton;
+        private Image _icon;
+        private Grid _leftVerticalGrip;
+        private Button _minimiseButton;
 
-        private bool mouseDown;
-        private Point mouseDownPosition;
-        private Button restoreButton;
-        private Grid rightVerticalGrip;
+        private bool _mouseDown;
+        private Point _mouseDownPosition;
+        private Button _restoreButton;
+        private Grid _rightVerticalGrip;
 
-        private Grid titleBar;
-        private Grid topHorizontalGrip;
-        private Grid topLeftGrip;
-        private Grid topRightGrip;
+        private Grid _titleBar;
+        private Grid _topHorizontalGrip;
+        private Grid _topLeftGrip;
+        private Grid _topRightGrip;
 
         public Control TitleBarContent
         {
