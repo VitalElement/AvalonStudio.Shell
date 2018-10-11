@@ -5,12 +5,13 @@ using Avalonia.Input;
 using Avalonia.Styling;
 using AvalonStudio.Extensibility.Utils;
 using System;
+using System.Runtime.InteropServices;
 
 namespace AvalonStudio.Shell.Controls
 {
     public class MetroWindow : Window, IStyleable
     {
-        public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
+		public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
             AvaloniaProperty.Register<MetroWindow, Control>(nameof(TitleBarContent));
 
         private Grid bottomHorizontalGrip;
@@ -150,6 +151,13 @@ namespace AvalonStudio.Shell.Controls
             closeButton.Click += (sender, ee) => { Close(); };
 
             icon.DoubleTapped += (sender, ee) => { Close(); };
-        }
+
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+			{
+				titleBar.IsVisible = false;
+
+				BorderThickness = new Thickness();
+			}
+		}
     }
 }
