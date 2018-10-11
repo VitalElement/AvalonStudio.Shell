@@ -16,6 +16,7 @@
         
         <SolidColorBrush x:Key="ThemeForegroundLightBrush">#FF808080</SolidColorBrush>
 
+        <SolidColorBrush x:Key="ThemeControlHighlightMidBrush">#CC086F9E</SolidColorBrush>
         <SolidColorBrush x:Key="HighlightBrush">#FF086F9E</SolidColorBrush>
         <SolidColorBrush x:Key="ThemeAccentBrush">#FF0063B1</SolidColorBrush>
         <SolidColorBrush x:Key="ThemeAccentBrush2">#FF004C8A</SolidColorBrush>
