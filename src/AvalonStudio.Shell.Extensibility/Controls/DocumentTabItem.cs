@@ -10,11 +10,11 @@ namespace AvalonStudio.Controls
     {
         static DocumentTabItem()
         {
-            PseudoClass(IsFocusedProperty, o => o, ":focused");
-            PseudoClass(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Right, ":dockright");
-            PseudoClass(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Left, ":dockleft");
-            PseudoClass(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Top, ":docktop");
-            PseudoClass(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Bottom, ":dockbottom");
+            PseudoClass<DocumentTabItem, bool>(IsFocusedProperty, o => o, ":focused");
+            PseudoClass<DocumentTabItem, Avalonia.Controls.Dock>(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Right, ":dockright");
+            PseudoClass<DocumentTabItem, Avalonia.Controls.Dock>(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Left, ":dockleft");
+            PseudoClass<DocumentTabItem, Avalonia.Controls.Dock>(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Top, ":docktop");
+            PseudoClass<DocumentTabItem, Avalonia.Controls.Dock>(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Bottom, ":dockbottom");
         }
 
         public DocumentTabItem()
