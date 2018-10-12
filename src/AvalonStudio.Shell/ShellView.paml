@@ -71,9 +71,9 @@
 
     <Grid Grid.ColumnSpan="5" Margin="0 0 0 0">
       <Grid RowDefinitions="Auto, Auto">
-        <menu:MainMenuView DataContext="{Binding MainMenu}" Margin="10 4 0 0"  Foreground="{DynamicResource ThemeForegroundBrush}" />
+        <menu:MainMenuView DataContext="{Binding MainMenu}" Margin="10 0 0 0"  Foreground="{DynamicResource ThemeForegroundBrush}" />
 
-        <cont:ToolBar DataContext="{Binding StandardToolbar}" Grid.Row="1" Margin="15 0 0 0" />
+        <cont:ToolBar DataContext="{Binding StandardToolbar}" Grid.Row="1" Margin="15 4 4 0" />
       </Grid>
     </Grid>
 
