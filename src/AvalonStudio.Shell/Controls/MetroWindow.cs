@@ -164,6 +164,14 @@ namespace AvalonStudio.Shell.Controls
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
 			{
 				_titleBar.IsVisible = false;
+				_topHorizontalGrip.IsVisible = false;
+				_bottomHorizontalGrip.IsHitTestVisible = false;
+				_leftVerticalGrip.IsHitTestVisible = false;
+				_rightVerticalGrip.IsHitTestVisible = false;
+				_topLeftGrip.IsHitTestVisible = false;
+				_bottomLeftGrip.IsHitTestVisible = false;
+				_topRightGrip.IsHitTestVisible = false;
+				_bottomRightGrip.IsHitTestVisible = false;
 
 				BorderThickness = new Thickness();
 			}
