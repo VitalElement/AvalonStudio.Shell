@@ -103,7 +103,7 @@ namespace AvalonStudio.Extensibility.Theme
                 Application.Current.Resources["ThemeControlMidBrush"] = theme.ControlMid;
                 Application.Current.Resources["ThemeControlLowBrush"] = theme.ControlLight;
                 Application.Current.Resources["ThemeForegroundBrush"] = theme.Foreground;
-                Application.Current.Resources["ThemeBorderHighBrush"] = theme.BorderDark;
+                Application.Current.Resources["ThemeBorderMidBrush"] = theme.BorderDark;
                 Application.Current.Resources["ThemeEditorBackground"] = theme.EditorBackground;
                 Application.Current.Resources["ApplicationAccentBrush"] = theme.Accent;
                 Application.Current.Resources["ApplicationAccentBrushLow"] = theme.AccentLight;
