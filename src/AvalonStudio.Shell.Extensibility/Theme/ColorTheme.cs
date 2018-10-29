@@ -99,14 +99,14 @@ namespace AvalonStudio.Extensibility.Theme
             {
                 Application.Current.Resources["ThemeBackgroundBrush"] = theme.Background;
                 Application.Current.Resources["ThemeControlBackgroundBrush"] = theme.ControlBackground;
-                Application.Current.Resources["ThemeControlDarkBrush"] = theme.ControlDark;
+                Application.Current.Resources["ThemeControlHighBrush"] = theme.ControlDark;
                 Application.Current.Resources["ThemeControlMidBrush"] = theme.ControlMid;
-                Application.Current.Resources["ThemeControlLightBrush"] = theme.ControlLight;
+                Application.Current.Resources["ThemeControlLowBrush"] = theme.ControlLight;
                 Application.Current.Resources["ThemeForegroundBrush"] = theme.Foreground;
-                Application.Current.Resources["ThemeBorderDarkBrush"] = theme.BorderDark;
+                Application.Current.Resources["ThemeBorderHighBrush"] = theme.BorderDark;
                 Application.Current.Resources["ThemeEditorBackground"] = theme.EditorBackground;
                 Application.Current.Resources["ApplicationAccentBrush"] = theme.Accent;
-                Application.Current.Resources["ApplicationAccentBrushLight"] = theme.AccentLight;
+                Application.Current.Resources["ApplicationAccentBrushLow"] = theme.AccentLight;
                 Application.Current.Resources["ApplicationAccentForegroundBrush"] = theme.AccentForeground;
                 Application.Current.Resources["ErrorListError"] = theme.ErrorListError;
                 Application.Current.Resources["ErrorListWarning"] = theme.ErrorListWarning;

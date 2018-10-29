@@ -11,10 +11,10 @@
         <SolidColorBrush x:Key="EditorBackgroundAccentBrush">#FF2D2D30</SolidColorBrush>
         <SolidColorBrush x:Key="EditorForegroundBrush">#FFE4E4E4</SolidColorBrush>
         <SolidColorBrush x:Key="ThemeBorderBrush">#3E3E42</SolidColorBrush>
-        <SolidColorBrush x:Key="ThemeBorderLightBrush">#FFAAAAAA</SolidColorBrush>
+        <SolidColorBrush x:Key="ThemeBorderLowBrush">#FFAAAAAA</SolidColorBrush>
         <SolidColorBrush x:Key="ThemeBorderMidBrush">#FF888888</SolidColorBrush>
         
-        <SolidColorBrush x:Key="ThemeForegroundLightBrush">#FF808080</SolidColorBrush>
+        <SolidColorBrush x:Key="ThemeForegroundLowBrush">#FF808080</SolidColorBrush>
 
         <SolidColorBrush x:Key="ThemeControlHighlightMidBrush">#CC086F9E</SolidColorBrush>
         <SolidColorBrush x:Key="HighlightBrush">#FF086F9E</SolidColorBrush>
