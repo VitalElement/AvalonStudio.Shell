@@ -13,7 +13,7 @@
         <SolidColorBrush x:Key="ThemeBorderBrush">#3E3E42</SolidColorBrush>
         <SolidColorBrush x:Key="ThemeBorderLowBrush">#3E3E42</SolidColorBrush>
         <SolidColorBrush x:Key="ThemeBorderMidBrush">#FF888888</SolidColorBrush>
-        <SolidColorBrush x:Key="ThemeBorderHighBrush">#FF888888</SolidColorBrush>
+        <SolidColorBrush x:Key="ThemeBorderHighBrush">#FFAAAAAA</SolidColorBrush>
 
     <SolidColorBrush x:Key="ThemeForegroundLowBrush">#FF808080</SolidColorBrush>
 

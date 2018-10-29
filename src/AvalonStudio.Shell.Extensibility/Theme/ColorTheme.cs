@@ -37,17 +37,17 @@ namespace AvalonStudio.Extensibility.Theme
             WindowBorder = Brush.Parse("#9B9FB9"),
             Background = Brush.Parse("#EEEEF2"),
             Foreground = Brush.Parse("#1E1E1E"),
-            ForegroundLight = Brush.Parse("#525252"),
-            BorderLight = Brush.Parse("#9B9FB9"),
+            ForegroundLow = Brush.Parse("#525252"),
+            BorderLow = Brush.Parse("#9B9FB9"),
             BorderMid = Brush.Parse("#9B9FB9"),
-            BorderDark = Brush.Parse("#FFCCCEDB"),
-            ControlLight = Brush.Parse("#686868"),
+            BorderHigh = Brush.Parse("#FFCCCEDB"),
+            ControlLow = Brush.Parse("#686868"),
             ControlMid = Brush.Parse("#FFC2C3C9"),
-            ControlDark = Brush.Parse("#FFF5F5F5"),
+            ControlHigh = Brush.Parse("#FFF5F5F5"),
             ControlBackground = Brush.Parse("#FFE6E7E8"),
             EditorBackground = Brush.Parse("#FFFFFFFF"),
             Accent = Brush.Parse("#FF007ACC"),
-            AccentLight = Brush.Parse("#FF1C97EA"),
+            AccentLow = Brush.Parse("#FF1C97EA"),
             AccentForeground = Brush.Parse("#FFF0F0F0"),
             ErrorListError = Brush.Parse("#E34937"),
             ErrorListWarning = Brush.Parse("#D78A04"),
@@ -60,17 +60,17 @@ namespace AvalonStudio.Extensibility.Theme
             WindowBorder = Brush.Parse("#FF004C8A"),
             Background = Brush.Parse("#FF2D2D30"),
             Foreground = Brush.Parse("#FFC4C4C4"),
-            ForegroundLight = Brush.Parse("#FF808080"),
-            BorderLight = Brush.Parse("#FFAAAAAA"),
+            ForegroundLow = Brush.Parse("#FF808080"),
+            BorderLow = Brush.Parse("#FF3E3E42"),
             BorderMid = Brush.Parse("#FF888888"),
-            BorderDark = Brush.Parse("#FF3E3E42"),
-            ControlLight = Brush.Parse("#FF9E9E9E"),
-            ControlMid = Brush.Parse("#FF686868"),
-            ControlDark = Brush.Parse("#FF3E3E42"),
+            BorderHigh = Brush.Parse("#FFAAAAAA"),
+            ControlLow = Brush.Parse("#FF2D2D30"),
+            ControlMid = Brush.Parse("#FF3E3E42"),
+            ControlHigh = Brush.Parse("#FF888888"),
             ControlBackground = Brush.Parse("#FF252526"),
             EditorBackground = Brush.Parse("#FF1E1E1E"),
             Accent = Brush.Parse("#FF007ACC"),
-            AccentLight = Brush.Parse("#FF1C97EA"),
+            AccentLow = Brush.Parse("#FF1C97EA"),
             AccentForeground = Brush.Parse("#FFF0F0F0"),
             ErrorListError = Brush.Parse("#E34937"),
             ErrorListWarning = Brush.Parse("#D78A04"),
@@ -99,14 +99,16 @@ namespace AvalonStudio.Extensibility.Theme
             {
                 Application.Current.Resources["ThemeBackgroundBrush"] = theme.Background;
                 Application.Current.Resources["ThemeControlBackgroundBrush"] = theme.ControlBackground;
-                Application.Current.Resources["ThemeControlHighBrush"] = theme.ControlDark;
+                Application.Current.Resources["ThemeControlHighBrush"] = theme.ControlHigh;
                 Application.Current.Resources["ThemeControlMidBrush"] = theme.ControlMid;
-                Application.Current.Resources["ThemeControlLowBrush"] = theme.ControlLight;
+                Application.Current.Resources["ThemeControlLowBrush"] = theme.ControlLow;
                 Application.Current.Resources["ThemeForegroundBrush"] = theme.Foreground;
-                Application.Current.Resources["ThemeBorderMidBrush"] = theme.BorderDark;
+                Application.Current.Resources["ThemeBorderHighBrush"] = theme.BorderHigh;
+				Application.Current.Resources["ThemeBorderMidBrush"] = theme.BorderMid;
+				Application.Current.Resources["ThemeBorderLowBrush"] = theme.BorderLow;
                 Application.Current.Resources["ThemeEditorBackground"] = theme.EditorBackground;
                 Application.Current.Resources["ApplicationAccentBrush"] = theme.Accent;
-                Application.Current.Resources["ApplicationAccentBrushLow"] = theme.AccentLight;
+                Application.Current.Resources["ApplicationAccentBrushLow"] = theme.AccentLow;
                 Application.Current.Resources["ApplicationAccentForegroundBrush"] = theme.AccentForeground;
                 Application.Current.Resources["ErrorListError"] = theme.ErrorListError;
                 Application.Current.Resources["ErrorListWarning"] = theme.ErrorListWarning;
@@ -122,7 +124,7 @@ namespace AvalonStudio.Extensibility.Theme
 
         public IBrush Accent { get; set; }
 
-        public IBrush AccentLight { get; set; }
+        public IBrush AccentLow { get; set; }
 
         public IBrush AccentForeground { get; set; }
 
@@ -132,19 +134,19 @@ namespace AvalonStudio.Extensibility.Theme
 
         public IBrush Foreground { get; set; }
 
-        public IBrush ForegroundLight { get; set; }
+        public IBrush ForegroundLow { get; set; }
 
-        public IBrush BorderLight { get; set; }
+        public IBrush BorderLow { get; set; }
 
         public IBrush BorderMid { get; set; }
 
-        public IBrush BorderDark { get; set; }
+        public IBrush BorderHigh { get; set; }
 
-        public IBrush ControlLight { get; set; }
+        public IBrush ControlLow { get; set; }
 
         public IBrush ControlMid { get; set; }
 
-        public IBrush ControlDark { get; set; }
+        public IBrush ControlHigh { get; set; }
 
         public IBrush ControlBackground { get; set; }
 
