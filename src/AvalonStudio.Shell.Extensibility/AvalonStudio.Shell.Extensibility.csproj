@@ -15,7 +15,7 @@
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
     <PackageReference Include="System.Composition" Version="1.1.0" />
-    <PackageReference Include="Dock.Avalonia" Version="0.0.1-build641" />
+    <PackageReference Include="Dock.Avalonia" Version="0.0.1-build648" />
   </ItemGroup>
 
 </Project>
