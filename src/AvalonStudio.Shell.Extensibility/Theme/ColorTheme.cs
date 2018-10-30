@@ -70,7 +70,7 @@ namespace AvalonStudio.Extensibility.Theme
             ControlBackground = Brush.Parse("#FF252526"),
             EditorBackground = Brush.Parse("#FF1E1E1E"),
             Accent = Brush.Parse("#FF007ACC"),
-            AccentLow = Brush.Parse("#FF1C97EA"),
+            AccentLow = Brush.Parse("#CC666675"),
             AccentForeground = Brush.Parse("#FFF0F0F0"),
             ErrorListError = Brush.Parse("#E34937"),
             ErrorListWarning = Brush.Parse("#D78A04"),

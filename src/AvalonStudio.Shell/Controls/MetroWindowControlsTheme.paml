@@ -6,7 +6,7 @@
     <Setter Property="FontWeight" Value="SemiBold" />
   </Style>
   <Style Selector="Button:pointerover /template/ ContentPresenter">
-    <Setter Property="Background" Value="{DynamicResource AccentColorLow}" />
+    <Setter Property="Background" Value="{DynamicResource ApplicationAccentBrushLow}" />
     <Setter Property="BorderThickness" Value="0" />
   </Style>
   <Style Selector="Button:pressed  /template/ ContentPresenter">
