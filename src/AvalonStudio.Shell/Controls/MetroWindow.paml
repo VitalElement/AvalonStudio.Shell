@@ -1,13 +1,13 @@
-﻿<Styles xmlns="https://github.com/avaloniaui" 
+﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:local="clr-namespace:AvalonStudio.Shell.Controls;assembly=AvalonStudio.Shell"
         xmlns:convert="clr-namespace:AvalonStudio.Shell.Converters;assembly=AvalonStudio.Shell"
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Style Selector="local|MetroWindow">
     <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
-    <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />  
+    <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />
     <Setter Property="Template">
       <ControlTemplate>
-        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">          
+        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
           <AdornerDecorator>
             <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">
               <Grid Grid.Row="0" Grid.RowSpan="5" Margin="-4 0" Grid.Column="1" RowDefinitions="Auto * Auto" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
@@ -30,21 +30,21 @@
                         <StackPanel Orientation="Horizontal">
                           <Button Background="Transparent" BorderThickness="0" Name="minimiseButton" ToolTip.Tip="Minimize">
                             <Panel Margin="4" Height="8" Width="8">
-                                <DrawingPresenter>
-                                    <DrawingGroup>
-                                        <DrawingGroup.Children>
-                                            <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
-                                            <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M15,15L1,15 1,10 15,10z" />
-                                            <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M14,11L2,11 2,14 14,14z" />
-                                        </DrawingGroup.Children>
-                                    </DrawingGroup>
-                                </DrawingPresenter>
+                              <DrawingPresenter>
+                                <DrawingGroup>
+                                  <DrawingGroup.Children>
+                                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
+                                    <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M15,15L1,15 1,10 15,10z" />
+                                    <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M14,11L2,11 2,14 14,14z" />
+                                  </DrawingGroup.Children>
+                                </DrawingGroup>
+                              </DrawingPresenter>
                             </Panel>
                           </Button>
 
                           <Button Background="Transparent" BorderThickness="0" Name="restoreButton" ToolTip.Tip="Restore">
                             <Panel Margin="4">
-                              <Path Height="8" Width="8" Stretch="Uniform" UseLayoutRounding="False"  Data="M4,8H8V4H20V16H16V20H4V8M16,8V14H18V6H10V8H16M6,12V18H14V12H6Z" Fill="{DynamicResource ThemeForegroundBrush}" />
+                              <Path Name="restoreButtonPanelPath" Height="8" Width="8" Stretch="Uniform" UseLayoutRounding="False" Fill="{DynamicResource ThemeForegroundBrush}" />
                             </Panel>
                           </Button>
 
