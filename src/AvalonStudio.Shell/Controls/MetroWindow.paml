@@ -35,7 +35,7 @@
                             </Panel>
                           </Button>
 
-                          <Button Background="Transparent" BorderThickness="0" Name="restoreButton" ToolTip.Tip="Restore">
+                          <Button Background="Transparent" BorderThickness="0" Name="restoreButton" ToolTip.Tip="Restore Down">
                             <Panel Margin="4">
                               <Path Height="8" Width="8" Stretch="Uniform" UseLayoutRounding="False"  Data="M4,8H8V4H20V16H16V20H4V8M16,8V14H18V6H10V8H16M6,12V18H14V12H6Z" Fill="{DynamicResource ThemeForegroundBrush}" />
                             </Panel>
