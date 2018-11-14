@@ -42,7 +42,7 @@
                             </Panel>
                           </Button>
 
-                          <Button Background="Transparent" BorderThickness="0" Name="restoreButton" ToolTip.Tip="Restore">
+                          <Button Background="Transparent" BorderThickness="0" Name="restoreButton" ToolTip.Tip="Restore Down">
                             <Panel Margin="4">
                               <Path Name="restoreButtonPanelPath" Height="8" Width="8" Stretch="Uniform" UseLayoutRounding="False" Fill="{DynamicResource ThemeForegroundBrush}" />
                             </Panel>
