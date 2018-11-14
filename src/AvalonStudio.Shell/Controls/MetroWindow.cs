@@ -1,7 +1,9 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Shapes;
 using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Styling;
 using AvalonStudio.Extensibility.Utils;
 using System;
@@ -11,16 +13,16 @@ namespace AvalonStudio.Shell.Controls
 {
     public class MetroWindow : Window, IStyleable
     {
-		public MetroWindow()
-		{
-			if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-			{
-				// do this in code or we get a delay in osx.
-				HasSystemDecorations = false;
-			}
-		}
+        public MetroWindow()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                // do this in code or we get a delay in osx.
+                HasSystemDecorations = false;
+            }
+        }
 
-		public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
+        public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
             AvaloniaProperty.Register<MetroWindow, Control>(nameof(TitleBarContent));
 
         private Grid _bottomHorizontalGrip;
@@ -34,6 +36,7 @@ namespace AvalonStudio.Shell.Controls
         private bool _mouseDown;
         private Point _mouseDownPosition;
         private Button _restoreButton;
+        private Path _restoreButtonPanelPath;
         private Grid _rightVerticalGrip;
 
         private Grid _titleBar;
@@ -85,12 +88,12 @@ namespace AvalonStudio.Shell.Controls
             }
             else if (_titleBar.IsPointerOver)
             {
-				_mouseDown = true;
-				_mouseDownPosition = e.GetPosition(this);
+                _mouseDown = true;
+                _mouseDownPosition = e.GetPosition(this);
             }
             else
             {
-				_mouseDown = false;
+                _mouseDown = false;
             }
 
             base.OnPointerPressed(e);
@@ -98,7 +101,7 @@ namespace AvalonStudio.Shell.Controls
 
         protected override void OnPointerReleased(PointerReleasedEventArgs e)
         {
-			_mouseDown = false;
+            _mouseDown = false;
             base.OnPointerReleased(e);
         }
 
@@ -110,7 +113,7 @@ namespace AvalonStudio.Shell.Controls
                 {
                     WindowState = WindowState.Normal;
                     BeginMoveDrag();
-					_mouseDown = false;
+                    _mouseDown = false;
                 }
             }
 
@@ -123,58 +126,77 @@ namespace AvalonStudio.Shell.Controls
             {
                 case WindowState.Maximized:
                     WindowState = WindowState.Normal;
-                    ToolTip.SetTip(_restoreButton, "Maximize");
                     break;
 
                 case WindowState.Normal:
                     WindowState = WindowState.Maximized;
+                    break;
+            }
+
+            RefreshWindowState();
+        }
+
+        private void RefreshWindowState()
+        {
+            switch (WindowState)
+            {
+                case WindowState.Normal:
+                    ToolTip.SetTip(_restoreButton, "Maximize");
+                    _restoreButtonPanelPath.Data = Geometry.Parse("M4,4H20V20H4V4M6,8V18H18V8H6Z");
+                    break;
+
+                case WindowState.Maximized:
                     ToolTip.SetTip(_restoreButton, "Restore");
+                    _restoreButtonPanelPath.Data = Geometry.Parse("M4,8H8V4H20V16H16V20H4V8M16,8V14H18V6H10V8H16M6,12V18H14V12H6Z");
                     break;
             }
         }
 
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
-			_titleBar = e.NameScope.Find<Grid>("titlebar");
-			_minimiseButton = e.NameScope.Find<Button>("minimiseButton");
-			_restoreButton = e.NameScope.Find<Button>("restoreButton");
-			_closeButton = e.NameScope.Find<Button>("closeButton");
-			_icon = e.NameScope.Find<Image>("icon");
+            _titleBar = e.NameScope.Find<Grid>("titlebar");
+            _minimiseButton = e.NameScope.Find<Button>("minimiseButton");
+            _restoreButton = e.NameScope.Find<Button>("restoreButton");
+            _restoreButtonPanelPath = e.NameScope.Find<Path>("restoreButtonPanelPath");
+            _closeButton = e.NameScope.Find<Button>("closeButton");
+            _icon = e.NameScope.Find<Image>("icon");
 
-			_topHorizontalGrip = e.NameScope.Find<Grid>("topHorizontalGrip");
-			_bottomHorizontalGrip = e.NameScope.Find<Grid>("bottomHorizontalGrip");
-			_leftVerticalGrip = e.NameScope.Find<Grid>("leftVerticalGrip");
-			_rightVerticalGrip = e.NameScope.Find<Grid>("rightVerticalGrip");
+            _topHorizontalGrip = e.NameScope.Find<Grid>("topHorizontalGrip");
+            _bottomHorizontalGrip = e.NameScope.Find<Grid>("bottomHorizontalGrip");
+            _leftVerticalGrip = e.NameScope.Find<Grid>("leftVerticalGrip");
+            _rightVerticalGrip = e.NameScope.Find<Grid>("rightVerticalGrip");
 
-			_topLeftGrip = e.NameScope.Find<Grid>("topLeftGrip");
-			_bottomLeftGrip = e.NameScope.Find<Grid>("bottomLeftGrip");
-			_topRightGrip = e.NameScope.Find<Grid>("topRightGrip");
-			_bottomRightGrip = e.NameScope.Find<Grid>("bottomRightGrip");
+            _topLeftGrip = e.NameScope.Find<Grid>("topLeftGrip");
+            _bottomLeftGrip = e.NameScope.Find<Grid>("bottomLeftGrip");
+            _topRightGrip = e.NameScope.Find<Grid>("topRightGrip");
+            _bottomRightGrip = e.NameScope.Find<Grid>("bottomRightGrip");
 
-			_minimiseButton.Click += (sender, ee) => { WindowState = WindowState.Minimized; };
+            RefreshWindowState();
 
-			_restoreButton.Click += (sender, ee) => { ToggleWindowState(); };
+            _minimiseButton.Click += (sender, ee) => { WindowState = WindowState.Minimized; };
 
-			_titleBar.DoubleTapped += (sender, ee) => { ToggleWindowState(); };
+            _restoreButton.Click += (sender, ee) => { ToggleWindowState(); };
 
-			_closeButton.Click += (sender, ee) => { Close(); };
+            _titleBar.DoubleTapped += (sender, ee) => { ToggleWindowState(); };
 
-			_icon.DoubleTapped += (sender, ee) => { Close(); };
+            _closeButton.Click += (sender, ee) => { Close(); };
 
-			if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
-			{
-				_titleBar.IsVisible = false;
-				_topHorizontalGrip.IsVisible = false;
-				_bottomHorizontalGrip.IsHitTestVisible = false;
-				_leftVerticalGrip.IsHitTestVisible = false;
-				_rightVerticalGrip.IsHitTestVisible = false;
-				_topLeftGrip.IsHitTestVisible = false;
-				_bottomLeftGrip.IsHitTestVisible = false;
-				_topRightGrip.IsHitTestVisible = false;
-				_bottomRightGrip.IsHitTestVisible = false;
+            _icon.DoubleTapped += (sender, ee) => { Close(); };
 
-				BorderThickness = new Thickness();
-			}
-		}
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                _titleBar.IsVisible = false;
+                _topHorizontalGrip.IsVisible = false;
+                _bottomHorizontalGrip.IsHitTestVisible = false;
+                _leftVerticalGrip.IsHitTestVisible = false;
+                _rightVerticalGrip.IsHitTestVisible = false;
+                _topLeftGrip.IsHitTestVisible = false;
+                _bottomLeftGrip.IsHitTestVisible = false;
+                _topRightGrip.IsHitTestVisible = false;
+                _bottomRightGrip.IsHitTestVisible = false;
+
+                BorderThickness = new Thickness();
+            }
+        }
     }
 }
