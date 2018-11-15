@@ -39,7 +39,7 @@ namespace AvalonStudio.Utils.Behaviors
                         _currentWindow.DataContext = DataContext;
                     }
                                         
-                    _currentWindow.ShowDialog();
+                    _currentWindow.ShowDialog(Application.Current.MainWindow);
                 }
                 else
                 {
