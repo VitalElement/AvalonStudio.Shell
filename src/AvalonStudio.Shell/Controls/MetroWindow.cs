@@ -20,6 +20,11 @@ namespace AvalonStudio.Shell.Controls
                 // do this in code or we get a delay in osx.
                 HasSystemDecorations = false;
             }
+
+			this.GetObservable(WindowStateProperty).Subscribe(_ =>
+			{
+				RefreshWindowState();
+			});
         }
 
         public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
@@ -132,24 +137,25 @@ namespace AvalonStudio.Shell.Controls
                     WindowState = WindowState.Maximized;
                     break;
             }
-
-            RefreshWindowState();
         }
 
         private void RefreshWindowState()
         {
-            switch (WindowState)
-            {
-                case WindowState.Normal:
-                    ToolTip.SetTip(_restoreButton, "Maximize");
-                    _restoreButtonPanelPath.Data = Geometry.Parse("M4,4H20V20H4V4M6,8V18H18V8H6Z");
-                    break;
+			if (_restoreButton != null)
+			{
+				switch (WindowState)
+				{
+					case WindowState.Normal:
+						ToolTip.SetTip(_restoreButton, "Maximize");
+						_restoreButtonPanelPath.Data = Geometry.Parse("M4,4H20V20H4V4M6,8V18H18V8H6Z");
+						break;
 
-                case WindowState.Maximized:
-                    ToolTip.SetTip(_restoreButton, "Restore");
-                    _restoreButtonPanelPath.Data = Geometry.Parse("M4,8H8V4H20V16H16V20H4V8M16,8V14H18V6H10V8H16M6,12V18H14V12H6Z");
-                    break;
-            }
+					case WindowState.Maximized:
+						ToolTip.SetTip(_restoreButton, "Restore");
+						_restoreButtonPanelPath.Data = Geometry.Parse("M4,8H8V4H20V16H16V20H4V8M16,8V14H18V6H10V8H16M6,12V18H14V12H6Z");
+						break;
+				}
+			}
         }
 
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
