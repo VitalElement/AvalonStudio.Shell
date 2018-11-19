@@ -117,7 +117,7 @@
     </Style>
 
     <Style Selector="ScrollBar /template/ RepeatButton:pointerover > Path">
-        <Setter Property="Fill" Value="{DynamicResource ApplicationAccentBrush}" />
+        <Setter Property="Fill" Value="{DynamicResource ApplicationAccentBrushLow}" />
     </Style>
 
     <Style Selector="ScrollBar /template/ Thumb#thumb:pointerover /template/ Border">
