@@ -2,33 +2,34 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
        xmlns:mut="https://github.com/avaloniaui/mutable"
        xmlns:sys="clr-namespace:System;assembly=mscorlib">
-    <Style.Resources>
-        <FontFamily x:Key="UiFont">resm:AvalonStudio.Shell.Assets?assembly=AvalonStudio.Shell#Ubuntu</FontFamily>
-        <FontFamily x:Key="EditorFont">Consolas, Menlo, Monaco</FontFamily>
-        <SolidColorBrush x:Key="AvalonBorderBrush">#FF004C8A</SolidColorBrush>
-        
-        <SolidColorBrush x:Key="EditorBackgroundBrush">#FF2D2D30</SolidColorBrush>
-        <SolidColorBrush x:Key="EditorBackgroundAccentBrush">#FF2D2D30</SolidColorBrush>
-        <SolidColorBrush x:Key="EditorForegroundBrush">#FFE4E4E4</SolidColorBrush>
-        <SolidColorBrush x:Key="ThemeBorderBrush">#3E3E42</SolidColorBrush>
-        <SolidColorBrush x:Key="ThemeBorderLowBrush">#3E3E42</SolidColorBrush>
-        <SolidColorBrush x:Key="ThemeBorderMidBrush">#FF888888</SolidColorBrush>
-        <SolidColorBrush x:Key="ThemeBorderHighBrush">#FFAAAAAA</SolidColorBrush>
+  <Style.Resources>
+    <FontFamily x:Key="UiFont">resm:AvalonStudio.Shell.Assets?assembly=AvalonStudio.Shell#Ubuntu</FontFamily>
+    <!--<FontFamily x:Key="EditorFont">Consolas, Menlo, Monaco</FontFamily>-->
+    <FontFamily x:Key="EditorFont">resm:AvalonStudio.Shell.Assets?assembly=AvalonStudio.Shell#DejaVu Sans Mono</FontFamily>
+    <SolidColorBrush x:Key="AvalonBorderBrush">#FF004C8A</SolidColorBrush>
+
+    <SolidColorBrush x:Key="EditorBackgroundBrush">#FF2D2D30</SolidColorBrush>
+    <SolidColorBrush x:Key="EditorBackgroundAccentBrush">#FF2D2D30</SolidColorBrush>
+    <SolidColorBrush x:Key="EditorForegroundBrush">#FFE4E4E4</SolidColorBrush>
+    <SolidColorBrush x:Key="ThemeBorderBrush">#3E3E42</SolidColorBrush>
+    <SolidColorBrush x:Key="ThemeBorderLowBrush">#3E3E42</SolidColorBrush>
+    <SolidColorBrush x:Key="ThemeBorderMidBrush">#FF888888</SolidColorBrush>
+    <SolidColorBrush x:Key="ThemeBorderHighBrush">#FFAAAAAA</SolidColorBrush>
 
     <SolidColorBrush x:Key="ThemeForegroundLowBrush">#FF808080</SolidColorBrush>
 
-        <SolidColorBrush x:Key="ThemeControlHighlightMidBrush">#CC086F9E</SolidColorBrush>
-        <SolidColorBrush x:Key="HighlightBrush">#FF086F9E</SolidColorBrush>
-        <SolidColorBrush x:Key="ThemeAccentBrush">#FF0063B1</SolidColorBrush>
-        <SolidColorBrush x:Key="ThemeAccentBrush2">#FF004C8A</SolidColorBrush>
-        <SolidColorBrush x:Key="ThemeAccentBrush3">#66119EDA</SolidColorBrush>
-        <SolidColorBrush x:Key="ThemeAccentBrush4">#33119EDA</SolidColorBrush>
+    <SolidColorBrush x:Key="ThemeControlHighlightMidBrush">#CC086F9E</SolidColorBrush>
+    <SolidColorBrush x:Key="HighlightBrush">#FF086F9E</SolidColorBrush>
+    <SolidColorBrush x:Key="ThemeAccentBrush">#FF0063B1</SolidColorBrush>
+    <SolidColorBrush x:Key="ThemeAccentBrush2">#FF004C8A</SolidColorBrush>
+    <SolidColorBrush x:Key="ThemeAccentBrush3">#66119EDA</SolidColorBrush>
+    <SolidColorBrush x:Key="ThemeAccentBrush4">#33119EDA</SolidColorBrush>
 
-        <Thickness x:Key="ThemeBorderThickness">1</Thickness>
-        <sys:Double x:Key="ThemeDisabledOpacity">0.5</sys:Double>
+    <Thickness x:Key="ThemeBorderThickness">1</Thickness>
+    <sys:Double x:Key="ThemeDisabledOpacity">0.5</sys:Double>
 
-        <sys:Double x:Key="FontSizeSmall">10</sys:Double>
-        <sys:Double x:Key="FontSizeNormal">12</sys:Double>
-        <sys:Double x:Key="FontSizeLarge">16</sys:Double>        
-    </Style.Resources>
+    <sys:Double x:Key="FontSizeSmall">10</sys:Double>
+    <sys:Double x:Key="FontSizeNormal">12</sys:Double>
+    <sys:Double x:Key="FontSizeLarge">16</sys:Double>
+  </Style.Resources>
 </Style>
