@@ -28,7 +28,7 @@
                           <StyleInclude Source="resm:AvalonStudio.Shell.Controls.MetroWindowControlsTheme.paml?assembly=AvalonStudio.Shell" />
                         </Grid.Styles>
                         <StackPanel Orientation="Horizontal">
-                          <Button Background="Transparent" BorderThickness="0" Name="minimiseButton" ToolTip.Tip="Minimize">
+                          <Button Background="Transparent" BorderThickness="0" Name="minimiseButton">
                             <Panel Margin="4" Height="8" Width="8">
                               <DrawingPresenter>
                                 <DrawingGroup>
@@ -42,13 +42,13 @@
                             </Panel>
                           </Button>
 
-                          <Button Background="Transparent" BorderThickness="0" Name="restoreButton" ToolTip.Tip="Restore Down">
+                          <Button Background="Transparent" BorderThickness="0" Name="restoreButton">
                             <Panel Margin="4">
                               <Path Name="restoreButtonPanelPath" Height="8" Width="8" Stretch="Uniform" UseLayoutRounding="False" Fill="{DynamicResource ThemeForegroundBrush}" />
                             </Panel>
                           </Button>
 
-                          <Button Background="Transparent" BorderThickness="0" Name="closeButton" ToolTip.Tip="Close">
+                          <Button Background="Transparent" BorderThickness="0" Name="closeButton">
                             <Panel Margin="4">
                               <Path Height="8" Width="8" Stretch="Uniform" UseLayoutRounding="False"  Data="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" Fill="{DynamicResource ThemeForegroundBrush}" />
                             </Panel>
