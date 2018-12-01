@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
-using Avalonia.Media;
 using Avalonia.Styling;
 using AvalonStudio.Extensibility.Utils;
 using System;
@@ -13,6 +12,11 @@ namespace AvalonStudio.Shell.Controls
 {
     public class MetroWindow : Window, IStyleable
     {
+        static MetroWindow()
+        {
+            PseudoClass<MetroWindow, WindowState>(WindowStateProperty, x => x == WindowState.Maximized, ":maximised");
+        }
+
         public MetroWindow()
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
@@ -20,11 +24,6 @@ namespace AvalonStudio.Shell.Controls
                 // do this in code or we get a delay in osx.
                 HasSystemDecorations = false;
             }
-
-			this.GetObservable(WindowStateProperty).Subscribe(_ =>
-			{
-				RefreshWindowState();
-			});
         }
 
         public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
@@ -139,23 +138,6 @@ namespace AvalonStudio.Shell.Controls
             }
         }
 
-        private void RefreshWindowState()
-        {
-			if (_restoreButton != null)
-			{
-				switch (WindowState)
-				{
-					case WindowState.Normal:
-						_restoreButtonPanelPath.Data = Geometry.Parse("M4,4H20V20H4V4M6,8V18H18V8H6Z");
-						break;
-
-					case WindowState.Maximized:
-						_restoreButtonPanelPath.Data = Geometry.Parse("M4,8H8V4H20V16H16V20H4V8M16,8V14H18V6H10V8H16M6,12V18H14V12H6Z");
-						break;
-				}
-			}
-        }
-
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
             _titleBar = e.NameScope.Find<DockPanel>("titlebar");
@@ -174,8 +156,6 @@ namespace AvalonStudio.Shell.Controls
             _bottomLeftGrip = e.NameScope.Find<Grid>("bottomLeftGrip");
             _topRightGrip = e.NameScope.Find<Grid>("topRightGrip");
             _bottomRightGrip = e.NameScope.Find<Grid>("bottomRightGrip");
-
-            RefreshWindowState();
 
             _minimiseButton.Click += (sender, ee) => { WindowState = WindowState.Minimized; };
 

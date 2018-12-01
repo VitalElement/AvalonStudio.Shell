@@ -13,11 +13,11 @@
               <Grid Grid.Row="0" Grid.RowSpan="5" Margin="-4 0" Grid.Column="1" RowDefinitions="Auto * Auto" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
                 <Grid Grid.Row="1" Margin="-4" Grid.Column="0" Grid.ColumnSpan="5" Background="{TemplateBinding Background}">
                   <Grid Margin="0 0" RowDefinitions="Auto, *">
-                    <TextBlock Margin="0 7 0 0" Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Margin="0 4 0 0" Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" />
                     <DockPanel Name="titlebar" Margin="4 0" Background="Transparent" IsVisible="{Binding SimulatedDecorations}">
                       <Image Source="{TemplateBinding Icon, Converter={x:Static convert:IconImageConverter.Converter}}"
-                             Name="icon" Height="20" Width="20" Margin="8 5 0 0" Stretch="UniformToFill" DockPanel.Dock="Left" />
-                      
+                             Name="icon" Height="20" Width="20" Margin="8 0 0 0" Stretch="UniformToFill" DockPanel.Dock="Left" />
+
                       <ContentControl Grid.ColumnSpan="1" Content="{TemplateBinding TitleBarContent}" Margin="0" DockPanel.Dock="Left" Background="{DynamicResource ThemeBackgroundBrush}" />
 
                       <Grid DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0">
@@ -26,28 +26,28 @@
                         </Grid.Styles>
                         <StackPanel Orientation="Horizontal">
                           <Button Background="Transparent" BorderThickness="0" Name="minimiseButton">
-                            <Panel Margin="4" Height="8" Width="8">
-                              <DrawingPresenter>
-                                <DrawingGroup>
-                                  <DrawingGroup.Children>
-                                    <GeometryDrawing Brush="#00FFFFFF" Geometry="F1M16,16L0,16 0,0 16,0z" />
-                                    <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M15,15L1,15 1,10 15,10z" />
-                                    <GeometryDrawing Brush="{DynamicResource ThemeForegroundBrush}" Geometry="F1M14,11L2,11 2,14 14,14z" />
-                                  </DrawingGroup.Children>
-                                </DrawingGroup>
-                              </DrawingPresenter>
+                            <Panel Margin="14 4">
+                              <Path Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="1" Height="1" Width="10" VerticalAlignment="Center"
+                                    Data="M 0.24804727 246.43977 H 4.1341142 v 0.0118"
+                                    Stroke="{DynamicResource ThemeForegroundBrush}" />
                             </Panel>
                           </Button>
 
                           <Button Background="Transparent" BorderThickness="0" Name="restoreButton">
-                            <Panel Margin="4">
-                              <Path Name="restoreButtonPanelPath" Height="8" Width="8" Stretch="Uniform" UseLayoutRounding="False" Fill="{DynamicResource ThemeForegroundBrush}" />
+                            <Panel Margin="14 4">
+                              <Path Name="restoreButtonPanelPath" Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="1" Height="10" Width="10"
+                                    Stroke="{DynamicResource ThemeForegroundBrush}" />
                             </Panel>
                           </Button>
 
                           <Button Background="Transparent" BorderThickness="0" Name="closeButton">
-                            <Panel Margin="4">
-                              <Path Height="8" Width="8" Stretch="Uniform" UseLayoutRounding="False"  Data="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" Fill="{DynamicResource ThemeForegroundBrush}" />
+                            <Panel Margin="14 4">
+                              <Path Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="0.75" Height="10" Width="10"
+                                    Data="m 0.66221333 244.76984 3.14041897 3.24064"
+                                    Stroke="{DynamicResource ThemeForegroundBrush}" />
+                              <Path Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="0.75" Height="10" Width="10"
+                                    Data="m 3.8360394 244.76984 -3.20723507 3.24064"
+                                    Stroke="{DynamicResource ThemeForegroundBrush}" />
                             </Panel>
                           </Button>
                         </StackPanel>
@@ -80,5 +80,11 @@
         </Border>
       </ControlTemplate>
     </Setter>
+  </Style>
+  <Style Selector="local|MetroWindow /template/ Path#restoreButtonPanelPath">
+    <Setter Property="Data" Value="m 0.314401 24.49792 h 3.7561387 v 3.74432 H 0.326212 Z" />
+  </Style>
+  <Style Selector="local|MetroWindow:maximised /template/ Path#restoreButtonPanelPath">
+    <Setter Property="Data" Value="m 2.0339844 246.71262 v -0.79375 h 3.175 v 3.175 h -0.79375 v 0.79375 h -3.175 v -3.175 h 3.175 v 2.38125 0" />
   </Style>
 </Styles>
