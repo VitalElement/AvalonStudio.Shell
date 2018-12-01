@@ -14,13 +14,13 @@
                 <Grid Grid.Row="1" Margin="-4" Grid.Column="0" Grid.ColumnSpan="5" Background="{TemplateBinding Background}">
                   <Grid Margin="0 0" RowDefinitions="Auto, *">
                     <TextBlock Margin="0 4 0 0" Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <DockPanel Name="titlebar" Margin="4 0" Background="Transparent" IsVisible="{Binding SimulatedDecorations}">
+                    <DockPanel Name="titlebar" Margin="4 0" Background="Transparent">
                       <Image Source="{TemplateBinding Icon, Converter={x:Static convert:IconImageConverter.Converter}}"
-                             Name="icon" Height="20" Width="20" Margin="8 0 0 0" Stretch="UniformToFill" DockPanel.Dock="Left" />
+                             Name="icon" Height="20" Width="20" Margin="8 0 0 0" Stretch="UniformToFill" DockPanel.Dock="Left" IsVisible="{Binding SimulatedDecorations}" />
 
                       <ContentControl Grid.ColumnSpan="1" Content="{TemplateBinding TitleBarContent}" Margin="0" DockPanel.Dock="Left" Background="{DynamicResource ThemeBackgroundBrush}" />
 
-                      <Grid DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0">
+                      <Grid DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0" IsVisible="{Binding SimulatedDecorations}">
                         <Grid.Styles>
                           <StyleInclude Source="resm:AvalonStudio.Shell.Controls.MetroWindowControlsTheme.paml?assembly=AvalonStudio.Shell" />
                         </Grid.Styles>
