@@ -23,11 +23,19 @@ namespace AvalonStudio.Shell.Controls
             {
                 // do this in code or we get a delay in osx.
                 HasSystemDecorations = false;
+                ClientDecorations = true;
+            }
+            else
+            {
+                ClientDecorations = false;
             }
         }
 
         public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
             AvaloniaProperty.Register<MetroWindow, Control>(nameof(TitleBarContent));
+
+        public static readonly AvaloniaProperty<bool> ClientDecorationsProperty =
+            AvaloniaProperty.Register<MetroWindow, bool>(nameof(ClientDecorations));
 
         private Grid _bottomHorizontalGrip;
         private Grid _bottomLeftGrip;
@@ -47,6 +55,12 @@ namespace AvalonStudio.Shell.Controls
         private Grid _topHorizontalGrip;
         private Grid _topLeftGrip;
         private Grid _topRightGrip;
+
+        public bool ClientDecorations
+        {
+            get => GetValue(ClientDecorationsProperty);
+            set => SetValue(ClientDecorationsProperty, value);
+        }
 
         public Control TitleBarContent
         {
@@ -169,7 +183,6 @@ namespace AvalonStudio.Shell.Controls
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                _titleBar.IsVisible = false;
                 _topHorizontalGrip.IsVisible = false;
                 _bottomHorizontalGrip.IsHitTestVisible = false;
                 _leftVerticalGrip.IsHitTestVisible = false;

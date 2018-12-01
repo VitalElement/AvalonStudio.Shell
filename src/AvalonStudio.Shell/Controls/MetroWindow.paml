@@ -13,14 +13,14 @@
               <Grid Grid.Row="0" Grid.RowSpan="5" Margin="-4 0" Grid.Column="1" RowDefinitions="Auto * Auto" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
                 <Grid Grid.Row="1" Margin="-4" Grid.Column="0" Grid.ColumnSpan="5" Background="{TemplateBinding Background}">
                   <Grid Margin="0 0" RowDefinitions="Auto, *">
-                    <TextBlock Margin="0 4 0 0" Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <TextBlock Margin="0 4 0 0" Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" IsVisible="{TemplateBinding ClientDecorations}" />
                     <DockPanel Name="titlebar" Margin="4 0" Background="Transparent">
                       <Image Source="{TemplateBinding Icon, Converter={x:Static convert:IconImageConverter.Converter}}"
-                             Name="icon" Height="20" Width="20" Margin="8 0 0 0" Stretch="UniformToFill" DockPanel.Dock="Left" IsVisible="{Binding SimulatedDecorations}" />
+                             Name="icon" Height="20" Width="20" Margin="8 0 0 0" Stretch="UniformToFill" DockPanel.Dock="Left" IsVisible="{TemplateBinding ClientDecorations}" />
 
                       <ContentControl Grid.ColumnSpan="1" Content="{TemplateBinding TitleBarContent}" Margin="0" DockPanel.Dock="Left" Background="{DynamicResource ThemeBackgroundBrush}" />
 
-                      <Grid DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0" IsVisible="{Binding SimulatedDecorations}">
+                      <Grid DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0" IsVisible="{TemplateBinding ClientDecorations, Mode=TwoWay}">
                         <Grid.Styles>
                           <StyleInclude Source="resm:AvalonStudio.Shell.Controls.MetroWindowControlsTheme.paml?assembly=AvalonStudio.Shell" />
                         </Grid.Styles>
