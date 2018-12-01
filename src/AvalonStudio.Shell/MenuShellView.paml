@@ -1,0 +1,17 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+                      xmlns:cont="clr-namespace:AvalonStudio.Shell.Controls;assembly=AvalonStudio.Shell"
+                      xmlns:menu="clr-namespace:AvalonStudio.Shell.Extensibility.MainMenu.Views;assembly=AvalonStudio.Shell.Extensibility"
+                      xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+                      xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+                      xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
+                      xmlns:idc="clr-namespace:Dock.Avalonia.Controls;assembly=Dock.Avalonia"
+                      xmlns:beh="clr-namespace:AvalonStudio.Utils.Behaviors;assembly=AvalonStudio.Utils"
+                      xmlns:local="clr-namespace:AvalonStudio.Shell;assembly=AvalonStudio.Shell"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      FontFamily="{DynamicResource UiFont}" FontSize="14"
+                      Foreground="{DynamicResource ThemeForegroundBrush}">
+  <DockPanel>
+    <menu:MainMenuView DockPanel.Dock="Top" DataContext="{Binding MainMenu}" Margin="10 4 0 0"  Foreground="{DynamicResource ThemeForegroundBrush}" />
+    <local:ShellView />
+  </DockPanel>
+</UserControl>

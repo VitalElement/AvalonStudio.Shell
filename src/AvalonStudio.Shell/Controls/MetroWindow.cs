@@ -44,7 +44,7 @@ namespace AvalonStudio.Shell.Controls
         private Path _restoreButtonPanelPath;
         private Grid _rightVerticalGrip;
 
-        private Grid _titleBar;
+        private DockPanel _titleBar;
         private Grid _topHorizontalGrip;
         private Grid _topLeftGrip;
         private Grid _topRightGrip;
@@ -158,7 +158,7 @@ namespace AvalonStudio.Shell.Controls
 
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
-            _titleBar = e.NameScope.Find<Grid>("titlebar");
+            _titleBar = e.NameScope.Find<DockPanel>("titlebar");
             _minimiseButton = e.NameScope.Find<Button>("minimiseButton");
             _restoreButton = e.NameScope.Find<Button>("restoreButton");
             _restoreButtonPanelPath = e.NameScope.Find<Path>("restoreButtonPanelPath");
