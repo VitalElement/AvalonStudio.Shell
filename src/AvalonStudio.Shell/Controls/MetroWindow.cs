@@ -12,6 +12,51 @@ namespace AvalonStudio.Shell.Controls
 {
     public class MetroWindow : Window, IStyleable
     {
+        public enum ClassLongIndex : int
+        {
+            GCLP_MENUNAME = -8,
+            GCLP_HBRBACKGROUND = -10,
+            GCLP_HCURSOR = -12,
+            GCLP_HICON = -14,
+            GCLP_HMODULE = -16,
+            GCL_CBWNDEXTRA = -18,
+            GCL_CBCLSEXTRA = -20,
+            GCLP_WNDPROC = -24,
+            GCL_STYLE = -26,
+            GCLP_HICONSM = -34,
+            GCW_ATOM = -32
+        }
+
+        [DllImport("user32.dll", EntryPoint = "SetClassLongPtr")]
+        private static extern IntPtr SetClassLong64(IntPtr hWnd, ClassLongIndex nIndex, IntPtr dwNewLong);
+
+        [DllImport("user32.dll", EntryPoint = "SetClassLong")]
+        private static extern IntPtr SetClassLong32(IntPtr hWnd, ClassLongIndex nIndex, IntPtr dwNewLong);
+
+        public static IntPtr SetClassLong(IntPtr hWnd, ClassLongIndex nIndex, IntPtr dwNewLong)
+        {
+            if (IntPtr.Size == 4)
+            {
+                return SetClassLong32(hWnd, nIndex, dwNewLong);
+            }
+
+            return SetClassLong64(hWnd, nIndex, dwNewLong);
+        }
+
+        public static IntPtr GetClassLongPtr(IntPtr hWnd, int nIndex)
+        {
+            if (IntPtr.Size > 4)
+                return GetClassLongPtr64(hWnd, nIndex);
+            else
+                return new IntPtr(GetClassLongPtr32(hWnd, nIndex));
+        }
+
+        [DllImport("user32.dll", EntryPoint = "GetClassLong")]
+        public static extern uint GetClassLongPtr32(IntPtr hWnd, int nIndex);
+
+        [DllImport("user32.dll", EntryPoint = "GetClassLongPtr")]
+        public static extern IntPtr GetClassLongPtr64(IntPtr hWnd, int nIndex);
+
         static MetroWindow()
         {
             PseudoClass<MetroWindow, WindowState>(WindowStateProperty, x => x == WindowState.Maximized, ":maximised");
@@ -24,6 +69,15 @@ namespace AvalonStudio.Shell.Controls
                 // do this in code or we get a delay in osx.
                 HasSystemDecorations = false;
                 ClientDecorations = true;
+
+                if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    var classes = (int)GetClassLongPtr(this.PlatformImpl.Handle.Handle, (int)ClassLongIndex.GCL_STYLE);
+
+                    classes |= (int)0x00020000;
+
+                    SetClassLong(this.PlatformImpl.Handle.Handle, ClassLongIndex.GCL_STYLE, new IntPtr(classes));
+                }
             }
             else
             {
