@@ -16,7 +16,7 @@
                     <TextBlock Margin="0 4 0 0" Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" VerticalAlignment="Center" HorizontalAlignment="Center" IsVisible="{TemplateBinding ClientDecorations}" />
                     <DockPanel Name="titlebar" Margin="4 0" Background="Transparent">
                       <Image Source="{TemplateBinding Icon, Converter={x:Static convert:IconImageConverter.Converter}}"
-                             Name="icon" Height="20" Width="20" Margin="8 0 0 0" Stretch="UniformToFill" DockPanel.Dock="Left" IsVisible="{TemplateBinding ClientDecorations}" />
+                             Name="icon" Height="20" Width="20" Margin="4 0 0 0" Stretch="UniformToFill" DockPanel.Dock="Left" IsVisible="{TemplateBinding ClientDecorations}" />
 
                       <ContentControl Grid.ColumnSpan="1" Content="{TemplateBinding TitleBarContent}" Margin="0" DockPanel.Dock="Left" Background="{DynamicResource ThemeBackgroundBrush}" />
 
