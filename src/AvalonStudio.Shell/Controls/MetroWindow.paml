@@ -42,10 +42,10 @@
 
                           <Button Background="Transparent" BorderThickness="0" Name="closeButton">
                             <Panel Margin="14 4">
-                              <Path Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="0.75" Height="10" Width="10"
+                              <Path Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="1" Height="10" Width="10"
                                     Data="m 0.66221333 244.76984 3.14041897 3.24064"
                                     Stroke="{DynamicResource ThemeForegroundBrush}" />
-                              <Path Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="0.75" Height="10" Width="10"
+                              <Path Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="1" Height="10" Width="10"
                                     Data="m 3.8360394 244.76984 -3.20723507 3.24064"
                                     Stroke="{DynamicResource ThemeForegroundBrush}" />
                             </Panel>
@@ -85,6 +85,6 @@
     <Setter Property="Data" Value="m 0.314401 24.49792 h 3.7561387 v 3.74432 H 0.326212 Z" />
   </Style>
   <Style Selector="local|MetroWindow:maximised /template/ Path#restoreButtonPanelPath">
-    <Setter Property="Data" Value="m 2.0339844 246.71262 v -0.79375 h 3.175 v 3.175 h -0.79375 v 0.79375 h -3.175 v -3.175 h 3.175 v 2.38125 0" />
+    <Setter Property="Data" Value="m 34.257253 227.69552 -2.43068 0 0 8.78359 8.76149 0 0 -2.54116 2.58536 0 0 -8.72835 -8.81674 0 -0.0651 0 0 2.49233 6.35172 0 0 6.19922 -0.11756 -0.0315" />
   </Style>
 </Styles>
