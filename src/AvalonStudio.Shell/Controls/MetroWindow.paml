@@ -42,10 +42,10 @@
 
                           <Button Background="Transparent" BorderThickness="0" Name="closeButton">
                             <Panel Margin="14 4">
-                              <Path Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="1" Height="10" Width="10"
+                              <Path Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="0.75" Height="10" Width="10"
                                     Data="m 0.66221333 244.76984 3.14041897 3.24064"
                                     Stroke="{DynamicResource ThemeForegroundBrush}" />
-                              <Path Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="1" Height="10" Width="10"
+                              <Path Stretch="UniformToFill" UseLayoutRounding="True" StrokeThickness="0.75" Height="10" Width="10"
                                     Data="m 3.8360394 244.76984 -3.20723507 3.24064"
                                     Stroke="{DynamicResource ThemeForegroundBrush}" />
                             </Panel>
