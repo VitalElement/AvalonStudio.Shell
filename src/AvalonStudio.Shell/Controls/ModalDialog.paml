@@ -3,7 +3,7 @@
               xmlns:cont="clr-namespace:AvalonStudio.Controls;assembly=AvalonStudio.Shell.Extensibility"              
               Background="{DynamicResource ThemeBackgroundBrush}"
               Icon="resm:AvalonStudio.Shell.Assets.logo-256.png?assembly=AvalonStudio.Shell"
-              Title="{Binding Title}" BorderThickness="1" BorderBrush="{DynamicResource AvalonBorderBrush}"
+              Title="{Binding Title}"
               FontFamily="{DynamicResource UiFont}" FontSize="14" Foreground="{DynamicResource ThemeForegroundBrush}"
               SizeToContent="WidthAndHeight" RenderOptions.BitmapInterpolationMode="HighQuality" UseLayoutRounding="True">
   <DockPanel LastChildFill="True" Margin="4 0">

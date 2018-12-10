@@ -4,7 +4,7 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <Style Selector="local|MetroWindow">
     <Setter Property="Background" Value="{DynamicResource ThemeBackgroundBrush}" />
-    <Setter Property="BorderBrush" Value="{DynamicResource ApplicationAccentBrushLow}" />
+    <Setter Property="BorderBrush" Value="{DynamicResource AvalonBorderBrush}" />
     <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />
     <Setter Property="Template">
       <ControlTemplate>
@@ -87,5 +87,11 @@
   </Style>
   <Style Selector="local|MetroWindow:maximised /template/ Path#restoreButtonPanelPath">
     <Setter Property="Data" Value="m 34.257253 227.69552 -2.43068 0 0 8.78359 8.76149 0 0 -2.54116 2.58536 0 0 -8.72835 -8.81674 0 -0.0651 0 0 2.49233 6.35172 0 0 6.19922 -0.11756 -0.0315" />
+  </Style>
+  <Style Selector="local|MetroWindow:maximised">
+    <Setter Property="BorderThickness" Value="0" />
+  </Style>
+  <Style Selector="local|MetroWindow">
+    <Setter Property="BorderThickness" Value="1" />
   </Style>
 </Styles>
