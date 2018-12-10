@@ -5,7 +5,7 @@
               Icon="resm:AvalonStudio.Shell.Assets.logo-256.png?assembly=AvalonStudio.Shell"
               Title="{Binding Title}" BorderThickness="1" BorderBrush="{DynamicResource AvalonBorderBrush}"
               FontFamily="{DynamicResource UiFont}" FontSize="14" Foreground="{DynamicResource ThemeForegroundBrush}"
-              SizeToContent="WidthAndHeight">
+              SizeToContent="WidthAndHeight" RenderOptions.BitmapInterpolationMode="HighQuality" UseLayoutRounding="True">
   <DockPanel LastChildFill="True" Margin="4 0">
 
     <StackPanel Orientation="Horizontal" Spacing="20" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="8 0 8 8">
