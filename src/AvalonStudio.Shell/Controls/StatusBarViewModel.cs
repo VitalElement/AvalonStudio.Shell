@@ -150,5 +150,17 @@ namespace AvalonStudio.Shell.Controls
         {
             Text = "Ready";
         }
+
+        public void SetTextPosition(int offset, int line, int column)
+        {
+            LineNumber = line;
+            Column = column;
+            Offset = offset;
+        }
+
+        public void ClearTextPosition()
+        {
+            
+        }
     }
 }
