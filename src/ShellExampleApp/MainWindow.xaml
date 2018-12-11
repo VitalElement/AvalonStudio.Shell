@@ -4,13 +4,14 @@
                       xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
                       xmlns:shell="clr-namespace:AvalonStudio.Shell;assembly=AvalonStudio.Shell"
                       xmlns:beh="clr-namespace:AvalonStudio.Utils.Behaviors;assembly=AvalonStudio.Utils"
+                      xmlns:menu="clr-namespace:AvalonStudio.Shell.Extensibility.MainMenu.Views;assembly=AvalonStudio.Shell.Extensibility"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       Icon="resm:AvalonStudio.Shell.Assets.logo-256.png?assembly=AvalonStudio.Shell"
                       Title="AvalonStudio Shell Example Application"
-                      BorderThickness="1" BorderBrush="{DynamicResource AvalonBorderBrush}"
                       FontFamily="{DynamicResource UiFont}" FontSize="14"
                       Foreground="{DynamicResource ThemeForegroundBrush}" WindowState="Maximized">
     <cont:MetroWindow.TitleBarContent>
+        <menu:MainMenuView DataContext="{Binding Shell.MainMenu}" Margin="4 0 0 0"  Foreground="{DynamicResource ThemeForegroundBrush}" VerticalAlignment="Stretch" FontSize="13" />
     </cont:MetroWindow.TitleBarContent>
 
     <cont:MetroWindow.Resources>
