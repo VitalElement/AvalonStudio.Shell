@@ -8,16 +8,16 @@
     <Setter Property="FontSize" Value="{DynamicResource FontSizeNormal}" />
     <Setter Property="Template">
       <ControlTemplate>
-        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}">
+        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Background="{TemplateBinding Background}" Padding="0">
           <AdornerDecorator>
             <Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto,Auto,*,Auto,Auto" Background="Transparent">
-              <Grid Grid.Row="0" Grid.RowSpan="5" Margin="-4 0" Grid.Column="1" RowDefinitions="Auto * Auto" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
-                <Grid Grid.Row="1" Margin="-4" Grid.Column="0" Grid.ColumnSpan="5" Background="{TemplateBinding Background}">
+              <Grid Grid.Row="0" Grid.RowSpan="5" Margin="-4" Grid.Column="1" RowDefinitions="Auto * Auto" ColumnDefinitions="Auto,Auto,*,Auto,Auto">
+                <Grid Grid.Row="1" Margin="0" Grid.Column="0" Grid.ColumnSpan="5" Background="{TemplateBinding Background}">
                   <Grid  RowDefinitions="Auto, *">
                     <TextBlock Text="{TemplateBinding Title}" Foreground="{TemplateBinding Foreground}" Margin="0 -1 0 0" VerticalAlignment="Center" HorizontalAlignment="Center" IsVisible="{TemplateBinding ClientDecorations}" />
-                    <DockPanel Name="titlebar" Margin="4 0" Background="Transparent">
+                    <DockPanel Name="titlebar" Margin="0" Background="Transparent">
                       <Image Source="{TemplateBinding Icon, Converter={x:Static convert:IconImageConverter.Converter}}"
-                             Name="icon" Height="16" Width="16" Margin="4 0 0 0" Stretch="UniformToFill" DockPanel.Dock="Left" IsVisible="{TemplateBinding ClientDecorations}" />
+                             Name="icon" Height="16" Width="16" Margin="5 0 0 0" Stretch="UniformToFill" DockPanel.Dock="Left" IsVisible="{TemplateBinding ClientDecorations}" />
 
                       <ContentControl Grid.ColumnSpan="1" Content="{TemplateBinding TitleBarContent}" Margin="0" DockPanel.Dock="Left" Background="{DynamicResource ThemeBackgroundBrush}" />
 
@@ -35,7 +35,7 @@
                       </Grid>
                     </DockPanel>
                     <Grid Grid.Row="1">
-                      <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" Margin="0" />
+                      <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" Margin="-5 0" />
                     </Grid>
                   </Grid>
                 </Grid>
