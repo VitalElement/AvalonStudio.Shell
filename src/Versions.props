@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <AvaloniaBehaviorsVersion>0.7.1-build957</AvaloniaBehaviorsVersion>
-    <AvaloniaVersion>0.7.1-cibuild0001342-beta</AvaloniaVersion>
+    <AvaloniaVersion>0.7.1-cibuild0001382-beta</AvaloniaVersion>
     <NewtonsoftJsonVersion>10.0.3</NewtonsoftJsonVersion>
     <ReactiveUIVersion>9.0.1</ReactiveUIVersion>
   </PropertyGroup>
