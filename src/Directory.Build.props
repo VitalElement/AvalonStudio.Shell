@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <LangVersion>Latest</LangVersion>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
 
   <Import Project="Versions.props" />
