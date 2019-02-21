@@ -7,7 +7,7 @@ using System.Reactive.Disposables;
 
 namespace AvalonStudio.Utils.Behaviors
 {
-    class OpenCloseWindowBehavior : Behavior<Control>
+    public class OpenCloseWindowBehavior : Behavior<Control>
     {
         private CompositeDisposable _disposables;
         private Window _currentWindow;

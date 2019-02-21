@@ -8,7 +8,7 @@
     using System.IO;
     using Avalonia.Data.Converters;
 
-    internal class IconImageConverter : IValueConverter
+    public class IconImageConverter : IValueConverter
     {
         private static IconImageConverter s_converter = new IconImageConverter();
 

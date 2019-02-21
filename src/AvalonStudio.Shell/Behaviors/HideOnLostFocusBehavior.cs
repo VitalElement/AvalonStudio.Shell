@@ -6,7 +6,7 @@ using System.Reactive.Disposables;
 
 namespace AvalonStudio.Shell.Behaviors
 {
-    class HideOnLostFocusBehavior : Behavior<Control>
+    public class HideOnLostFocusBehavior : Behavior<Control>
     {
         private CompositeDisposable _disposables = new CompositeDisposable();
         private Control _attachedControl;

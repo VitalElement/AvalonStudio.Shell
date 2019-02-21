@@ -14,8 +14,8 @@
     <PackageReference Include="Avalonia.ReactiveUI" />
     <PackageReference Include="Avalonia.Xaml.Behaviors" />
     <PackageReference Include="Avalonia.Xaml.Interactions.Custom" />
-    <PackageReference Include="Dock.Model.ReactiveUI" Version="0.0.3-build998" />
-    <PackageReference Include="Dock.Avalonia" Version="0.0.3-build998" />
+    <PackageReference Include="Dock.Model.ReactiveUI" Version="0.0.3-build1072" />
+    <PackageReference Include="Dock.Avalonia" Version="0.0.3-build1072" />
     <PackageReference Include="ReactiveUI" />
   </ItemGroup>  
 

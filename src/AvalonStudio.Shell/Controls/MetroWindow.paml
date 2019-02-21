@@ -23,7 +23,9 @@
 
                       <Grid DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0" IsVisible="{TemplateBinding ClientDecorations, Mode=TwoWay}">
                         <Grid.Styles>
-                          <StyleInclude Source="resm:AvalonStudio.Shell.Controls.MetroWindowControlsTheme.paml?assembly=AvalonStudio.Shell" />
+                          <Styles>
+                            <StyleInclude Source="resm:AvalonStudio.Shell.Controls.MetroWindowControlsTheme.paml?assembly=AvalonStudio.Shell" />
+                          </Styles>
                         </Grid.Styles>
                         <StackPanel Orientation="Horizontal">
                           <Button Background="Transparent" BorderThickness="0" Name="minimiseButton" />

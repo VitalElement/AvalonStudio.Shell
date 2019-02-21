@@ -6,7 +6,7 @@ using System.Reactive.Disposables;
 
 namespace AvalonStudio.Shell.Behaviors
 {
-    class FocusOnVisibleBehavior : Behavior<Control>
+    public class FocusOnVisibleBehavior : Behavior<Control>
     {
         private CompositeDisposable _disposables = new CompositeDisposable();
         private Control _attachedControl;
