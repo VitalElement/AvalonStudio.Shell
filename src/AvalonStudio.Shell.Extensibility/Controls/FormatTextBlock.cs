@@ -37,7 +37,7 @@ namespace AvalonStudio.Controls
             });
         }
 
-        private static readonly AvaloniaProperty<StyledText> StyledTextProperty =
+        public static readonly AvaloniaProperty<StyledText> StyledTextProperty =
             AvaloniaProperty.Register<FormattedTextBlock, StyledText>(nameof(StyledText));
 
         public StyledText StyledText
@@ -46,7 +46,7 @@ namespace AvalonStudio.Controls
             set => SetValue(StyledTextProperty, value);
         }
 
-        private static readonly AvaloniaProperty<IReadOnlyList<FormattedTextStyleSpan>> SpansProperty =
+        public static readonly AvaloniaProperty<IReadOnlyList<FormattedTextStyleSpan>> SpansProperty =
             AvaloniaProperty.Register<FormattedTextBlock, IReadOnlyList<FormattedTextStyleSpan>>(nameof(Spans));
 
         public IReadOnlyList<FormattedTextStyleSpan> Spans

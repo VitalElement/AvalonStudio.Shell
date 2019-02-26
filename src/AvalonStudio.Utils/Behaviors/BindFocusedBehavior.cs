@@ -9,7 +9,7 @@ using System.Reactive.Linq;
 
 namespace AvalonStudio.Utils.Behaviors
 {
-    class BindFocusedBehavior : Behavior<Control>
+    public class BindFocusedBehavior : Behavior<Control>
     {
         private CompositeDisposable _disposables;
 
