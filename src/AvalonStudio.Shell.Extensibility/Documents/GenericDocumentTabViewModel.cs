@@ -94,6 +94,11 @@ namespace AvalonStudio.Controls
 			set { this.RaiseAndSetIfChanged(ref _isSelected, value); }
 		}
 
+		public virtual void OnOpen()
+		{
+
+		}
+
 		public virtual void Close()
 		{
 			IoC.Get<IShell>().RemoveDocument(this);

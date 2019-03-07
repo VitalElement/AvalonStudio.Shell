@@ -78,6 +78,8 @@ namespace AvalonStudio.Shell
             }
 
             CenterPane.Factory.SetCurrentView(_tabTools[tool]);
+
+			tool.OnOpen();
         }
 
         public void RemoveTool(IToolViewModel tool)

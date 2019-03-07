@@ -49,6 +49,11 @@ namespace AvalonStudio.Shell
             return _model.OnClose();
         }
 
+		public void OnOpen()
+		{
+			_model.OnOpen();
+		}
+
         public void OnSelected()
         {
             

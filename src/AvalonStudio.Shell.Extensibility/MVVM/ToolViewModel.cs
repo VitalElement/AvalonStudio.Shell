@@ -15,6 +15,8 @@ namespace AvalonStudio.MVVM
 
     public interface IDockableViewModel
     {
+		void OnOpen();
+
         void OnSelected();
 
         void OnDeselected();
@@ -85,11 +87,16 @@ namespace AvalonStudio.MVVM
             set { this.RaiseAndSetIfChanged(ref _title, value); }
         }
 
-        public bool OnClose()
+        public virtual bool OnClose()
         {
             IoC.Get<IShell>().CurrentPerspective.RemoveTool(this);
             return true;
         }
+
+		public virtual void OnOpen()
+		{
+
+		}
 
         public virtual void OnSelected()
         {

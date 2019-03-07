@@ -231,6 +231,8 @@ namespace AvalonStudio.Shell
 			}
 
             Factory.SetCurrentView(_documentViews[document]);
+
+			document.OnOpen();
         }
 
         public void RemoveDocument(IDocumentTabViewModel document)
