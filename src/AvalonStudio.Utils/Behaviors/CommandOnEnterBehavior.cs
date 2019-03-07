@@ -5,21 +5,23 @@ namespace AvalonStudio.Utils.Behaviors
 {
     public class CommandOnEnterBehavior : CommandBasedBehavior<TextBox>
     {
-        private CompositeDisposable _disposables;        
+        private CompositeDisposable Disposables { get; set; }
 
         protected override void OnAttached()
         {
-            _disposables = new CompositeDisposable();
-
             base.OnAttached();
 
-            _disposables.Add(AssociatedObject.AddHandler(TextBox.KeyDownEvent, (sender, e) => 
+            Disposables?.Dispose();
+            Disposables = new CompositeDisposable
             {
-                if(e.Key == Avalonia.Input.Key.Enter)
+                AssociatedObject.AddHandler(TextBox.KeyDownEvent, (sender, e) =>
                 {
-                    e.Handled = ExecuteCommand();                    
-                }
-            }));
+                    if (e.Key == Avalonia.Input.Key.Enter)
+                    {
+                        e.Handled = ExecuteCommand();
+                    }
+                })
+            };
 
         }
 
@@ -27,7 +29,7 @@ namespace AvalonStudio.Utils.Behaviors
         {
             base.OnDetaching();
 
-            _disposables.Dispose();
+            Disposables?.Dispose();
         }
     }
 }

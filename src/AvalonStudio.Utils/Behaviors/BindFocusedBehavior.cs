@@ -11,35 +11,38 @@ namespace AvalonStudio.Utils.Behaviors
 {
     public class BindFocusedBehavior : Behavior<Control>
     {
-        private CompositeDisposable _disposables;
+        private CompositeDisposable Disposables { get; set; }
 
         protected override void OnAttached()
         {
             base.OnAttached();
 
-            _disposables = new CompositeDisposable {
-            this.GetObservable(IsFocusedProperty).Subscribe(focused =>
+            Disposables?.Dispose();
+            Disposables = new CompositeDisposable
             {
-                if(focused)
+                this.GetObservable(IsFocusedProperty).Subscribe(focused =>
                 {
-                    AssociatedObject.Focus();
-                }
-            }),
-            Observable.FromEventPattern(AssociatedObject, nameof(AssociatedObject.LostFocus)).Subscribe(_ =>
-            {
-                IsFocused = false;
-            }),
-            Observable.FromEventPattern(AssociatedObject, nameof(AssociatedObject.GotFocus)).Subscribe(_ =>
-            {
-                IsFocused = true;
-            })};
+                    if (focused)
+                    {
+                        AssociatedObject.Focus();
+                    }
+                }),
+                Observable.FromEventPattern(AssociatedObject, nameof(AssociatedObject.LostFocus)).Subscribe(_ =>
+                {
+                    IsFocused = false;
+                }),
+                Observable.FromEventPattern(AssociatedObject, nameof(AssociatedObject.GotFocus)).Subscribe(_ =>
+                {
+                    IsFocused = true;
+                })
+            };
         }
 
         protected override void OnDetaching()
         {
             base.OnDetaching();
 
-            _disposables.Dispose();
+            Disposables?.Dispose();
         }
 
         public static readonly StyledProperty<bool> IsFocusedProperty =

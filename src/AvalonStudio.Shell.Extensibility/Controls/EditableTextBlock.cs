@@ -7,11 +7,14 @@ using Avalonia.Interactivity;
 using Avalonia.Metadata;
 using Avalonia.Threading;
 using System;
+using System.Reactive.Disposables;
 
 namespace AvalonStudio.Controls
 {
-    public class EditableTextBlock : TemplatedControl
+    public class EditableTextBlock : TemplatedControl, IDisposable
     {
+        private CompositeDisposable Disposables { get; } = new CompositeDisposable();
+
         private string _text;
         private string _editText;
         private TextBox _textBox;
@@ -29,20 +32,12 @@ namespace AvalonStudio.Controls
                 Interval = TimeSpan.FromMilliseconds(500),                
             };
 
-            _editClickTimer.Tick += (sender, e) =>
-             {
-                 _editClickTimer.Stop();
-
-                 if(IsFocused && !InEditMode)
-                 {
-                     EnterEditMode();
-                 }
-             };
+            _editClickTimer.Tick += _editClickTimer_Tick;
 
             this.GetObservable(TextProperty).Subscribe(t =>
             {
                 EditText = t;
-            });
+            }).DisposeWith(Disposables);
 
             this.GetObservable(InEditModeProperty).Subscribe(mode =>
             {
@@ -50,7 +45,7 @@ namespace AvalonStudio.Controls
                 {
                     EnterEditMode();
                 }
-            });
+            }).DisposeWith(Disposables);
 
             AddHandler(PointerPressedEvent, (sender, e)=>
             {
@@ -72,7 +67,17 @@ namespace AvalonStudio.Controls
                         ExitEditMode();
                     }
                 }
-            }, RoutingStrategies.Tunnel);
+            }, RoutingStrategies.Tunnel).DisposeWith(Disposables);
+        }
+
+        private void _editClickTimer_Tick(object sender, EventArgs e)
+        {
+            _editClickTimer.Stop();
+
+            if (IsFocused && !InEditMode)
+            {
+                EnterEditMode();
+            }
         }
 
         public static readonly DirectProperty<EditableTextBlock, string> TextProperty = TextBlock.TextProperty.AddOwner<EditableTextBlock>(
@@ -166,6 +171,31 @@ namespace AvalonStudio.Controls
 
             InEditMode = false;
             (VisualRoot as IInputRoot).MouseDevice.Capture(null);
-        }        
+        }
+
+        #region IDisposable Support
+        private volatile bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    _editClickTimer.Tick -= _editClickTimer_Tick;
+                    Disposables?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+        }
+        #endregion
     }
 }

@@ -8,7 +8,8 @@ namespace AvalonStudio.Shell.Behaviors
 {
     public class FocusOnVisibleBehavior : Behavior<Control>
     {
-        private CompositeDisposable _disposables = new CompositeDisposable();
+        private CompositeDisposable Disposables { get; set; }
+
         private Control _attachedControl;
 
         static readonly AvaloniaProperty<string> AttachedControlNameProperty = AvaloniaProperty.Register<FocusOnVisibleBehavior, string>(nameof(AttachedControlName));
@@ -23,6 +24,9 @@ namespace AvalonStudio.Shell.Behaviors
         {
             base.OnAttached();
 
+            Disposables?.Dispose();
+            Disposables = new CompositeDisposable();
+
             AssociatedObject.AttachedToLogicalTree += (sender, e) =>
             {
                 if (!string.IsNullOrEmpty(AttachedControlName))
@@ -34,23 +38,23 @@ namespace AvalonStudio.Shell.Behaviors
                         throw new Exception($"Control: {AttachedControlName} was not found on the control.");
                     }
 
-                    _disposables.Add(_attachedControl.GetObservable(Control.IsVisibleProperty).Subscribe(visible =>
+                    _attachedControl.GetObservable(Control.IsVisibleProperty).Subscribe(visible =>
                     {
                         if (visible)
                         {
                             AssociatedObject.Focus();
                         }
-                    }));
+                    }).DisposeWith(Disposables);
                 }
                 else
                 {
-                    _disposables.Add(AssociatedObject.GetObservable(Control.IsVisibleProperty).Subscribe(visible =>
+                    AssociatedObject.GetObservable(Control.IsVisibleProperty).Subscribe(visible =>
                     {
                         if (visible)
                         {
                             AssociatedObject.Focus();
                         }
-                    }));
+                    }).DisposeWith(Disposables);
                 }
             };
         }
@@ -59,7 +63,7 @@ namespace AvalonStudio.Shell.Behaviors
         {
             base.OnDetaching();
 
-            _disposables.Dispose();
+            Disposables?.Dispose();
         }
     }
 }

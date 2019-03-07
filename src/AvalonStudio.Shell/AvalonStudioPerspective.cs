@@ -4,11 +4,14 @@ using Dock.Model.Controls;
 using System;
 using System.Collections.Generic;
 using ReactiveUI;
+using System.Reactive.Disposables;
 
 namespace AvalonStudio.Shell
 {
-    public class AvalonStudioPerspective : IPerspective
+    public class AvalonStudioPerspective : IPerspective, IDisposable
     {
+        private CompositeDisposable Disposables { get; } = new CompositeDisposable();
+
         private List<IToolViewModel> _tools;
         private Dictionary<IToolViewModel, IView> _tabTools;
         private IDock _left;
@@ -34,7 +37,7 @@ namespace AvalonStudio.Shell
                 {
                     SelectedTool = null;
                 }
-            });
+            }).DisposeWith(Disposables);
         }
 
         public IReadOnlyList<IToolViewModel> Tools => _tools.AsReadOnly();
@@ -263,5 +266,29 @@ namespace AvalonStudio.Shell
 
             throw new NotSupportedException();
         }
+
+        #region IDisposable Support
+        private volatile bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Disposables?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+        }
+        #endregion
     }
 }

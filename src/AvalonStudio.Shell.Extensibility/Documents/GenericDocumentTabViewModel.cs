@@ -4,12 +4,15 @@ using AvalonStudio.MVVM;
 using AvalonStudio.Shell;
 using ReactiveUI;
 using System;
+using System.Reactive.Disposables;
 
 namespace AvalonStudio.Controls
 {
-    public abstract class DocumentTabViewModel<T> : ViewModel<T>, IDocumentTabViewModel where T : class
-	{
-		private Avalonia.Controls.Dock dock;
+    public abstract class DocumentTabViewModel<T> : ViewModel<T>, IDocumentTabViewModel, IDisposable where T : class
+    {
+        private CompositeDisposable Disposables { get; } = new CompositeDisposable();
+
+        private Avalonia.Controls.Dock dock;
 		private string _title;
 		private bool _isTemporary;
 		private bool _isHidden;
@@ -26,7 +29,7 @@ namespace AvalonStudio.Controls
             this.WhenAnyValue(x => x.IsDirty).Subscribe(dirty =>
             {
                 this.RaisePropertyChanged(nameof(Title));
-            });
+            }).DisposeWith(Disposables);
         }
 
         public bool IsDirty
@@ -111,6 +114,30 @@ namespace AvalonStudio.Controls
         {
             IoC.Get<IShell>().RemoveDocument(this);
             return true;
-        }       
-	}
+        }
+
+        #region IDisposable Support
+        private volatile bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Disposables?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+        }
+        #endregion
+    }
 }

@@ -9,51 +9,55 @@ namespace AvalonStudio.Utils.Behaviors
 {
     public class OpenCloseWindowBehavior : Behavior<Control>
     {
-        private CompositeDisposable _disposables;
+        private CompositeDisposable Disposables { get; set; }
+
         private Window _currentWindow;
 
         protected override void OnAttached()
         {
             base.OnAttached();
 
-            _disposables = new CompositeDisposable {
-            this.GetObservable(IsOpenProperty).Subscribe(open =>
+            Disposables?.Dispose();
+            Disposables = new CompositeDisposable
             {
-                if(open && _currentWindow == null)
+                this.GetObservable(IsOpenProperty).Subscribe(open =>
                 {
-                    if(WindowType != null)
+                    if(open && _currentWindow == null)
                     {
-                        _currentWindow = Activator.CreateInstance(WindowType) as Window;
-                    }
-                    else
-                    {
-                        _currentWindow = Activator.CreateInstance<Window>();
-                    }
+                        if(WindowType != null)
+                        {
+                            _currentWindow = Activator.CreateInstance(WindowType) as Window;
+                        }
+                        else
+                        {
+                            _currentWindow = Activator.CreateInstance<Window>();
+                        }
 
-                    if (DataContext == null)
-                    {
-                        _currentWindow.DataContext = AssociatedObject.DataContext;
+                        if (DataContext == null)
+                        {
+                            _currentWindow.DataContext = AssociatedObject.DataContext;
+                        }
+                        else
+                        {
+                            _currentWindow.DataContext = DataContext;
+                        }
+                                        
+                        _currentWindow.ShowDialog(Application.Current.MainWindow);
                     }
                     else
                     {
-                        _currentWindow.DataContext = DataContext;
+                        _currentWindow?.Close();
+                        _currentWindow = null;
                     }
-                                        
-                    _currentWindow.ShowDialog(Application.Current.MainWindow);
-                }
-                else
-                {
-                    _currentWindow?.Close();
-                    _currentWindow = null;
-                }
-            })};
+                })
+            };
         }
 
         protected override void OnDetaching()
         {
-            _disposables.Dispose();
-
             base.OnDetaching();
+
+            Disposables?.Dispose();
         }
 
         public static readonly AvaloniaProperty<Type> WindowTypeProperty =

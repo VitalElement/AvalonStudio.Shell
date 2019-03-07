@@ -11,13 +11,14 @@ namespace AvalonStudio.Utils.Behaviors
 {
     public class PointerWheelValueBehavior : Behavior<Control>
     {
-        private CompositeDisposable _disposables;
+        private CompositeDisposable Disposables { get; set; }
 
         protected override void OnAttached()
         {
             base.OnAttached();
 
-            _disposables = new CompositeDisposable
+            Disposables?.Dispose();
+            Disposables = new CompositeDisposable
             {
                 AssociatedObject.AddHandler(Control.PointerWheelChangedEvent, (sender, e) =>
                 {
@@ -46,7 +47,7 @@ namespace AvalonStudio.Utils.Behaviors
         {
             base.OnDetaching();
 
-            _disposables.Dispose();
+            Disposables?.Dispose();
         }
 
         public static readonly StyledProperty<double> MinValueProperty = AvaloniaProperty.Register<PointerWheelValueBehavior, double>(nameof(MinValue), 0);

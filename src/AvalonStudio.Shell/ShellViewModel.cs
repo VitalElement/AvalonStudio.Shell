@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 
@@ -27,8 +28,10 @@ namespace AvalonStudio.Shell
     [Export(typeof(ShellViewModel))]
     [Export(typeof(IShell))]
     [Shared]
-    public class ShellViewModel : ViewModel, IShell
+    public class ShellViewModel : ViewModel, IShell, IDisposable
     {
+        private CompositeDisposable Disposables { get; } = new CompositeDisposable();
+
         public static ShellViewModel Instance { get; set; }
         private List<KeyBinding> _keyBindings;
 
@@ -72,7 +75,7 @@ namespace AvalonStudio.Shell
 
             _keyBindings = new List<KeyBinding>();
 
-            ModalDialog = new ModalDialogViewModelBase("Dialog");
+            ModalDialog = new ModalDialogViewModelBase("Dialog").DisposeWith(Disposables);
 
             _documents = new List<IDocumentTabViewModel>();
             _documentViews = new Dictionary<IDocumentTabViewModel, IView>();
@@ -84,7 +87,7 @@ namespace AvalonStudio.Shell
                 {
                     Root.Navigate(perspective.Root);
                 }
-            });
+            }).DisposeWith(Disposables);
         }
 
         public void RemoveDock(IDock dock)
@@ -205,7 +208,7 @@ namespace AvalonStudio.Shell
             var newPerspectiveLayout = (Root.Factory as DefaultLayoutFactory).CreatePerspectiveLayout("Name");
             Root.Factory.AddView(Root, newPerspectiveLayout.root);
 
-            var result = new AvalonStudioPerspective(newPerspectiveLayout.root, newPerspectiveLayout.centerPane, newPerspectiveLayout.documentDock);
+            var result = new AvalonStudioPerspective(newPerspectiveLayout.root, newPerspectiveLayout.centerPane, newPerspectiveLayout.documentDock).DisposeWith(Disposables);
 
             _perspectives.Add(result);
 
@@ -345,5 +348,29 @@ namespace AvalonStudio.Shell
         }
 
         public Avalonia.Controls.IPanel Overlay { get; internal set; }
+
+        #region IDisposable Support
+        private volatile bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Disposables?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+        }
+        #endregion
     }
 }

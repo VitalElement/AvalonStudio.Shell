@@ -1,12 +1,15 @@
 using ReactiveUI;
 using System;
+using System.Reactive.Disposables;
 using System.Threading.Tasks;
 
 namespace AvalonStudio.Extensibility.Dialogs
 {
-	public class ModalDialogViewModelBase : ReactiveObject
-	{
-		private bool cancelButtonVisible;
+	public class ModalDialogViewModelBase : ReactiveObject, IDisposable
+    {
+        protected CompositeDisposable Disposables { get; } = new CompositeDisposable();
+
+        private bool cancelButtonVisible;
 
 		private bool isVisible;
 
@@ -24,7 +27,7 @@ namespace AvalonStudio.Extensibility.Dialogs
 			isVisible = false;
 			this.title = title;
 
-			CancelCommand = ReactiveCommand.Create(() => Close(false));
+			CancelCommand = ReactiveCommand.Create(() => Close(false)).DisposeWith(Disposables);
 		}
 
 		public bool CancelButtonVisible
@@ -68,6 +71,30 @@ namespace AvalonStudio.Extensibility.Dialogs
 			IsVisible = false;
 
 			dialogCloseCompletionSource.SetResult(success);
-		}
-	}
+        }
+
+        #region IDisposable Support
+        private volatile bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    Disposables?.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+        }
+        #endregion
+    }
 }
