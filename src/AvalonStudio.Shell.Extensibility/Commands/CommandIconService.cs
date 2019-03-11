@@ -12,20 +12,25 @@ namespace AvalonStudio.Commands
 
         public DrawingGroup GetCompletionKindImage(string icon)
         {
-            if (!_cache.TryGetValue(icon, out var image))
+            if (Application.Current != null)
             {
-                if (Application.Current.Styles.TryGetResource(icon.ToString(), out object resource))
+                if (!_cache.TryGetValue(icon, out var image))
                 {
-                    image = resource as DrawingGroup;
-                    _cache.Add(icon, image);
+                    if (Application.Current.Styles.TryGetResource(icon.ToString(), out object resource))
+                    {
+                        image = resource as DrawingGroup;
+                        _cache.Add(icon, image);
+                    }
+                    else
+                    {
+                        System.Console.WriteLine($"No intellisense icon provided for {icon}");
+                    }
                 }
-                else
-                {
-                    System.Console.WriteLine($"No intellisense icon provided for {icon}");
-                }
+
+                return image;
             }
 
-            return image;
+            return null;
         }
     }
 }
