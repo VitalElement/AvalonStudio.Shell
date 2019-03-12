@@ -33,7 +33,10 @@ namespace AvalonStudio.Extensibility
         {
             if (s_compositionHost != null)
             {
-                return s_compositionHost.GetExport<T>();
+                 if(s_compositionHost.TryGetExport<T>(out var result))
+                {
+                    return result;
+                }
             }
 
             return default;
