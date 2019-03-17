@@ -2,13 +2,13 @@
 using AvalonStudio.MVVM;
 using Dock.Model;
 using Dock.Model.Controls;
-using System.Linq;
 using ReactiveUI;
 using System;
+using System.Linq;
 
 namespace AvalonStudio.Shell
 {
-    abstract class AvalonStudioTab<T> : ViewModel, ITab where T : IDockableViewModel
+	abstract class AvalonStudioTab<T> : ViewModel, ITab where T : IDockableViewModel
     {
         T _model;
 

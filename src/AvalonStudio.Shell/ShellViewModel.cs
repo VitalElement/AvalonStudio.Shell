@@ -20,11 +20,10 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Threading;
 
 namespace AvalonStudio.Shell
 {
-    [Export(typeof(ShellViewModel))]
+	[Export(typeof(ShellViewModel))]
     [Export(typeof(IShell))]
     [Shared]
     public class ShellViewModel : ViewModel, IShell

@@ -7,7 +7,7 @@ using System;
 
 namespace AvalonStudio.Controls
 {
-    public abstract class DocumentTabViewModel<T> : ViewModel<T>, IDocumentTabViewModel where T : class
+	public abstract class DocumentTabViewModel<T> : ViewModel<T>, IDocumentTabViewModel where T : class
 	{
 		private Avalonia.Controls.Dock dock;
 		private string _title;

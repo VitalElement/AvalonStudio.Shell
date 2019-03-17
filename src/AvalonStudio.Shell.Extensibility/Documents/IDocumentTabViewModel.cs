@@ -1,5 +1,4 @@
 ﻿using AvalonStudio.MVVM;
-using Dock.Model.Controls;
 
 namespace AvalonStudio.Documents
 {

@@ -1,13 +1,13 @@
 ﻿using AvalonStudio.MVVM;
 using Dock.Model;
 using Dock.Model.Controls;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
-using ReactiveUI;
 
 namespace AvalonStudio.Shell
 {
-    public class AvalonStudioPerspective : IPerspective
+	public class AvalonStudioPerspective : IPerspective
     {
         private List<IToolViewModel> _tools;
         private Dictionary<IToolViewModel, IView> _tabTools;

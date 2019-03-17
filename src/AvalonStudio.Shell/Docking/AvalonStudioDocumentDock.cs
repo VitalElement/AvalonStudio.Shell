@@ -3,7 +3,7 @@ using Dock.Model.Controls;
 
 namespace AvalonStudio.Docking
 {
-    public class AvalonStudioDocumentDock : DocumentDock
+	public class AvalonStudioDocumentDock : DocumentDock
     {
         public override bool OnClose()
         {
