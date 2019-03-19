@@ -249,6 +249,11 @@ namespace AvalonStudio.Shell
 
             _documentViews.Remove(document);
 			_documents.Remove(document);
+
+			if(SelectedDocument == document)
+			{
+				SelectedDocument = null;
+			}
 		}
 
         public ModalDialogViewModelBase ModalDialog
