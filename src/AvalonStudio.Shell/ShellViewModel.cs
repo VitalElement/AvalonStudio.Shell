@@ -254,6 +254,8 @@ namespace AvalonStudio.Shell
 			{
 				SelectedDocument = null;
 			}
+
+			GC.Collect();
 		}
 
         public ModalDialogViewModelBase ModalDialog
