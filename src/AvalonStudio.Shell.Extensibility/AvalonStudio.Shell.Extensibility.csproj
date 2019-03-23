@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" />
-    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="3.0.0-preview3-27503-5 " />
+    <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
