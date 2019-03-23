@@ -1,6 +1,7 @@
 using AvalonStudio.Extensibility.Dialogs;
 using ReactiveUI;
 using System.Diagnostics;
+using System.Reactive;
 using System.Reflection;
 
 namespace ShellExampleApp
@@ -12,7 +13,7 @@ namespace ShellExampleApp
             OKCommand = ReactiveCommand.Create(()=>Close());
         }
 
-        public override ReactiveCommand OKCommand { get; protected set; }
+        public override ReactiveCommand<Unit, Unit> OKCommand { get; protected set; }
 
         public string Version => FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).FileVersion;	        
     }
