@@ -1,9 +1,9 @@
 <Project>
 
   <PropertyGroup>
-    <AvaloniaBehaviorsVersion>0.7.1-build20190222-01</AvaloniaBehaviorsVersion>
+    <AvaloniaBehaviorsVersion>0.7.1-build20190303-01</AvaloniaBehaviorsVersion>
     <AvaloniaVersion>0.7.1-cibuild0001689-beta</AvaloniaVersion>
-    <NewtonsoftJsonVersion>10.0.3</NewtonsoftJsonVersion>
+    <NewtonsoftJsonVersion>12.0.1</NewtonsoftJsonVersion>
     <ReactiveUIVersion>9.0.1</ReactiveUIVersion>
   </PropertyGroup>
 
