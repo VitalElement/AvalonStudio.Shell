@@ -1,5 +1,6 @@
 using ReactiveUI;
 using System;
+using System.Reactive;
 using System.Threading.Tasks;
 
 namespace AvalonStudio.Extensibility.Dialogs
@@ -39,8 +40,8 @@ namespace AvalonStudio.Extensibility.Dialogs
 			set { this.RaiseAndSetIfChanged(ref okayButtonVisible, value); }
 		}
 
-		public virtual ReactiveCommand OKCommand { get; protected set; }
-		public ReactiveCommand CancelCommand { get; }
+		public virtual ReactiveCommand<Unit, Unit> OKCommand { get; protected set; }
+		public ReactiveCommand<Unit, Unit> CancelCommand { get; }
 
 		public string Title
 		{

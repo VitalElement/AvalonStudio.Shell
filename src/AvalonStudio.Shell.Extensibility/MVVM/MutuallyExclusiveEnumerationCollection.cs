@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 
 namespace AvalonStudio.MVVM
 {
@@ -18,7 +19,7 @@ namespace AvalonStudio.MVVM
                 Add(enumClass);
             }
 
-            Command = ReactiveCommand.Create<object>((o) =>
+            Command = ReactiveCommand.Create<object, Unit>(o =>
             {
                 T myEnum = (T)o;
 
@@ -35,9 +36,11 @@ namespace AvalonStudio.MVVM
                 theClass.IsChecked = true;
 
                 setter(myEnum);
+
+                return Unit.Default;
             });
         }
 
-        public ReactiveCommand Command { get; private set; }
+        public ReactiveCommand<object, Unit> Command { get; private set; }
     }
 }
