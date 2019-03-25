@@ -58,6 +58,8 @@ namespace AvalonStudio.Extensibility.Dialogs
 		{
 			IsVisible = true;
 
+			OnOpen();
+
 			dialogCloseCompletionSource = new TaskCompletionSource<bool>();
 
 			return dialogCloseCompletionSource.Task;
@@ -67,7 +69,19 @@ namespace AvalonStudio.Extensibility.Dialogs
 		{
 			IsVisible = false;
 
+			OnClose();
+
 			dialogCloseCompletionSource.SetResult(success);
+		}
+
+		public virtual void OnClose()
+		{
+
+		}
+
+		public virtual void OnOpen()
+		{
+
 		}
 	}
 }
