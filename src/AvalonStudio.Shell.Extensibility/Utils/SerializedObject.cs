@@ -50,6 +50,15 @@ namespace AvalonStudio.Utils
                 };
             }
 
+            if (property.PropertyType == typeof(string))
+            {
+                // Do not include emptry strings
+                property.ShouldSerialize = instance =>
+                {
+                    return !string.IsNullOrWhiteSpace(instance.GetType().GetProperty(member.Name).GetValue(instance, null) as string);
+                };
+            }
+
             return property;
         }
     }
