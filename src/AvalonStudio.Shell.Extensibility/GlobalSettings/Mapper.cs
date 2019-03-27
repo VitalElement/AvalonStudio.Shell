@@ -57,7 +57,15 @@ namespace AvalonStudio.Utils
                     {
                         if (p.PropertyType.GetTypeInfo().IsEnum)
                         {
-                            p.SetValue(destination, Enum.Parse(p.PropertyType, kv.Value as string));
+                            if (kv.Value is string val)
+                            {
+                                p.SetValue(destination, Enum.Parse(p.PropertyType, val));
+                            }
+                            else
+                            {
+                                p.SetValue(destination, Enum.Parse(p.PropertyType, kv.Value.ToString()));
+                            }
+
                         }
                         else if (kv.Value is IConvertible)
                         {
