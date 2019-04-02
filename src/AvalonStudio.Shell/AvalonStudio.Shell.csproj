@@ -14,8 +14,8 @@
     <PackageReference Include="Avalonia.ReactiveUI" />
     <PackageReference Include="Avalonia.Xaml.Behaviors" />
     <PackageReference Include="Avalonia.Xaml.Interactions.Custom" />
-    <PackageReference Include="Dock.Model.ReactiveUI" Version="0.0.4-build20190401-01" />
-    <PackageReference Include="Dock.Avalonia" Version="0.0.4-build20190401-01" />
+    <PackageReference Include="Dock.Model.ReactiveUI" Version="0.0.4-build20190402-02" />
+    <PackageReference Include="Dock.Avalonia" Version="0.0.4-build20190402-02" />
     <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <PackageReference Include="ReactiveUI" />
