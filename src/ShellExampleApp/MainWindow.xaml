@@ -1,4 +1,6 @@
-﻿<cont:MetroWindow xmlns="https://github.com/avaloniaui"
+﻿<cont:MetroWindow x:Class="ShellExampleApp.MainWindow"
+             xmlns="https://github.com/avaloniaui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:cont="clr-namespace:AvalonStudio.Shell.Controls;assembly=AvalonStudio.Shell"
                       xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
                       xmlns:id="clr-namespace:Dock.Avalonia;assembly=Dock.Avalonia"
