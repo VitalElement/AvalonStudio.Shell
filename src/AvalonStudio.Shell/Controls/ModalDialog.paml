@@ -4,7 +4,7 @@
               xmlns:controls="clr-namespace:AvalonStudio.Shell.Controls;assembly=AvalonStudio.Shell"                            
               xmlns:cont="clr-namespace:AvalonStudio.Controls;assembly=AvalonStudio.Shell.Extensibility"              
               Background="{DynamicResource ThemeBackgroundBrush}"
-              Icon="resm:AvalonStudio.Shell.Assets.logo-256.png?assembly=AvalonStudio.Shell"
+              Icon="avares://AvalonStudio.Shell/Assets/logo-256.png"
               Title="{Binding Title}"
               FontFamily="{DynamicResource UiFont}" FontSize="14" Foreground="{DynamicResource ThemeForegroundBrush}"
               SizeToContent="WidthAndHeight" RenderOptions.BitmapInterpolationMode="HighQuality" UseLayoutRounding="True">

@@ -24,7 +24,7 @@
                       <Grid DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0" IsVisible="{TemplateBinding ClientDecorations, Mode=TwoWay}">
                         <Grid.Styles>
                           <Styles>
-                            <StyleInclude Source="resm:AvalonStudio.Shell.Controls.MetroWindowControlsTheme.paml?assembly=AvalonStudio.Shell" />
+                            <StyleInclude Source="avares://AvalonStudio.Shell/Controls/MetroWindowControlsTheme.paml" />
                           </Styles>
                         </Grid.Styles>
                         <StackPanel Orientation="Horizontal">

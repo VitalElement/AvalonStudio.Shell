@@ -7,8 +7,7 @@
                       xmlns:shell="clr-namespace:AvalonStudio.Shell;assembly=AvalonStudio.Shell"
                       xmlns:beh="clr-namespace:AvalonStudio.Utils.Behaviors;assembly=AvalonStudio.Utils"
                       xmlns:menu="clr-namespace:AvalonStudio.Shell.Extensibility.MainMenu.Views;assembly=AvalonStudio.Shell.Extensibility"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      Icon="resm:AvalonStudio.Shell.Assets.logo-256.png?assembly=AvalonStudio.Shell"
+                      Icon="avares://AvalonStudio.Shell/Assets/logo-256.png"
                       Title="AvalonStudio Shell Example Application"
                       FontFamily="{DynamicResource UiFont}" FontSize="14"
                       Foreground="{DynamicResource ThemeForegroundBrush}" WindowState="Maximized">
