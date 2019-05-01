@@ -208,6 +208,8 @@ namespace AvalonStudio.Shell.Controls
 
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
         {
+			base.OnTemplateApplied(e);
+
             _titleBar = e.NameScope.Find<DockPanel>("titlebar");
             _minimiseButton = e.NameScope.Find<Button>("minimiseButton");
             _restoreButton = e.NameScope.Find<Button>("restoreButton");
