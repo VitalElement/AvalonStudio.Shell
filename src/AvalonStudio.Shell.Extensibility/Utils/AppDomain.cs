@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -19,15 +20,18 @@ namespace AvalonStudio.Extensibility.Utils
         {
             var assemblies = new List<Assembly>();
 
-            var compileDependencies = DependencyContext.Default.CompileLibraries;
+            var dir = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var files = Directory.EnumerateFiles(dir).ToList();
 
-            foreach (var library in compileDependencies)
+            //var compileDependencies = DependencyContext.Default.CompileLibraries;
+
+            foreach (var library in files.Where(x=>Path.GetExtension(x) == ".dll"))
             {
-                if (IsCandidateCompilationLibrary(library))
+                if (IsCandidateCompilationLibrary(Path.GetFileNameWithoutExtension(library)))
                 {
                     try
                     {
-                        var assembly = Assembly.Load(new AssemblyName(library.Name));
+                        var assembly = Assembly.Load(new AssemblyName(Path.GetFileNameWithoutExtension(library)));
                         assemblies.Add(assembly);
                     }
                     catch(Exception)
@@ -40,11 +44,10 @@ namespace AvalonStudio.Extensibility.Utils
             return assemblies.ToArray();
         }
 
-        private static bool IsCandidateCompilationLibrary(Library compilationLibrary)
+        private static bool IsCandidateCompilationLibrary(string name)
         {
-            return compilationLibrary.Name.ToLower() == "avalonStudio"
-                || compilationLibrary.Name.ToLower().StartsWith("avalonstudio")
-                || compilationLibrary.Dependencies.Any(d => d.Name.ToLower().StartsWith("avalonstudio"));
+            return name.ToLower() == "avalonStudio"
+                || name.ToLower().StartsWith("avalonstudio");
         }
     }
 }
