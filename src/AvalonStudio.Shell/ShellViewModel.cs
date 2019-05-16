@@ -218,7 +218,7 @@ namespace AvalonStudio.Shell
             set => this.RaiseAndSetIfChanged(ref _currentPerspective, value);
         }
 
-        public void AddDocument(IDocumentTabViewModel document, bool temporary = false)
+        public void AddDocument(IDocumentTabViewModel document, bool temporary = false, bool select = true)
         {
 			if (!_documentViews.ContainsKey(document))
 			{
@@ -229,9 +229,12 @@ namespace AvalonStudio.Shell
 				_documentViews.Add(document, view);
 			}
 
-            Factory.SetCurrentView(_documentViews[document]);
+			if (select)
+			{
+				Factory.SetCurrentView(_documentViews[document]);
 
-			document.OnOpen();
+				document.OnOpen();
+			}
         }
 
         public void RemoveDocument(IDocumentTabViewModel document)
