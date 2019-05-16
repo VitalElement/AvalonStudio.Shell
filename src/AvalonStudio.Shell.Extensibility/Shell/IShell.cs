@@ -37,7 +37,7 @@ namespace AvalonStudio.Shell
 
         ModalDialogViewModelBase ModalDialog { get; set; }
 
-		void AddDocument(IDocumentTabViewModel document, bool temporary = true);
+		void AddDocument(IDocumentTabViewModel document, bool temporary = true, bool select = true);
 
 		void RemoveDocument(IDocumentTabViewModel document);
 
