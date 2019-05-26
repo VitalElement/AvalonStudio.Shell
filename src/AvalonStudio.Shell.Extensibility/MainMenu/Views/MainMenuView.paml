@@ -7,7 +7,7 @@
     </Style>
   </UserControl.Styles>
 
-  <Menu Items="{Binding Items}">
+  <Menu Items="{Binding Items}" IsVisible="{Binding IsVisible}">
     <Menu.Styles>
       <Style Selector="AccessText">
         <Setter Property="VerticalAlignment" Value="Center" />
