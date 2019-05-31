@@ -5,7 +5,7 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <EmbeddedResource Include="**\*.resx;**\*.xaml;Assets\*;**\*.paml" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <AvaloniaResource Include="**\*.resx;**\*.xaml;Assets\*;**\*.paml" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +17,7 @@
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
     <PackageReference Include="System.Composition" Version="1.2.0" />
-    <PackageReference Include="Dock.Avalonia" Version="0.8.0" />
+    <PackageReference Include="Dock.Avalonia" />
   </ItemGroup>
 
 </Project>

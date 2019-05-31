@@ -3,9 +3,9 @@
        xmlns:mut="https://github.com/avaloniaui/mutable"
        xmlns:sys="clr-namespace:System;assembly=mscorlib">
   <Style.Resources>
-    <FontFamily x:Key="UiFont">resm:AvalonStudio.Shell.Assets?assembly=AvalonStudio.Shell#Ubuntu</FontFamily>
+    <FontFamily x:Key="UiFont">avares://AvalonStudio.Shell/Assets#Ubuntu</FontFamily>
     <!--<FontFamily x:Key="EditorFont">Consolas, Menlo, Monaco</FontFamily>-->
-    <FontFamily x:Key="EditorFont">resm:AvalonStudio.Shell.Assets?assembly=AvalonStudio.Shell#DejaVu Sans Mono</FontFamily>
+        <FontFamily x:Key="EditorFont">avares://AvalonStudio.Shell/Assets#DejaVu Sans Mono</FontFamily>
     <SolidColorBrush x:Key="AvalonBorderBrush">#FF004C8A</SolidColorBrush>
 
     <SolidColorBrush x:Key="EditorBackgroundBrush">#FF2D2D30</SolidColorBrush>

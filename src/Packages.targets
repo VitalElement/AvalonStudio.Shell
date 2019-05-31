@@ -9,6 +9,8 @@
     <PackageReference Update="Avalonia.Xaml.Interactions.Custom" Version="$(AvaloniaBehaviorsVersion)" />
     <PackageReference Update="Newtonsoft.Json" Version="$(NewtonsoftJsonVersion)" />
     <PackageReference Update="ReactiveUI" Version="$(ReactiveUIVersion)" />
+    <PackageReference Update="Dock.Avalonia" Version="$(DockVersion)" />
+    <PackageReference Update="Dock.Model.ReactiveUI" Version="$(DockVersion)" />
   </ItemGroup>
 
 </Project>

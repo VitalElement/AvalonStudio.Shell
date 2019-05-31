@@ -1,4 +1,6 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl x:Class="AvalonStudio.Shell.Extensibility.MainMenu.Views.MainMenuView"
+             xmlns="https://github.com/avaloniaui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mod="clr-namespace:AvalonStudio.Menus.Models;assembly=AvalonStudio.Shell.Extensibility">
 
   <UserControl.Styles>

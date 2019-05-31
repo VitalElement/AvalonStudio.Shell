@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <Compile Update="**\*.xaml.cs" DependentUpon="%(Filename)" />
-    <EmbeddedResource Include="**\*.xaml;**\*.paml;Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
+    <AvaloniaResource Include="**\*.xaml;**\*.paml;Assets\*" Exclude="bin\**;obj\**;**\*.xproj;packages\**;@(EmbeddedResource)" />
   </ItemGroup>
 
   <ItemGroup>
@@ -14,8 +14,8 @@
     <PackageReference Include="Avalonia.ReactiveUI" />
     <PackageReference Include="Avalonia.Xaml.Behaviors" />
     <PackageReference Include="Avalonia.Xaml.Interactions.Custom" />
-    <PackageReference Include="Dock.Model.ReactiveUI" Version="0.8.0" />
-    <PackageReference Include="Dock.Avalonia" Version="0.8.0" />
+    <PackageReference Include="Dock.Model.ReactiveUI" />
+    <PackageReference Include="Dock.Avalonia"/>
     <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <PackageReference Include="ReactiveUI" />

@@ -1,4 +1,5 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl x:Class="AvalonStudio.Shell.MenuShellView"
+             xmlns="https://github.com/avaloniaui"
                       xmlns:cont="clr-namespace:AvalonStudio.Shell.Controls;assembly=AvalonStudio.Shell"
                       xmlns:menu="clr-namespace:AvalonStudio.Shell.Extensibility.MainMenu.Views;assembly=AvalonStudio.Shell.Extensibility"
                       xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"

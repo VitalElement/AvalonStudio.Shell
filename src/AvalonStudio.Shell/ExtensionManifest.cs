@@ -10,7 +10,7 @@ namespace AvalonStudio
 {
     internal class ExtensionManifest : IExtensionManifest
     {
-        private static string DefaultIcon = "resm:AvalonStudio.Assets.logo-256.png?assembly=AvalonStudio";
+        private static string DefaultIcon = "avares://AvalonStudio/Assets/logo-256.png";
 
         [JsonProperty(Required = Required.Always)]
         public string Name { get; set; }
