@@ -14,6 +14,7 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
+    configuration: 'Release'
 
 - task: DotNetCoreCLI@2
   inputs:
