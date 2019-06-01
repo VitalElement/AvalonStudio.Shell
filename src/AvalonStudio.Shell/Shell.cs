@@ -1,6 +1,5 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.ReactiveUI;
 using AvalonStudio.Extensibility;
 using AvalonStudio.Shell.Extensibility.Platforms;
 using Dock.Model;
