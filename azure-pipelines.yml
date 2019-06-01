@@ -10,4 +10,11 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj'
+    configuration: 'Release'
+    nobuild: true
+    versioningScheme: 'off'
 
