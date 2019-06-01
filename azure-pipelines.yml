@@ -21,6 +21,5 @@ steps:
     command: 'pack'
     packagesToPack: '**/*.csproj'
     configuration: 'Release'
-    nobuild: true
     versioningScheme: 'off'
 
