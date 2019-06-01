@@ -12,6 +12,11 @@ pool:
 steps:
 - task: DotNetCoreCLI@2
   inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
     configuration: 'Release'
