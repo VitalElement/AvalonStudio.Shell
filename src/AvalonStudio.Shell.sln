@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docking", "Docking", "{6E5B4A46-33CE-46B5-B624-F7DC6585035E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvalonStudio.Shell.Extensibility", "AvalonStudio.Shell.Extensibility\AvalonStudio.Shell.Extensibility.csproj", "{6B08E495-D5AE-404C-9B1D-A31802FEF392}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvalonStudio.Shell", "AvalonStudio.Shell\AvalonStudio.Shell.csproj", "{28DC0A5A-0D2E-4361-BA3D-3675C774DB37}"
@@ -13,12 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvalonStudio.Utils", "Avalo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShellExampleApp", "ShellExampleApp\ShellExampleApp.csproj", "{56BC3EFB-0011-4ECB-B9A8-A249CCC531C1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Avalonia", "..\Dock\src\Dock.Avalonia\Dock.Avalonia.csproj", "{E3CE8853-E654-40C5-8B7F-EDB5724EEB22}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model", "..\Dock\src\Dock.Model\Dock.Model.csproj", "{C6B1E4DD-784E-4B65-8952-443FBDF7EA18}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dock.Model.ReactiveUI", "..\Dock\src\Dock.Model.ReactiveUI\Dock.Model.ReactiveUI.csproj", "{8C76C6BD-BCB4-453B-94AF-DE6116DF4083}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{73D031C2-8DAD-46AA-99E3-F40933BB2C81}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
@@ -26,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Packages.targets = Packages.targets
 		Versions.props = Versions.props
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\build\_build.csproj", "{B3643ED5-0422-4A28-AB9F-EF12430CD423}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,26 +43,11 @@ Global
 		{56BC3EFB-0011-4ECB-B9A8-A249CCC531C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56BC3EFB-0011-4ECB-B9A8-A249CCC531C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56BC3EFB-0011-4ECB-B9A8-A249CCC531C1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3CE8853-E654-40C5-8B7F-EDB5724EEB22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3CE8853-E654-40C5-8B7F-EDB5724EEB22}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3CE8853-E654-40C5-8B7F-EDB5724EEB22}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3CE8853-E654-40C5-8B7F-EDB5724EEB22}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6B1E4DD-784E-4B65-8952-443FBDF7EA18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6B1E4DD-784E-4B65-8952-443FBDF7EA18}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6B1E4DD-784E-4B65-8952-443FBDF7EA18}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6B1E4DD-784E-4B65-8952-443FBDF7EA18}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C76C6BD-BCB4-453B-94AF-DE6116DF4083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C76C6BD-BCB4-453B-94AF-DE6116DF4083}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C76C6BD-BCB4-453B-94AF-DE6116DF4083}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C76C6BD-BCB4-453B-94AF-DE6116DF4083}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3643ED5-0422-4A28-AB9F-EF12430CD423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3643ED5-0422-4A28-AB9F-EF12430CD423}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{E3CE8853-E654-40C5-8B7F-EDB5724EEB22} = {6E5B4A46-33CE-46B5-B624-F7DC6585035E}
-		{C6B1E4DD-784E-4B65-8952-443FBDF7EA18} = {6E5B4A46-33CE-46B5-B624-F7DC6585035E}
-		{8C76C6BD-BCB4-453B-94AF-DE6116DF4083} = {6E5B4A46-33CE-46B5-B624-F7DC6585035E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CC7706D3-374C-499F-8769-3E378963A308}
