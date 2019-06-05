@@ -10,18 +10,18 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-    configuration: 'Release'
+  - task: CmdLine@2
+    displayName: 'Install Nuke'
+    inputs:
+      script: |
+       dotnet tool install --global Nuke.GlobalTool --version 0.12.3 
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'pack'
-    packagesToPack: '**/*.csproj'
-    configuration: 'Release'
-    versioningScheme: 'off'
+  - task: CmdLine@2
+    displayName: 'Run Nuke'
+    inputs:
+      script: |
+        set PATH=%PATH%;%USERPROFILE%\.dotnet\tools
+        nuke --target CiAzureWindows --configuration Release
 
 - task: PublishBuildArtifacts@1
   inputs:
