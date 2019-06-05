@@ -4,7 +4,10 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+  branches:
+    include: ['*']
+  tags:
+    include: ['*']
 
 pool:
   vmImage: 'windows-latest'
