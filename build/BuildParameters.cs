@@ -68,7 +68,7 @@ public partial class Build
 			SkipTests = b.SkipTests;
 
 			// CONFIGURATION
-			MainRepo = "https://github.com/AvaloniaUI/Avalonia";
+			MainRepo = "https://github.com/VitalElement/AvalonStudio.Shell";
 			MasterBranch = "refs/heads/master";
 			ReleaseBranchPrefix = "refs/heads/release/";
 			ReleaseConfiguration = "Release";
