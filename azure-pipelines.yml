@@ -23,9 +23,9 @@ steps:
         set PATH=%PATH%;%USERPROFILE%\.dotnet\tools
         nuke --target CiAzureWindows --configuration Release
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'nuget'
-    publishLocation: 'Container'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      ArtifactName: 'nuget'
+      publishLocation: 'Container'
 
