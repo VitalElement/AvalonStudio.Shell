@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyModel;
+﻿using AvalonStudio.Commands;
+using Microsoft.Extensions.DependencyModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace AvalonStudio.Extensibility.Utils
         {
             var assemblies = new List<Assembly>();
 
-            var compileDependencies = DependencyContext.Default.CompileLibraries;
+            var compileDependencies = DependencyContext.Default.RuntimeLibraries;
 
             foreach (var library in compileDependencies)
             {
@@ -36,6 +37,8 @@ namespace AvalonStudio.Extensibility.Utils
                     }
                 }
             }
+
+            assemblies.Add(Assembly.GetAssembly(typeof(CommandService)));
 
             return assemblies.ToArray();
         }
