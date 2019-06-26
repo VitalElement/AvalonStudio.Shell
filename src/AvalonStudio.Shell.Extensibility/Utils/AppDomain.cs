@@ -40,7 +40,7 @@ namespace AvalonStudio.Extensibility.Utils
 
             assemblies.Add(Assembly.GetAssembly(typeof(CommandService)));
 
-            return assemblies.ToArray();
+            return assemblies.Distinct().ToArray();
         }
 
         private static bool IsCandidateCompilationLibrary(Library compilationLibrary)
