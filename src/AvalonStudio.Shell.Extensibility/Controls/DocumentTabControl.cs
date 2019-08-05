@@ -15,13 +15,7 @@ namespace AvalonStudio.Controls
         public DocumentTabControl()
         {
             SelectionMode = SelectionMode.AlwaysSelected;            
-        }        
-
-        /// <summary>
-        /// Defines an <see cref="IMemberSelector"/> that selects the content of a <see cref="TabItem"/>.
-        /// </summary>
-        public static readonly IMemberSelector ContentSelector =
-            new FuncMemberSelector<object, object>(SelectContent);
+        }
 
         public static readonly StyledProperty<object> HeaderSeperatorContentProperty = AvaloniaProperty.Register<DocumentTabControl, object>(nameof(HeaderSeperatorContent));
 
@@ -70,18 +64,6 @@ namespace AvalonStudio.Controls
             else
             {
                 return o;
-            }
-        }
-
-        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
-        {
-            base.OnTemplateApplied(e);
-
-            var carousel = e.NameScope.Find<Carousel>("PART_Carousel");
-
-            if (carousel != null)
-            {
-                carousel.MemberSelector = ContentSelector;
             }
         }
 

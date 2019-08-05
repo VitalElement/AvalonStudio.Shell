@@ -15,9 +15,7 @@ namespace ShellExampleApp
             BuildAvaloniaApp().AfterSetup(builder=>
             {
                 Dispatcher.UIThread.InvokeAsync(() => { ColorTheme.LoadTheme(ColorTheme.VisualStudioLight); });
-            }).StartShellApp<AppBuilder, MainWindow>("ShellExampleApp", null, ()=> new MainWindowViewModel());
-
-            Application.Current.Exit();
+            }).StartShellApp<AppBuilder, MainWindow>("ShellExampleApp", null, ()=> new MainWindowViewModel());            
         }
 
         public static AppBuilder BuildAvaloniaApp()
