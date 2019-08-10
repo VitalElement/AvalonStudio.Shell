@@ -3,6 +3,7 @@ using AvalonStudio.Extensibility.Utils;
 using System.Collections.Generic;
 using System.Composition.Convention;
 using System.Composition.Hosting;
+using System.Linq;
 using System.Reflection;
 
 namespace AvalonStudio
@@ -17,7 +18,8 @@ namespace AvalonStudio
             // TODO AppDomain here is a custom appdomain from namespace AvalonStudio.Extensibility.Utils. It is able
             // to load any assembly in the bin directory (so not really appdomain) we need to get rid of this
             // once all our default extensions are published with a manifest and copied to extensions dir.
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Distinct();
+
             var extensionAssemblies = LoadMefComponents(extensionManager);
 
             var configuration = new ContainerConfiguration()

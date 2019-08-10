@@ -11,6 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="App.paml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="App.paml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="Dock.Avalonia.Themes.Default" />
     <PackageReference Include="Dock.Avalonia.Themes.Metro" />
