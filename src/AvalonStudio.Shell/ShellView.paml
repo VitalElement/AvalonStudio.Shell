@@ -75,7 +75,7 @@
     </Grid>
 
     <Grid Grid.Row="1" Margin="4 0">
-      <idc:DockControl DataContext="{Binding Root}" Margin="4 2 4 4" />
+      <idc:DockControl Name="Dock" DataContext="{Binding Root}" Margin="4 2 4 4" />
     </Grid>
   </Grid>
 </UserControl>

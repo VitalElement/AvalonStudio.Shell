@@ -16,11 +16,8 @@
     <StyleInclude Source="avares://AvalonStudio.Shell/Controls/MetroWindowTheme.paml" />
     <StyleInclude Source="avares://AvalonStudio.Shell.Extensibility/Controls/ControlTheme.paml" />
     <StyleInclude Source="avares://AvalonStudio.Shell/Styles/GlobalStyles.xaml" />
-    <StyleInclude Source="avares://Dock.Avalonia/Controls/DockPanelSplitter.xaml" />
-    <StyleInclude Source="avares://Dock.Avalonia/Controls/ProportionalStackPanelSplitter.xaml"/>
-    <StyleInclude Source="avares://Dock.Avalonia/Controls/DockTarget.xaml"/>
-    <StyleInclude Source="avares://Dock.Avalonia/Controls/DockToolChrome.xaml"/>
-    <StyleInclude Source="avares://Dock.Avalonia/Controls/MetroWindow.xaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Default/DefaultTheme.xaml"/>
+    <StyleInclude Source="avares://Dock.Avalonia.Themes.Metro/DefaultTheme.xaml"/>
   </Application.Styles>  
     <Application.DataTemplates>
       <!-- Views -->

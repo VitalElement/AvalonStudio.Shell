@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using AvalonStudio.Extensibility.Theme;
 using AvalonStudio.GlobalSettings;
 using AvalonStudio.Shell.Controls;
+using Dock.Avalonia.Controls;
 
 namespace AvalonStudio.Shell
 {
@@ -21,9 +22,15 @@ namespace AvalonStudio.Shell
 
 			var generalSettings = Settings.GetSettings<GeneralSettings>();
 			ColorTheme.LoadTheme(generalSettings.Theme);
+
+            this.FindControl<DockControl>("Dock").TemplateApplied += ShellView_TemplateApplied;
 		}
 
-		private void InitializeComponent()
+        private void ShellView_TemplateApplied(object sender, Avalonia.Controls.Primitives.TemplateAppliedEventArgs e)
+        {
+        }
+
+        private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
 		}

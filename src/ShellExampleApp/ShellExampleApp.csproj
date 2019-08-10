@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Dock.Avalonia.Themes.Default" />
+    <PackageReference Include="Dock.Avalonia.Themes.Metro" />
   </ItemGroup>
 
   <ItemGroup>
