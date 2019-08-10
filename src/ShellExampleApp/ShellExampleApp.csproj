@@ -11,6 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="App.paml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="App.paml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
   </ItemGroup>
 
