@@ -57,8 +57,9 @@ namespace AvalonStudio.Controls
                 _editClickTimer.Stop();
 
                 if (!InEditMode)
-                {                    
-                    if (e.ClickCount == 1 && e.InputModifiers == InputModifiers.LeftMouseButton && IsFocused)
+                {
+                    var properties = e.GetPointerPoint(this).Properties;
+                    if (e.ClickCount == 1 && properties.IsLeftButtonPressed && IsFocused)
                     {
                         _editClickTimer.Start();
                     }                    
