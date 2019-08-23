@@ -4,13 +4,14 @@ using Avalonia.ReactiveUI;
 using AvalonStudio.Extensibility;
 using AvalonStudio.Shell.Extensibility.Platforms;
 using Dock.Model;
-using System;
 
 namespace AvalonStudio.Shell
 {
-	public static class Shell
+    public static class Shell
 	{
-        public static void StartShellApp<TAppBuilder>(this TAppBuilder builder, string appName, AppBuilderBase<TAppBuilder>.AppMainDelegate main, string[] args, IDockFactory layoutFactory = null)  
+        public delegate void ShellAppMainDelegate(string[] args);
+
+        public static void StartShellApp<TAppBuilder>(this TAppBuilder builder, string appName, ShellAppMainDelegate main, string[] args, IDockFactory layoutFactory = null)  
             where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
 		{
 			builder
@@ -28,6 +29,8 @@ namespace AvalonStudio.Shell
 				ShellViewModel.Instance = IoC.Get<ShellViewModel>();
 
 				ShellViewModel.Instance.Initialise(layoutFactory);
+
+                main(args);
 			}).StartWithClassicDesktopLifetime(args, ShutdownMode.OnMainWindowClose);
 		}
 	}
