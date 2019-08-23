@@ -10,9 +10,12 @@ namespace AvalonStudio.Shell
 {
 	public static class Shell
 	{
-		public static void StartShellApp<TAppBuilder, TMainWindow>(this TAppBuilder builder, string appName, IDockFactory layoutFactory = null, Func<object> dataContextProvider = null, Action<TAppBuilder> beforeStarting = null)  where TAppBuilder : AppBuilderBase<TAppBuilder>, new() where TMainWindow : Window, new()
+        public static void StartShellApp<TAppBuilder>(this TAppBuilder builder, string appName, AppBuilderBase<TAppBuilder>.AppMainDelegate main, string[] args, IDockFactory layoutFactory = null)  
+            where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
 		{
-			builder.UseReactiveUI().AfterSetup(_ =>
+			builder
+                .UseReactiveUI()
+                .AfterSetup(_ =>
 			{
 				Platform.AppName = appName;
 				Platform.Initialise();
@@ -25,9 +28,7 @@ namespace AvalonStudio.Shell
 				ShellViewModel.Instance = IoC.Get<ShellViewModel>();
 
 				ShellViewModel.Instance.Initialise(layoutFactory);
-
-                beforeStarting?.Invoke(builder);
-			}).Start<TMainWindow>(dataContextProvider);
+			}).StartWithClassicDesktopLifetime(args, ShutdownMode.OnMainWindowClose);
 		}
 	}
 }
