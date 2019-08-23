@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Data;
+using Avalonia.VisualTree;
 using Avalonia.Xaml.Interactivity;
 using System;
 using System.Reactive.Disposables;
@@ -38,8 +39,9 @@ namespace AvalonStudio.Utils.Behaviors
                     {
                         _currentWindow.DataContext = DataContext;
                     }
-                                        
-                    _currentWindow.ShowDialog(null);
+
+                    var mainWindow = AssociatedObject.GetVisualRoot() as Window;
+                    _currentWindow.ShowDialog(mainWindow);
                 }
                 else
                 {
