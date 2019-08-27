@@ -13,26 +13,13 @@ namespace AvalonStudio.Docking
     public class DefaultLayoutFactory : Factory
     {
         private ObservableCollection<IDockable> _documents;
-        private IDocumentDock _documentDock;
 
         public DefaultLayoutFactory()
         {
             _documents = new ObservableCollection<IDockable>();
-
-            _documentDock = new DocumentDock
-            {
-                Id = "DocumentsPane",
-                Proportion = double.NaN,
-                Title = "DocumentsPane",
-                ActiveDockable = null,
-                IsCollapsable = false,
-                VisibleDockables = _documents
-            };
         }
 
         public RootDock Root { get; private set; }
-
-        public IDocumentDock DocumentDock => _documentDock;
 
         public override IToolDock CreateToolDock()
         {
@@ -47,6 +34,16 @@ namespace AvalonStudio.Docking
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
+            var documentDock = new DocumentDock
+            {
+                Id = "DocumentsPane",
+                Proportion = double.NaN,
+                Title = "DocumentsPane",
+                ActiveDockable = null,
+                IsCollapsable = false,
+                VisibleDockables = _documents
+            };
+
             var verticalContainer = new ProportionalDock
             {
                 Id = "VerticalContainer",
@@ -56,7 +53,7 @@ namespace AvalonStudio.Docking
                 ActiveDockable = null,
                 VisibleDockables = new ObservableCollection<IDockable>
                 {
-                    _documentDock,
+                    documentDock,
                 }
             };
 

@@ -173,6 +173,8 @@ namespace AvalonStudio.Shell
 
             MainPerspective = CreateInitialPerspective();
 
+            _documentDock = Root.Factory.FindDockable(Root, x => x.Id == "DocumentsPane") as IDock;
+
             CurrentPerspective = MainPerspective;
         }
 
@@ -236,7 +238,7 @@ namespace AvalonStudio.Shell
 
         public IPerspective CreateInitialPerspective()
         {
-            var result = new AvalonStudioPerspective(Root.ActiveDockable as IRootDock, (Root.Factory as DefaultLayoutFactory).DocumentDock);
+            var result = new AvalonStudioPerspective(Root.ActiveDockable as IRootDock);
 
             _perspectives.Add(result);
 
@@ -247,9 +249,9 @@ namespace AvalonStudio.Shell
         {
             var currentLayout = Root.ActiveDockable as IRootDock;
             var root = CreatePerspective(currentLayout);
-            ApplyPerspective(root);
+            //ApplyPerspective(root);
 
-            var result = new AvalonStudioPerspective(root, (Root.Factory as DefaultLayoutFactory).DocumentDock);
+            var result = new AvalonStudioPerspective(root);
 
             _perspectives.Add(result);
 
@@ -262,11 +264,13 @@ namespace AvalonStudio.Shell
             set => this.RaiseAndSetIfChanged(ref _currentPerspective, value);
         }
 
+        private IDock _documentDock;
+
         public void AddDocument(IDocumentTabViewModel document, bool temporary = false, bool select = true)
         {
 			if (!_documentViews.ContainsKey(document))
 			{
-				var view = CurrentPerspective.DocumentDock.Dock(document, !Documents.Contains(document));
+				var view = _documentDock.Dock(document, !Documents.Contains(document));
 
 				_documents.Add(document);
 

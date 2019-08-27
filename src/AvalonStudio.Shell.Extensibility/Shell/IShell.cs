@@ -20,8 +20,6 @@ namespace AvalonStudio.Shell
 
         IRootDock Root { get; }
 
-        IDocumentDock DocumentDock { get; }
-
         IToolViewModel SelectedTool { get; set; }
     }
 

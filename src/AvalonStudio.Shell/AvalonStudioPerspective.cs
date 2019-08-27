@@ -16,10 +16,8 @@ namespace AvalonStudio.Shell
         private IDock _top;
         private IDock _bottom;
 
-        public AvalonStudioPerspective (IRootDock root, IDocumentDock documentDock)
+        public AvalonStudioPerspective (IRootDock root)
         {
-            DocumentDock = documentDock;
-
             Root = root;
             _tools = new List<IToolViewModel>();
             _tabTools = new Dictionary<IToolViewModel, IDockable>();
@@ -40,8 +38,6 @@ namespace AvalonStudio.Shell
         public IReadOnlyList<IToolViewModel> Tools => _tools.AsReadOnly();
 
         public IRootDock Root { get; }
-
-        public IDocumentDock DocumentDock { get; }
 
         public void RemoveDock(IDock dock)
         {
@@ -65,7 +61,6 @@ namespace AvalonStudio.Shell
 
         public void AddTool(IToolViewModel tool)
         {
-            //return;
             if(!_tabTools.ContainsKey(tool))
             {
                 _tabTools.Add(tool, DockOrCreate(tool));
@@ -76,7 +71,7 @@ namespace AvalonStudio.Shell
                 DockOrCreate(tool);
             }
 
-            DocumentDock.Factory.SetActiveDockable(_tabTools[tool]);
+            Root.Factory.SetActiveDockable(_tabTools[tool]);
 
 			tool.OnOpen();
         }
@@ -125,7 +120,7 @@ namespace AvalonStudio.Shell
                 if (value != null && _tabTools.ContainsKey(value))
                 {
                     _selectedTool?.OnDeselected();
-                    DocumentDock.Factory.SetActiveDockable(_tabTools[value]);
+                    Root.Factory.SetActiveDockable(_tabTools[value]);
                 }
 
                 _selectedTool = value;
@@ -196,22 +191,20 @@ namespace AvalonStudio.Shell
 
             }
 
-            var parentDock = DocumentDock.Owner as IProportionalDock;
-            var containedElement = DocumentDock as IDockable;
+            IProportionalDock container = null;
 
-            while (true)
+            if (orientation == Orientation.Horizontal)
             {
-                if (parentDock.Orientation == orientation)
-                {
-                    break;
-                }
-
-                containedElement = parentDock;
-                parentDock = parentDock.Owner as IProportionalDock;
+                container = Root.Factory.FindDockable(Root, x => x.Id == "HorizontalContainer") as IProportionalDock;
+            }
+            else
+            {
+                container = Root.Factory.FindDockable(Root, x => x.Id == "VerticalContainer") as IProportionalDock;
             }
 
+            var documentDock = Root.Factory.FindDockable(Root, x => x.Id == "DocumentsPane") as IDock;
 
-            var factory = DocumentDock.Factory;
+            var factory = Root.Factory;
             var toolDock = factory.CreateToolDock();
             toolDock.Id = nameof(IToolDock);
             toolDock.Title = nameof(IToolDock);
@@ -222,7 +215,8 @@ namespace AvalonStudio.Shell
             //toolDock.CurrentView = view;
             //toolDock.Views.Add(view);
 
-            factory.SplitToDock(DocumentDock, toolDock, dockOperation);
+            
+            factory.SplitToDock(documentDock, toolDock, dockOperation);
             toolDock.Proportion = 0.2;
 
             switch (view.DefaultLocation)
