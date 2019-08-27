@@ -2,6 +2,7 @@
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +14,6 @@ namespace AvalonStudio.Docking
     {
         private ObservableCollection<IDockable> _documents;
         private IDocumentDock _documentDock;
-        private IDocumentDock _centerPane;
 
         public DefaultLayoutFactory()
         {
@@ -28,21 +28,11 @@ namespace AvalonStudio.Docking
                 IsCollapsable = false,
                 VisibleDockables = _documents
             };
-
-            _centerPane = new DocumentDock
-            {
-                Id = $"CenterPane",
-                Proportion = double.NaN,                
-                Title = $"CenterPane",
-                ActiveDockable = null,
-                VisibleDockables = CreateList<IDockable>
-                (
-                    _documentDock
-                )
-            };
         }
 
         public RootDock Root { get; private set; }
+
+        public IDocumentDock DocumentDock => _documentDock;
 
         public override IToolDock CreateToolDock()
         {
@@ -57,60 +47,84 @@ namespace AvalonStudio.Docking
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
-          //  MainLayout = CreatePerspectiveLayout("Main").root;
-            // Root
+            var verticalContainer = new ProportionalDock
+            {
+                Id = "VerticalContainer",
+                Proportion = double.NaN,
+                Orientation = Orientation.Vertical,
+                Title = "VerticalContainer",
+                ActiveDockable = null,
+                VisibleDockables = new ObservableCollection<IDockable>
+                {
+                    _documentDock,
+                }
+            };
+
+            var horizontalContainer = new ProportionalDock
+            {
+                Id = "HorizontalContainer",
+                Proportion = double.NaN,
+                Orientation = Orientation.Horizontal,
+                Title = "HorizontalContainer",
+                ActiveDockable = null,
+                VisibleDockables = new ObservableCollection<IDockable>
+                {
+                    verticalContainer,
+                }
+            };
+
+            var mainLayout = new RootDock
+            {
+                Id = "Perspective",
+                Title = "Perspective",
+                ActiveDockable = horizontalContainer,
+                VisibleDockables = new ObservableCollection<IDockable>
+                {
+                    horizontalContainer
+                }
+            };
 
             Root = new RootDock
             {
                 Id = "Root",
                 Title = "Root",
+                Top = new PinDock
+                {
+                    Alignment = Alignment.Top
+                },
+                Bottom = new PinDock
+                {
+                    Alignment = Alignment.Bottom
+                },
+                Left = new PinDock
+                {
+                    Alignment = Alignment.Left
+                },
+                Right = new PinDock
+                {
+                    Alignment = Alignment.Right
+                },
+                ActiveDockable = mainLayout,
                 VisibleDockables = new ObservableCollection<IDockable>
                 {
-                    
+                    mainLayout
                 }
             };
+
+            Root.WhenAnyValue(x => x.VisibleDockables)
+                .Subscribe(x =>
+                {
+
+                });
+
+            (Root.VisibleDockables as ObservableCollection<IDockable>).CollectionChanged += DefaultLayoutFactory_CollectionChanged;
 
             return Root;
         }
 
-        public (DockBase root, IProportionalDock centerPane, IDocumentDock documentDock) CreatePerspectiveLayout(string identifier)
+        private void DefaultLayoutFactory_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            var debugLayout = new ProportionalDock
-            {
-                Id = $"{identifier}Layout",
-                Proportion = double.NaN,
-                Orientation = Orientation.Vertical,
-                Title = $"{identifier}Layout",
-                ActiveDockable = null,
-                VisibleDockables = new ObservableCollection<IDockable>
-                {
-                    _centerPane
-                }
-            };
-
-            var container = new ProportionalDock
-            {
-                Id = $"{identifier}Container",
-                Proportion = double.NaN,
-                Orientation = Orientation.Horizontal,
-                Title = $"{identifier}Container",
-                ActiveDockable = null,
-                VisibleDockables = new ObservableCollection<IDockable>
-                {
-                    debugLayout
-                }
-            };
-
-            return (new MainView
-            {
-                Id = identifier,
-                Title = identifier,
-                ActiveDockable = container,
-                VisibleDockables = new ObservableCollection<IDockable>
-                {
-                    container
-                }
-            }, debugLayout, _documentDock);
+            
         }
 
         public override void UpdateDockable(IDockable view, IDockable parent)

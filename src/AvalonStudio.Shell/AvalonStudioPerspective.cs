@@ -16,32 +16,30 @@ namespace AvalonStudio.Shell
         private IDock _top;
         private IDock _bottom;
 
-        public AvalonStudioPerspective (IDockable root, IProportionalDock centerPane, IDocumentDock documentDock)
+        public AvalonStudioPerspective (IRootDock root, IDocumentDock documentDock)
         {
             DocumentDock = documentDock;
-            CenterPane = centerPane;
+
             Root = root;
             _tools = new List<IToolViewModel>();
             _tabTools = new Dictionary<IToolViewModel, IDockable>();
 
-            CenterPane.WhenAnyValue(l => l.FocusedDockable).Subscribe(focused =>
-            {
-                if (focused?.Context is IToolViewModel tool)
-                {
-                    SelectedTool = tool;
-                }
-                else
-                {
-                    SelectedTool = null;
-                }
-            });
+            //CenterPane.WhenAnyValue(l => l.FocusedDockable).Subscribe(focused =>
+            //{
+            //    if (focused?.Context is IToolViewModel tool)
+            //    {
+            //        SelectedTool = tool;
+            //    }
+            //    else
+            //    {
+            //        SelectedTool = null;
+            //    }
+            //});
         }
 
         public IReadOnlyList<IToolViewModel> Tools => _tools.AsReadOnly();
 
-        public IDockable Root { get; }
-
-        public IProportionalDock CenterPane { get; }
+        public IRootDock Root { get; }
 
         public IDocumentDock DocumentDock { get; }
 
@@ -67,6 +65,7 @@ namespace AvalonStudio.Shell
 
         public void AddTool(IToolViewModel tool)
         {
+            //return;
             if(!_tabTools.ContainsKey(tool))
             {
                 _tabTools.Add(tool, DockOrCreate(tool));
@@ -77,7 +76,7 @@ namespace AvalonStudio.Shell
                 DockOrCreate(tool);
             }
 
-            CenterPane.Factory.SetActiveDockable(_tabTools[tool]);
+            DocumentDock.Factory.SetActiveDockable(_tabTools[tool]);
 
 			tool.OnOpen();
         }
@@ -88,9 +87,27 @@ namespace AvalonStudio.Shell
             {
                 if(_tabTools[tool].Owner is IDock dock)
                 {
-                    dock.VisibleDockables.Remove(_tabTools[tool]);
-                    // todo pinned, and hidden dockables....
-                    dock.Factory.UpdateDockable(_tabTools[tool], dock);
+                    dock.Factory.RemoveDockable(_tabTools[tool], true);
+
+                    if(dock.VisibleDockables.Count == 0)
+                    {
+                        if(dock == _left)
+                        {
+                            _left = null;
+                        }
+                        else if(dock == _right)
+                        {
+                            _right = null;
+                        }
+                        else if(dock == _top)
+                        {
+                            _top = null;
+                        }
+                        else if(dock == _bottom)
+                        {
+                            _bottom = null;
+                        }
+                    }
                 }
 
                 _tabTools.Remove(tool);
@@ -108,7 +125,7 @@ namespace AvalonStudio.Shell
                 if (value != null && _tabTools.ContainsKey(value))
                 {
                     _selectedTool?.OnDeselected();
-                    CenterPane.Factory.SetActiveDockable(_tabTools[value]);
+                    DocumentDock.Factory.SetActiveDockable(_tabTools[value]);
                 }
 
                 _selectedTool = value;
@@ -145,7 +162,7 @@ namespace AvalonStudio.Shell
                     break;
 
                 case Location.Top:
-                    if(_top != null)
+                    if (_top != null)
                     {
                         return _top.Dock(view);
                     }
@@ -179,8 +196,8 @@ namespace AvalonStudio.Shell
 
             }
 
-            var parentDock = CenterPane as IProportionalDock;
-            var containedElement = DocumentDock as IDock;
+            var parentDock = DocumentDock.Owner as IProportionalDock;
+            var containedElement = DocumentDock as IDockable;
 
             while (true)
             {
@@ -193,78 +210,53 @@ namespace AvalonStudio.Shell
                 parentDock = parentDock.Owner as IProportionalDock;
             }
 
-            var index = parentDock.VisibleDockables.IndexOf(containedElement);
 
-            void advanceIndex()
+            var factory = DocumentDock.Factory;
+            var toolDock = factory.CreateToolDock();
+            toolDock.Id = nameof(IToolDock);
+            toolDock.Title = nameof(IToolDock);
+            toolDock.VisibleDockables = factory.CreateList<IDockable>();
+            toolDock.Factory = factory;
+
+            var currentView = toolDock.Dock(view);
+            //toolDock.CurrentView = view;
+            //toolDock.Views.Add(view);
+
+            factory.SplitToDock(DocumentDock, toolDock, dockOperation);
+            toolDock.Proportion = 0.2;
+
+            switch (view.DefaultLocation)
             {
-                switch (view.DefaultLocation)
-                {
-                    case Location.Top:
-                    case Location.Left:
-                        index--;
-                        break;
+                case Location.Left:
+                    if (_left == null)
+                    {
+                        _left = toolDock;
+                    }
+                    break;
 
-                    case Location.Right:
-                    case Location.Bottom:
-                        index++;
-                        break;
+                case Location.Right:
+                    if (_right == null)
+                    {
+                        _right = toolDock;
+                    }
+                    break;
 
-                }
+                case Location.Bottom:
+                    if (_bottom == null)
+                    {
+                        _bottom = toolDock;
+                    }
+                    break;
+
+                case Location.Top:
+                    if (_top == null)
+                    {
+                        _top = toolDock;
+                    }
+                    break;
             }
 
-            advanceIndex();
-
-            if (index <= 0 || index >= parentDock.VisibleDockables.Count)
-            {
-                var factory = CenterPane.Factory;
-                var toolDock = factory.CreateToolDock();
-                toolDock.Id = nameof(IToolDock);
-                toolDock.Title = nameof(IToolDock);
-                toolDock.VisibleDockables = factory.CreateList<IDockable>();
-                toolDock.Factory = factory;
-
-                var currentView = toolDock.Dock(view);
-                //toolDock.CurrentView = view;
-                //toolDock.Views.Add(view);
-
-                factory.SplitToDock(CenterPane, toolDock, dockOperation);
-                toolDock.Proportion = 0.2;
-
-                switch (view.DefaultLocation)
-                {
-                    case Location.Left:
-                        if (_left == null)
-                        {
-                            _left = toolDock;
-                        }
-                        break;
-
-                    case Location.Right:
-                        if (_right == null)
-                        {
-                            _right = toolDock;
-                        }
-                        break;
-
-                    case Location.Bottom:
-                        if (_bottom == null)
-                        {
-                            _bottom = toolDock;
-                        }
-                        break;
-
-                    case Location.Top:
-                        if(_top == null)
-                        {
-                            _top = toolDock;
-                        }
-                        break;
-                }
-
-                return currentView;
-            }
-
-            throw new NotSupportedException();
+            return currentView;
         }
     }
 }

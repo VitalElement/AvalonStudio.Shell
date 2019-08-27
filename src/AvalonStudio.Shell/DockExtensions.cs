@@ -61,7 +61,7 @@ namespace AvalonStudio.Shell
 
         public IDockable Clone()
         {
-            throw new NotImplementedException();
+            return this;
         }
     }
 
@@ -96,8 +96,7 @@ namespace AvalonStudio.Shell
                     currentTab = new AvalonStudioDocumentTab(documentModel);
                 }
 
-                dock.VisibleDockables.Add(currentTab);
-                dock.Factory.UpdateDockable(currentTab, dock);
+                dock.Factory.AddDockable(dock, currentTab);
             }
             else
             {

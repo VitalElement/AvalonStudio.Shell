@@ -7,8 +7,8 @@ namespace AvaloniaDemo.ViewModels.Views
     public class MainView : DockBase
     {
         public override IDockable Clone()
-        {           
-            throw new System.NotImplementedException();
+        {
+            return this;
         }
     }
 }
