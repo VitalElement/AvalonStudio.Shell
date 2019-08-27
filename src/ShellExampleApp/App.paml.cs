@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using AvalonStudio.Extensibility.Theme;
@@ -12,14 +13,29 @@ namespace ShellExampleApp
         [STAThread]
         private static void Main(string[] args)
         {
-            BuildAvaloniaApp().AfterSetup(builder=>
-            {
-                Dispatcher.UIThread.InvokeAsync(() => { ColorTheme.LoadTheme(ColorTheme.VisualStudioLight); });
-            }).StartShellApp<AppBuilder, MainWindow>("ShellExampleApp", null, ()=> new MainWindowViewModel());            
+            BuildAvaloniaApp().StartShellApp("ShellExampleApp", AppMain, args);            
+        }
+
+        private static void AppMain(string[] args)
+        {
+            Dispatcher.UIThread.InvokeAsync(() => { ColorTheme.LoadTheme(ColorTheme.VisualStudioLight); });
         }
 
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>().UsePlatformDetect();
+
+        public override void OnFrameworkInitializationCompleted()
+        {
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+            {
+                desktop.MainWindow = new MainWindow
+                {
+                    DataContext = new MainWindowViewModel()
+                };
+            }
+
+            base.OnFrameworkInitializationCompleted();
+        }
 
         public override void Initialize()
         {
