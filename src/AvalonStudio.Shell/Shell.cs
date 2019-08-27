@@ -11,7 +11,7 @@ namespace AvalonStudio.Shell
 	{
         public delegate void ShellAppMainDelegate(string[] args);
 
-        public static void StartShellApp<TAppBuilder>(this TAppBuilder builder, string appName, ShellAppMainDelegate main, string[] args, IDockFactory layoutFactory = null)  
+        public static void StartShellApp<TAppBuilder>(this TAppBuilder builder, string appName, ShellAppMainDelegate main, string[] args, IFactory layoutFactory = null)  
             where TAppBuilder : AppBuilderBase<TAppBuilder>, new()
 		{
 			builder

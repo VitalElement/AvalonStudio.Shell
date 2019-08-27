@@ -18,9 +18,9 @@ namespace AvalonStudio.Shell
 
         IReadOnlyList<IToolViewModel> Tools { get; }
 
-        IView Root { get; }
+        IDockable Root { get; }
 
-        ILayoutDock CenterPane { get; }
+        IProportionalDock CenterPane { get; }
 
         IDocumentDock DocumentDock { get; }
 

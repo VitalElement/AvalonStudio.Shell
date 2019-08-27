@@ -36,7 +36,7 @@ namespace AvalonStudio.Shell
         private IEnumerable<Lazy<IExtension>> _extensions;
         private IEnumerable<Lazy<ToolViewModel>> _toolControls;
         private CommandService _commandService;
-        private Dictionary<IDocumentTabViewModel, IView> _documentViews;
+        private Dictionary<IDocumentTabViewModel, IDockable> _documentViews;
         private List<IDocumentTabViewModel> _documents;
         private List<IPerspective> _perspectives;
 
@@ -44,7 +44,7 @@ namespace AvalonStudio.Shell
 
         private ModalDialogViewModelBase modalDialog;
 
-        private IDockFactory _factory;
+        private IFactory _factory;
         private IRootDock _root;
         private IDock _layout;
 
@@ -74,7 +74,7 @@ namespace AvalonStudio.Shell
             ModalDialog = new ModalDialogViewModelBase("Dialog");
 
             _documents = new List<IDocumentTabViewModel>();
-            _documentViews = new Dictionary<IDocumentTabViewModel, IView>();
+            _documentViews = new Dictionary<IDocumentTabViewModel, IDockable>();
             _perspectives = new List<IPerspective>();
 
             this.WhenAnyValue(x => x.CurrentPerspective).Subscribe(perspective =>
@@ -91,7 +91,7 @@ namespace AvalonStudio.Shell
             CurrentPerspective.RemoveDock(dock);
         }
 
-        public void Initialise(IDockFactory layoutFactory = null)
+        public void Initialise(IFactory layoutFactory = null)
         {
             if (layoutFactory == null)
             {
@@ -112,7 +112,7 @@ namespace AvalonStudio.Shell
                 }
             }
 
-            _layout.WhenAnyValue(l => l.FocusedView).Subscribe(focused =>
+            _layout.WhenAnyValue(l => l.ActiveDockable).Subscribe(focused =>
 			{
 				if (focused?.Context is IDocumentTabViewModel doc)
 				{
@@ -174,7 +174,7 @@ namespace AvalonStudio.Shell
 
         public IPerspective MainPerspective { get; private set; }
 
-        public IDockFactory Factory
+        public IFactory Factory
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
@@ -202,7 +202,7 @@ namespace AvalonStudio.Shell
         public IPerspective CreatePerspective()
         {
             var newPerspectiveLayout = (Root.Factory as DefaultLayoutFactory).CreatePerspectiveLayout("Name");
-            Root.Factory.AddView(Root, newPerspectiveLayout.root);
+            Root.Factory.AddDockable(Root, newPerspectiveLayout.root);
 
             var result = new AvalonStudioPerspective(newPerspectiveLayout.root, newPerspectiveLayout.centerPane, newPerspectiveLayout.documentDock);
 
@@ -231,7 +231,7 @@ namespace AvalonStudio.Shell
 
 			if (select)
 			{
-				Factory.SetCurrentView(_documentViews[document]);
+				Factory.SetActiveDockable(_documentViews[document]);
 
 				document.OnOpen();
 			}
@@ -244,10 +244,10 @@ namespace AvalonStudio.Shell
                 return;
             }
 
-			if(_documentViews[document].Parent is IDock dock)
+			if(_documentViews[document].Owner is IDock dock)
 			{
-				dock.Views.Remove(_documentViews[document]);
-				dock.Factory.Update(_documentViews[document], dock);
+				dock.VisibleDockables.Remove(_documentViews[document]);
+				dock.Factory.UpdateDockable(_documentViews[document], dock);
 			}
 
             _documentViews.Remove(document);
@@ -278,11 +278,11 @@ namespace AvalonStudio.Shell
                 {
                     foreach(var perspective in _perspectives)
                     {
-                        if(_documentViews[value].Parent is IDock dock)
+                        if(_documentViews[value].Owner is IDock dock)
                         {
-                            if(dock.Views.Contains(_documentViews[value]))
+                            if(dock.VisibleDockables.Contains(_documentViews[value]))
                             {
-                                dock.CurrentView = _documentViews[value];
+                                dock.ActiveDockable = _documentViews[value];
                             }
                         }
                     }

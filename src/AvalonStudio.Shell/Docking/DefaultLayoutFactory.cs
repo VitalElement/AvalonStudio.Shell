@@ -9,34 +9,33 @@ using System.Collections.ObjectModel;
 namespace AvalonStudio.Docking
 {
     /// <inheritdoc/>
-    public class DefaultLayoutFactory : DockFactory
+    public class DefaultLayoutFactory : Factory
     {
-        private ObservableCollection<IView> _documents;
+        private ObservableCollection<IDockable> _documents;
         private IDocumentDock _documentDock;
-        private ILayoutDock _centerPane;
+        private IDocumentDock _centerPane;
 
         public DefaultLayoutFactory()
         {
-            _documents = new ObservableCollection<IView>();
+            _documents = new ObservableCollection<IDockable>();
 
             _documentDock = new DocumentDock
             {
                 Id = "DocumentsPane",
                 Proportion = double.NaN,
                 Title = "DocumentsPane",
-                CurrentView = null,
+                ActiveDockable = null,
                 IsCollapsable = false,
-                Views = _documents
+                VisibleDockables = _documents
             };
 
-            _centerPane = new LayoutDock
+            _centerPane = new DocumentDock
             {
                 Id = $"CenterPane",
-                Proportion = double.NaN,
-                Orientation = Orientation.Vertical,
+                Proportion = double.NaN,                
                 Title = $"CenterPane",
-                CurrentView = null,
-                Views = CreateList<IView>
+                ActiveDockable = null,
+                VisibleDockables = CreateList<IDockable>
                 (
                     _documentDock
                 )
@@ -65,7 +64,7 @@ namespace AvalonStudio.Docking
             {
                 Id = "Root",
                 Title = "Root",
-                Views = new ObservableCollection<IView>
+                VisibleDockables = new ObservableCollection<IDockable>
                 {
                     
                 }
@@ -74,29 +73,29 @@ namespace AvalonStudio.Docking
             return Root;
         }
 
-        public (DockBase root, ILayoutDock centerPane, IDocumentDock documentDock) CreatePerspectiveLayout(string identifier)
+        public (DockBase root, IProportionalDock centerPane, IDocumentDock documentDock) CreatePerspectiveLayout(string identifier)
         {
-            var debugLayout = new LayoutDock
+            var debugLayout = new ProportionalDock
             {
                 Id = $"{identifier}Layout",
                 Proportion = double.NaN,
                 Orientation = Orientation.Vertical,
                 Title = $"{identifier}Layout",
-                CurrentView = null,
-                Views = new ObservableCollection<IView>
+                ActiveDockable = null,
+                VisibleDockables = new ObservableCollection<IDockable>
                 {
                     _centerPane
                 }
             };
 
-            var container = new LayoutDock
+            var container = new ProportionalDock
             {
                 Id = $"{identifier}Container",
                 Proportion = double.NaN,
                 Orientation = Orientation.Horizontal,
                 Title = $"{identifier}Container",
-                CurrentView = null,
-                Views = new ObservableCollection<IView>
+                ActiveDockable = null,
+                VisibleDockables = new ObservableCollection<IDockable>
                 {
                     debugLayout
                 }
@@ -106,27 +105,27 @@ namespace AvalonStudio.Docking
             {
                 Id = identifier,
                 Title = identifier,
-                CurrentView = container,
-                Views = new ObservableCollection<IView>
+                ActiveDockable = container,
+                VisibleDockables = new ObservableCollection<IDockable>
                 {
                     container
                 }
             }, debugLayout, _documentDock);
         }
 
-        public override void Update(IView view, IView parent)
+        public override void UpdateDockable(IDockable view, IDockable parent)
         {
-            view.Parent = parent;
+            view.Owner = parent;
 
             if (view is IDock dock)
             {
                 dock.Factory = this;
 
-                if (dock.Views != null)
+                if (dock.VisibleDockables != null)
                 {
-                    foreach (var child in dock.Views)
+                    foreach (var child in dock.VisibleDockables)
                     {
-                        Update(child, view);
+                        UpdateDockable(child, view);
                     }
                 }
 
@@ -134,35 +133,35 @@ namespace AvalonStudio.Docking
                 {
                     foreach (var child in dock.Windows)
                     {
-                        Update(child, view);
+                        UpdateDockWindow(child, view);
                     }
                 }
             }
         }
 
         /// <inheritdoc/>
-        public override void InitLayout(IView layout)
+        public override void InitLayout(IDockable layout)
         {
-            this.HostLocator = new Dictionary<string, Func<IDockHost>>
+            this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
                 [nameof(IDockWindow)] = () => new HostWindow()
             };
 
-            this.ViewLocator = new Dictionary<string, Func<IView>>
+            this.DockableLocator = new Dictionary<string, Func<IDockable>>
             {
                 //[nameof(DebugCenterPane)] = () => DebugCenterPane,
                 //[nameof(MainCenterPane)] = () => MainCenterPane,
             };
 
-            this.Update(layout, null);
+            this.UpdateDockable(layout, null);
 
             if (layout is IDock layoutWindowsHost)
             {
                 layoutWindowsHost.ShowWindows();
                 if (layout is IDock layoutViewsHost)
                 {
-                    layoutViewsHost.CurrentView = layoutViewsHost.DefaultView;
-                    if (layoutViewsHost.CurrentView is IDock currentViewWindowsHost)
+                    layoutViewsHost.ActiveDockable = layoutViewsHost.DefaultDockable;
+                    if (layoutViewsHost.ActiveDockable is IDock currentViewWindowsHost)
                     {
                         currentViewWindowsHost.ShowWindows();
                     }

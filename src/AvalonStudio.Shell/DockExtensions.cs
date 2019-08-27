@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace AvalonStudio.Shell
 {
-	abstract class AvalonStudioTab<T> : ViewModel, ITab where T : IDockableViewModel
+	abstract class AvalonStudioTab<T> : ViewModel, IDockable where T : IDockableViewModel
     {
         T _model;
 
@@ -42,7 +42,7 @@ namespace AvalonStudio.Shell
             set { this.RaiseAndSetIfChanged(ref _context, value); }
         }
 
-        public IView Parent { get; set; }
+        public IDockable Owner { get; set; }
 
         public bool OnClose()
         {
@@ -58,16 +58,21 @@ namespace AvalonStudio.Shell
         {
             
         }
+
+        public IDockable Clone()
+        {
+            throw new NotImplementedException();
+        }
     }
 
-    class AvalonStudioDocumentTab : AvalonStudioTab<IDocumentTabViewModel>, IDocumentTab
+    class AvalonStudioDocumentTab : AvalonStudioTab<IDocumentTabViewModel>, IDocument
     {
         public AvalonStudioDocumentTab(IDocumentTabViewModel model) : base(model)
         {
         }
     }
 
-    class AvalonStudioToolTab : AvalonStudioTab<IToolViewModel>, IToolTab
+    class AvalonStudioToolTab : AvalonStudioTab<IToolViewModel>, ITool
     {
         public AvalonStudioToolTab(IToolViewModel model) : base (model)
         {
@@ -76,9 +81,9 @@ namespace AvalonStudio.Shell
 
     public static class DockExtensions
     {
-        public static IView Dock(this IDock dock, IDockableViewModel model, bool add = true)
+        public static IDockable Dock(this IDock dock, IDockableViewModel model, bool add = true)
         {
-            IView currentTab = null;
+            IDockable currentTab = null;
 
             if (add)
             {
@@ -91,16 +96,16 @@ namespace AvalonStudio.Shell
                     currentTab = new AvalonStudioDocumentTab(documentModel);
                 }
 
-                dock.Views.Add(currentTab);
-                dock.Factory.Update(currentTab, dock);
+                dock.VisibleDockables.Add(currentTab);
+                dock.Factory.UpdateDockable(currentTab, dock);
             }
             else
             {
-                currentTab = dock.Views.FirstOrDefault(v => v.Context == model);
+                currentTab = dock.VisibleDockables.FirstOrDefault(v => v.Context == model);
 
                 if (currentTab != null)
                 {
-                    dock.Factory.Update(currentTab, currentTab.Parent);
+                    dock.Factory.UpdateDockable(currentTab, currentTab.Owner);
                 }
             }
 

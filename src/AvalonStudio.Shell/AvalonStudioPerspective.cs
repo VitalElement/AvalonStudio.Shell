@@ -10,21 +10,21 @@ namespace AvalonStudio.Shell
 	public class AvalonStudioPerspective : IPerspective
     {
         private List<IToolViewModel> _tools;
-        private Dictionary<IToolViewModel, IView> _tabTools;
+        private Dictionary<IToolViewModel, IDockable> _tabTools;
         private IDock _left;
         private IDock _right;
         private IDock _top;
         private IDock _bottom;
 
-        public AvalonStudioPerspective (IView root, ILayoutDock centerPane, IDocumentDock documentDock)
+        public AvalonStudioPerspective (IDockable root, IProportionalDock centerPane, IDocumentDock documentDock)
         {
             DocumentDock = documentDock;
             CenterPane = centerPane;
             Root = root;
             _tools = new List<IToolViewModel>();
-            _tabTools = new Dictionary<IToolViewModel, IView>();
+            _tabTools = new Dictionary<IToolViewModel, IDockable>();
 
-            CenterPane.WhenAnyValue(l => l.FocusedView).Subscribe(focused =>
+            CenterPane.WhenAnyValue(l => l.FocusedDockable).Subscribe(focused =>
             {
                 if (focused?.Context is IToolViewModel tool)
                 {
@@ -39,9 +39,9 @@ namespace AvalonStudio.Shell
 
         public IReadOnlyList<IToolViewModel> Tools => _tools.AsReadOnly();
 
-        public IView Root { get; }
+        public IDockable Root { get; }
 
-        public ILayoutDock CenterPane { get; }
+        public IProportionalDock CenterPane { get; }
 
         public IDocumentDock DocumentDock { get; }
 
@@ -77,7 +77,7 @@ namespace AvalonStudio.Shell
                 DockOrCreate(tool);
             }
 
-            CenterPane.Factory.SetCurrentView(_tabTools[tool]);
+            CenterPane.Factory.SetActiveDockable(_tabTools[tool]);
 
 			tool.OnOpen();
         }
@@ -86,10 +86,11 @@ namespace AvalonStudio.Shell
         {
             if(_tabTools.ContainsKey(tool))
             {
-                if(_tabTools[tool].Parent is IDock dock)
+                if(_tabTools[tool].Owner is IDock dock)
                 {
-                    dock.Views.Remove(_tabTools[tool]);
-                    dock.Factory.Update(_tabTools[tool], dock);
+                    dock.VisibleDockables.Remove(_tabTools[tool]);
+                    // todo pinned, and hidden dockables....
+                    dock.Factory.UpdateDockable(_tabTools[tool], dock);
                 }
 
                 _tabTools.Remove(tool);
@@ -107,7 +108,7 @@ namespace AvalonStudio.Shell
                 if (value != null && _tabTools.ContainsKey(value))
                 {
                     _selectedTool?.OnDeselected();
-                    CenterPane.Factory.SetCurrentView(_tabTools[value]);
+                    CenterPane.Factory.SetActiveDockable(_tabTools[value]);
                 }
 
                 _selectedTool = value;
@@ -118,7 +119,7 @@ namespace AvalonStudio.Shell
             }
         }
 
-        private IView DockOrCreate(IToolViewModel view)
+        private IDockable DockOrCreate(IToolViewModel view)
         {
             switch (view.DefaultLocation)
             {
@@ -178,7 +179,7 @@ namespace AvalonStudio.Shell
 
             }
 
-            var parentDock = CenterPane as ILayoutDock;
+            var parentDock = CenterPane as IProportionalDock;
             var containedElement = DocumentDock as IDock;
 
             while (true)
@@ -189,10 +190,10 @@ namespace AvalonStudio.Shell
                 }
 
                 containedElement = parentDock;
-                parentDock = parentDock.Parent as ILayoutDock;
+                parentDock = parentDock.Owner as IProportionalDock;
             }
 
-            var index = parentDock.Views.IndexOf(containedElement);
+            var index = parentDock.VisibleDockables.IndexOf(containedElement);
 
             void advanceIndex()
             {
@@ -213,20 +214,20 @@ namespace AvalonStudio.Shell
 
             advanceIndex();
 
-            if (index <= 0 || index >= parentDock.Views.Count)
+            if (index <= 0 || index >= parentDock.VisibleDockables.Count)
             {
                 var factory = CenterPane.Factory;
                 var toolDock = factory.CreateToolDock();
                 toolDock.Id = nameof(IToolDock);
                 toolDock.Title = nameof(IToolDock);
-                toolDock.Views = factory.CreateList<IView>();
+                toolDock.VisibleDockables = factory.CreateList<IDockable>();
                 toolDock.Factory = factory;
 
                 var currentView = toolDock.Dock(view);
                 //toolDock.CurrentView = view;
                 //toolDock.Views.Add(view);
 
-                factory.Split(CenterPane, toolDock, dockOperation);
+                factory.SplitToDock(CenterPane, toolDock, dockOperation);
                 toolDock.Proportion = 0.2;
 
                 switch (view.DefaultLocation)
