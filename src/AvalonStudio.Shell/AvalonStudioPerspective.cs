@@ -191,6 +191,15 @@ namespace AvalonStudio.Shell
 
             }
 
+            var factory = Root.Factory;
+            var root = Root.Owner as IDock;
+
+            var currentRoot = root.ActiveDockable;
+
+            root.Navigate(Root);
+            root.Factory.SetFocusedDockable(root, Root);
+            root.DefaultDockable = Root;
+
             IProportionalDock container = null;
 
             if (orientation == Orientation.Horizontal)
@@ -202,9 +211,8 @@ namespace AvalonStudio.Shell
                 container = Root.Factory.FindDockable(Root, x => x.Id == "VerticalContainer") as IProportionalDock;
             }
 
-            var documentDock = Root.Factory.FindDockable(Root, x => x.Id == "DocumentsPane") as IDock;
+            var documentDock = Root.Factory.FindDockable(Root, x => x.Id == "CenterPane") as IDock;
 
-            var factory = Root.Factory;
             var toolDock = factory.CreateToolDock();
             toolDock.Id = nameof(IToolDock);
             toolDock.Title = nameof(IToolDock);
@@ -218,6 +226,10 @@ namespace AvalonStudio.Shell
             
             factory.SplitToDock(documentDock, toolDock, dockOperation);
             toolDock.Proportion = 0.2;
+
+            root.Navigate(currentRoot);
+            root.Factory.SetFocusedDockable(root, currentRoot);
+            root.DefaultDockable = currentRoot;
 
             switch (view.DefaultLocation)
             {

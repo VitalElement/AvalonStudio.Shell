@@ -9,6 +9,30 @@ using System.Collections.ObjectModel;
 
 namespace AvalonStudio.Docking
 {
+    public class PerspectiveCompatibleDocumentDock : DocumentDock
+    {
+        public override IDockable Clone()
+        {
+            return this;
+        }
+    }
+
+    public class PerspectiveCompatibleRootDock : RootDock
+    {
+        public override IDockable Clone()
+        {
+            return this;
+        }
+    }
+
+    public class PerspectiveCompatibleProportionalDock : ProportionalDock
+    {
+        public override IDockable Clone()
+        {
+            return this;
+        }
+    }
+
     /// <inheritdoc/>
     public class DefaultLayoutFactory : Factory
     {
@@ -33,8 +57,8 @@ namespace AvalonStudio.Docking
 
         /// <inheritdoc/>
         public override IDock CreateLayout()
-        {
-            var documentDock = new DocumentDock
+        {   
+            var documentDock = new PerspectiveCompatibleDocumentDock
             {
                 Id = "DocumentsPane",
                 Proportion = double.NaN,
@@ -42,6 +66,18 @@ namespace AvalonStudio.Docking
                 ActiveDockable = null,
                 IsCollapsable = false,
                 VisibleDockables = _documents
+            };
+
+            var documentContainer = new RootDock
+            {
+                Id = "CenterPane",
+                Title = "CenterPane",
+                Proportion = double.NaN,
+                ActiveDockable = documentDock,
+                VisibleDockables = new ObservableCollection<IDockable>
+                {
+                    documentDock
+                }
             };
 
             var verticalContainer = new ProportionalDock
@@ -53,7 +89,7 @@ namespace AvalonStudio.Docking
                 ActiveDockable = null,
                 VisibleDockables = new ObservableCollection<IDockable>
                 {
-                    documentDock,
+                    documentContainer,
                 }
             };
 
@@ -108,20 +144,7 @@ namespace AvalonStudio.Docking
                 }
             };
 
-            Root.WhenAnyValue(x => x.VisibleDockables)
-                .Subscribe(x =>
-                {
-
-                });
-
-            (Root.VisibleDockables as ObservableCollection<IDockable>).CollectionChanged += DefaultLayoutFactory_CollectionChanged;
-
             return Root;
-        }
-
-        private void DefaultLayoutFactory_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            
         }
 
         public override void UpdateDockable(IDockable view, IDockable parent)

@@ -173,6 +173,8 @@ namespace AvalonStudio.Shell
 
             MainPerspective = CreateInitialPerspective();
 
+            ApplyPerspective(MainPerspective.Root);
+
             _documentDock = Root.Factory.FindDockable(Root, x => x.Id == "DocumentsPane") as IDock;
 
             CurrentPerspective = MainPerspective;
@@ -249,7 +251,12 @@ namespace AvalonStudio.Shell
         {
             var currentLayout = Root.ActiveDockable as IRootDock;
             var root = CreatePerspective(currentLayout);
-            //ApplyPerspective(root);
+            //ApplyPerspective(currentLayout);
+
+            root.Title = "NewPerspective";
+
+            _documentDock.Owner = currentLayout;
+            
 
             var result = new AvalonStudioPerspective(root);
 
