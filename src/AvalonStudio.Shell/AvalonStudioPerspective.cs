@@ -164,16 +164,7 @@ namespace AvalonStudio.Shell
                     break;
             }
 
-            var orientation = Orientation.Horizontal;
             var dockOperation = DockOperation.Left;
-
-            switch (view.DefaultLocation)
-            {
-                case Location.Top:
-                case Location.Bottom:
-                    orientation = Orientation.Vertical;
-                    break;
-            }
 
             switch (view.DefaultLocation)
             {
@@ -209,9 +200,6 @@ namespace AvalonStudio.Shell
             toolDock.Factory = factory;
 
             var currentView = toolDock.Dock(view);
-            //toolDock.CurrentView = view;
-            //toolDock.Views.Add(view);
-
             
             factory.SplitToDock(documentDock, toolDock, dockOperation);
             toolDock.Proportion = 0.2;
