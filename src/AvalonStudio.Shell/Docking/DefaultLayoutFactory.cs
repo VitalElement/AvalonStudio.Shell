@@ -1,4 +1,5 @@
-﻿using AvaloniaDemo.ViewModels.Views;
+﻿using Avalonia.Data;
+using AvaloniaDemo.ViewModels.Views;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -132,7 +133,7 @@ namespace AvalonStudio.Docking
             };
 
             return Root;
-        }
+        }        
 
         public override void UpdateDockable(IDockable view, IDockable parent)
         {
@@ -165,7 +166,20 @@ namespace AvalonStudio.Docking
         {
             this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
-                [nameof(IDockWindow)] = () => new HostWindow()
+                [nameof(IDockWindow)] = () =>
+                {
+                    var hostWindow = new HostWindow()
+                    {
+                        [!HostWindow.TitleProperty] = new Binding("ActiveDockable.Title")
+                    };
+
+                    hostWindow.Content = new DockControl()
+                    {
+                        [!DockControl.LayoutProperty] = hostWindow[!HostWindow.DataContextProperty]
+                    };
+
+                    return hostWindow;
+                }
             };
 
             this.DockableLocator = new Dictionary<string, Func<IDockable>>
