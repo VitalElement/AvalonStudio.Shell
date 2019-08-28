@@ -200,17 +200,6 @@ namespace AvalonStudio.Shell
             root.Factory.SetFocusedDockable(root, Root);
             root.DefaultDockable = Root;
 
-            IProportionalDock container = null;
-
-            if (orientation == Orientation.Horizontal)
-            {
-                container = Root.Factory.FindDockable(Root, x => x.Id == "HorizontalContainer") as IProportionalDock;
-            }
-            else
-            {
-                container = Root.Factory.FindDockable(Root, x => x.Id == "VerticalContainer") as IProportionalDock;
-            }
-
             var documentDock = Root.Factory.FindDockable(Root, x => x.Id == "CenterPane") as IDock;
 
             var toolDock = factory.CreateToolDock();

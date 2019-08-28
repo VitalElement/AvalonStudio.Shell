@@ -80,19 +80,6 @@ namespace AvalonStudio.Docking
                 }
             };
 
-            var verticalContainer = new ProportionalDock
-            {
-                Id = "VerticalContainer",
-                Proportion = double.NaN,
-                Orientation = Orientation.Vertical,
-                Title = "VerticalContainer",
-                ActiveDockable = null,
-                VisibleDockables = new ObservableCollection<IDockable>
-                {
-                    documentContainer,
-                }
-            };
-
             var horizontalContainer = new ProportionalDock
             {
                 Id = "HorizontalContainer",
@@ -102,7 +89,7 @@ namespace AvalonStudio.Docking
                 ActiveDockable = null,
                 VisibleDockables = new ObservableCollection<IDockable>
                 {
-                    verticalContainer,
+                    documentContainer,
                 }
             };
 
