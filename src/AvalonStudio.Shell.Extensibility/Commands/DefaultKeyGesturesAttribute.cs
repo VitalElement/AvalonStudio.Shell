@@ -6,13 +6,26 @@ namespace AvalonStudio.Commands
 {
     [MetadataAttribute]
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property)]
-    public class DefaultKeyGesturesAttribute : Attribute
+    public class DefaultKeyGestureAttribute : Attribute
     {
-        public IEnumerable<string> DefaultKeyGestures { get; }
+        public string DefaultKeyGesture { get; }
 
-        public DefaultKeyGesturesAttribute(params string[] keyGestures)
+        public string OSXKeyGesture { get; }
+
+        public string LinuxKeyGesture { get; }
+
+        public string WindowsKeyGesture { get; }
+
+        public DefaultKeyGestureAttribute
+            (string defaultGesture, string windowsKeyGesture = null, string osxKeyGesture = null, string linuxKeyGesture = null)
         {
-            DefaultKeyGestures = keyGestures;
+            DefaultKeyGesture = defaultGesture;
+
+            WindowsKeyGesture = windowsKeyGesture;
+
+            OSXKeyGesture = osxKeyGesture;
+
+            LinuxKeyGesture = linuxKeyGesture;
         }
     }
 }

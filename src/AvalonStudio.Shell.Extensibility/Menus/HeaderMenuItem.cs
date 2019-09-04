@@ -11,7 +11,8 @@ namespace AvalonStudio.Menus
 
         public ICommand Command => null;
 
-        public IEnumerable<string> Gestures => null;
+        public string Gesture => null;
+
         public HeaderMenuItem(string label, DrawingGroup icon)
         {
             Label = label;

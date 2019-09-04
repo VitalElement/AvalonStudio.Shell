@@ -134,11 +134,11 @@ namespace AvalonStudio.Shell
                 }
             }
 
-            foreach (var command in _commandService.GetKeyGestures())
+            foreach (var command in _commandService.GetKeyGesture())
             {
-                foreach (var keyGesture in command.Value)
+                if (command.Value != null)
                 {
-                    _keyBindings.Add(new KeyBinding { Command = command.Key.Command, Gesture = KeyGesture.Parse(keyGesture) });
+                    _keyBindings.Add(new KeyBinding { Command = command.Key.Command, Gesture = KeyGesture.Parse(command.Value) });
                 }
             }
 

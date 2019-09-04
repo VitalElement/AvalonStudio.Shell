@@ -8,14 +8,14 @@ namespace AvalonStudio.Menus
 {
     internal class CommandMenuItem : IMenuItem
     {
-        private Lazy<IEnumerable<string>> _gestures;
+        private Lazy<string> _gesture;
 
         public string Label => _commandDefinition.Value?.Label;
         public DrawingGroup Icon => _commandDefinition.Value?.Icon;
 
         public ICommand Command => _commandDefinition.Value?.Command;
 
-        public IEnumerable<string> Gestures => _gestures?.Value;
+        public string Gesture => _gesture?.Value;
 
         private readonly CommandService _commandsService;
         private readonly string _commandName; 
@@ -29,9 +29,9 @@ namespace AvalonStudio.Menus
 
             _commandDefinition = new Lazy<CommandDefinition>(ResolveCommandDefinition);
 
-            _gestures = new Lazy<IEnumerable<string>>(() =>
+            _gesture = new Lazy<string>(() =>
             {
-                return _commandsService.GetGestures(_commandDefinition.Value);
+                return _commandsService.GetGesture(_commandDefinition.Value);
             });
         }
 
