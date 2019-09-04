@@ -61,20 +61,31 @@ namespace AvalonStudio.Shell.Extensibility.Platforms
             {
                 if(string.IsNullOrEmpty(_baseDirectory) )
                 {
-                    string userDir = string.Empty;
+                    var envPath = Environment.GetEnvironmentVariable("AVALON_CACHE_PATH");
 
-                    switch (PlatformIdentifier)
+                    if (envPath != null)
                     {
-                        case PlatformID.Win32NT:
-                            userDir = Environment.GetEnvironmentVariable("UserProfile");
-                            break;
-
-                        default:
-                            userDir = Environment.GetEnvironmentVariable("HOME");
-                            break;
+                        _baseDirectory = envPath;
                     }
-                    _baseDirectory = AppName != null ? Path.Combine(userDir, AppName) : null;
+                    else
+                    {
+                        string userDir = string.Empty;
+
+                        switch (PlatformIdentifier)
+                        {
+                            case PlatformID.Win32NT:
+                                userDir = Environment.GetEnvironmentVariable("UserProfile");
+                                break;
+
+                            default:
+                                userDir = Environment.GetEnvironmentVariable("HOME");
+                                break;
+                        }
+
+                        _baseDirectory = AppName != null ? Path.Combine(userDir, AppName) : null;
+                    }
                 }
+
                 return _baseDirectory;
             }
             set

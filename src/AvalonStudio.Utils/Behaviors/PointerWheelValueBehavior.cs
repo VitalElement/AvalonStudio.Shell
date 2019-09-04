@@ -21,7 +21,7 @@ namespace AvalonStudio.Utils.Behaviors
             {
                 AssociatedObject.AddHandler(Control.PointerWheelChangedEvent, (sender, e) =>
                 {
-                    if (e.InputModifiers == InputModifiers)
+                    if (e.KeyModifiers == KeyModifiers)
                     {
                         e.Handled = true;
 
@@ -81,12 +81,12 @@ namespace AvalonStudio.Utils.Behaviors
             set => SetValue(ScaleProperty, value);
         }
 
-        public static readonly StyledProperty<InputModifiers> InputModifiersProperty = AvaloniaProperty.Register<PointerWheelValueBehavior, InputModifiers>(nameof(InputModifiers), InputModifiers.None);
+        public static readonly StyledProperty<KeyModifiers> KeyModifiersProperty = AvaloniaProperty.Register<PointerWheelValueBehavior, KeyModifiers>(nameof(KeyModifiers), KeyModifiers.None);
 
-        public InputModifiers InputModifiers
+        public KeyModifiers KeyModifiers
         {
-            get => GetValue(InputModifiersProperty);
-            set => SetValue(InputModifiersProperty, value);
+            get => GetValue(KeyModifiersProperty);
+            set => SetValue(KeyModifiersProperty, value);
         }
     }
 }

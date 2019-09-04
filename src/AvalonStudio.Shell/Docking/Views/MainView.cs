@@ -6,5 +6,9 @@ namespace AvaloniaDemo.ViewModels.Views
 {
     public class MainView : DockBase
     {
+        public override IDockable Clone()
+        {
+            return this;
+        }
     }
 }

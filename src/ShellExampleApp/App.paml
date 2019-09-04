@@ -36,7 +36,7 @@
           <ContentControl Content="{Binding CurrentView}"/>
         </Grid>
       </DataTemplate>
-      <DataTemplate DataType="id:IView">
+      <DataTemplate DataType="id:IDockable">
         <cont:ViewModelViewHost DataContext="{Binding Context}" />
       </DataTemplate>
     </Application.DataTemplates>  

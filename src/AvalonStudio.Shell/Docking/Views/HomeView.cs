@@ -6,5 +6,9 @@ namespace AvaloniaDemo.ViewModels.Views
 {
     public class HomeView : DockBase
     {
+        public override IDockable Clone()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

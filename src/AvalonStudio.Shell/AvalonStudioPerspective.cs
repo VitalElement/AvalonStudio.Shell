@@ -10,40 +10,34 @@ namespace AvalonStudio.Shell
 	public class AvalonStudioPerspective : IPerspective
     {
         private List<IToolViewModel> _tools;
-        private Dictionary<IToolViewModel, IView> _tabTools;
+        private Dictionary<IToolViewModel, IDockable> _tabTools;
         private IDock _left;
         private IDock _right;
         private IDock _top;
         private IDock _bottom;
 
-        public AvalonStudioPerspective (IView root, ILayoutDock centerPane, IDocumentDock documentDock)
+        public AvalonStudioPerspective (IRootDock root)
         {
-            DocumentDock = documentDock;
-            CenterPane = centerPane;
             Root = root;
             _tools = new List<IToolViewModel>();
-            _tabTools = new Dictionary<IToolViewModel, IView>();
+            _tabTools = new Dictionary<IToolViewModel, IDockable>();
 
-            CenterPane.WhenAnyValue(l => l.FocusedView).Subscribe(focused =>
-            {
-                if (focused?.Context is IToolViewModel tool)
-                {
-                    SelectedTool = tool;
-                }
-                else
-                {
-                    SelectedTool = null;
-                }
-            });
+            //CenterPane.WhenAnyValue(l => l.FocusedDockable).Subscribe(focused =>
+            //{
+            //    if (focused?.Context is IToolViewModel tool)
+            //    {
+            //        SelectedTool = tool;
+            //    }
+            //    else
+            //    {
+            //        SelectedTool = null;
+            //    }
+            //});
         }
 
         public IReadOnlyList<IToolViewModel> Tools => _tools.AsReadOnly();
 
-        public IView Root { get; }
-
-        public ILayoutDock CenterPane { get; }
-
-        public IDocumentDock DocumentDock { get; }
+        public IRootDock Root { get; }
 
         public void RemoveDock(IDock dock)
         {
@@ -77,7 +71,7 @@ namespace AvalonStudio.Shell
                 DockOrCreate(tool);
             }
 
-            CenterPane.Factory.SetCurrentView(_tabTools[tool]);
+            Root.Factory.SetActiveDockable(_tabTools[tool]);
 
 			tool.OnOpen();
         }
@@ -86,10 +80,29 @@ namespace AvalonStudio.Shell
         {
             if(_tabTools.ContainsKey(tool))
             {
-                if(_tabTools[tool].Parent is IDock dock)
+                if(_tabTools[tool].Owner is IDock dock)
                 {
-                    dock.Views.Remove(_tabTools[tool]);
-                    dock.Factory.Update(_tabTools[tool], dock);
+                    dock.Factory.RemoveDockable(_tabTools[tool], true);
+
+                    if(dock.VisibleDockables.Count == 0)
+                    {
+                        if(dock == _left)
+                        {
+                            _left = null;
+                        }
+                        else if(dock == _right)
+                        {
+                            _right = null;
+                        }
+                        else if(dock == _top)
+                        {
+                            _top = null;
+                        }
+                        else if(dock == _bottom)
+                        {
+                            _bottom = null;
+                        }
+                    }
                 }
 
                 _tabTools.Remove(tool);
@@ -107,7 +120,7 @@ namespace AvalonStudio.Shell
                 if (value != null && _tabTools.ContainsKey(value))
                 {
                     _selectedTool?.OnDeselected();
-                    CenterPane.Factory.SetCurrentView(_tabTools[value]);
+                    Root.Factory.SetActiveDockable(_tabTools[value]);
                 }
 
                 _selectedTool = value;
@@ -118,7 +131,7 @@ namespace AvalonStudio.Shell
             }
         }
 
-        private IView DockOrCreate(IToolViewModel view)
+        private IDockable DockOrCreate(IToolViewModel view)
         {
             switch (view.DefaultLocation)
             {
@@ -144,23 +157,14 @@ namespace AvalonStudio.Shell
                     break;
 
                 case Location.Top:
-                    if(_top != null)
+                    if (_top != null)
                     {
                         return _top.Dock(view);
                     }
                     break;
             }
 
-            var orientation = Orientation.Horizontal;
             var dockOperation = DockOperation.Left;
-
-            switch (view.DefaultLocation)
-            {
-                case Location.Top:
-                case Location.Bottom:
-                    orientation = Orientation.Vertical;
-                    break;
-            }
 
             switch (view.DefaultLocation)
             {
@@ -178,92 +182,64 @@ namespace AvalonStudio.Shell
 
             }
 
-            var parentDock = CenterPane as ILayoutDock;
-            var containedElement = DocumentDock as IDock;
+            var factory = Root.Factory;
+            var root = Root.Owner as IDock;
 
-            while (true)
+            var currentRoot = root.ActiveDockable;
+
+            root.Navigate(Root);
+            root.Factory.SetFocusedDockable(root, Root);
+            root.DefaultDockable = Root;
+
+            var documentDock = Root.Factory.FindDockable(Root, x => x.Id == "CenterPane") as IDock;
+
+            var toolDock = factory.CreateToolDock();
+            toolDock.Id = nameof(IToolDock);
+            toolDock.Title = nameof(IToolDock);
+            toolDock.VisibleDockables = factory.CreateList<IDockable>();
+            toolDock.Factory = factory;
+
+            var currentView = toolDock.Dock(view);
+            
+            factory.SplitToDock(documentDock, toolDock, dockOperation);
+            toolDock.Proportion = 0.2;
+
+            root.Navigate(currentRoot);
+            root.Factory.SetFocusedDockable(root, currentRoot);
+            root.DefaultDockable = currentRoot;
+
+            switch (view.DefaultLocation)
             {
-                if (parentDock.Orientation == orientation)
-                {
+                case Location.Left:
+                    if (_left == null)
+                    {
+                        _left = toolDock;
+                    }
                     break;
-                }
 
-                containedElement = parentDock;
-                parentDock = parentDock.Parent as ILayoutDock;
+                case Location.Right:
+                    if (_right == null)
+                    {
+                        _right = toolDock;
+                    }
+                    break;
+
+                case Location.Bottom:
+                    if (_bottom == null)
+                    {
+                        _bottom = toolDock;
+                    }
+                    break;
+
+                case Location.Top:
+                    if (_top == null)
+                    {
+                        _top = toolDock;
+                    }
+                    break;
             }
 
-            var index = parentDock.Views.IndexOf(containedElement);
-
-            void advanceIndex()
-            {
-                switch (view.DefaultLocation)
-                {
-                    case Location.Top:
-                    case Location.Left:
-                        index--;
-                        break;
-
-                    case Location.Right:
-                    case Location.Bottom:
-                        index++;
-                        break;
-
-                }
-            }
-
-            advanceIndex();
-
-            if (index <= 0 || index >= parentDock.Views.Count)
-            {
-                var factory = CenterPane.Factory;
-                var toolDock = factory.CreateToolDock();
-                toolDock.Id = nameof(IToolDock);
-                toolDock.Title = nameof(IToolDock);
-                toolDock.Views = factory.CreateList<IView>();
-                toolDock.Factory = factory;
-
-                var currentView = toolDock.Dock(view);
-                //toolDock.CurrentView = view;
-                //toolDock.Views.Add(view);
-
-                factory.Split(CenterPane, toolDock, dockOperation);
-                toolDock.Proportion = 0.2;
-
-                switch (view.DefaultLocation)
-                {
-                    case Location.Left:
-                        if (_left == null)
-                        {
-                            _left = toolDock;
-                        }
-                        break;
-
-                    case Location.Right:
-                        if (_right == null)
-                        {
-                            _right = toolDock;
-                        }
-                        break;
-
-                    case Location.Bottom:
-                        if (_bottom == null)
-                        {
-                            _bottom = toolDock;
-                        }
-                        break;
-
-                    case Location.Top:
-                        if(_top == null)
-                        {
-                            _top = toolDock;
-                        }
-                        break;
-                }
-
-                return currentView;
-            }
-
-            throw new NotSupportedException();
+            return currentView;
         }
     }
 }

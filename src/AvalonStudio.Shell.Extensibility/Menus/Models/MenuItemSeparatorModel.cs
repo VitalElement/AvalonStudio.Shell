@@ -19,6 +19,8 @@ namespace AvalonStudio.Menus.Models
             public DrawingGroup Icon => null;
 
             public ICommand Command => null;
+
+            public string Gesture => null;
         }
     }
 }

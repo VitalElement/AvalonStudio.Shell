@@ -10,10 +10,6 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       FontFamily="{DynamicResource UiFont}" FontSize="14"
                       Foreground="{DynamicResource ThemeForegroundBrush}">
-  <UserControl.Resources>
-    <id:DockDropHandler x:Key="DockDropHandler0" Id="0" />
-  </UserControl.Resources>
-
   <i:Interaction.Behaviors>
     <beh:OpenCloseWindowBehavior DataContext="{Binding ModalDialog}" WindowType="{x:Type cont:ModalDialog}" IsOpen="{Binding ModalDialog.IsVisible}" />
   </i:Interaction.Behaviors>
@@ -65,11 +61,7 @@
   <UserControl.KeyBindings>
     <KeyBinding Command="{Binding EnableDebugModeCommand}" Gesture="CTRL+SHIFT+D" />
   </UserControl.KeyBindings>
-  <Grid RowDefinitions="Auto,*">
-    <i:Interaction.Behaviors>
-      <id:DropBehavior Context="{Binding Layout}" Handler="{StaticResource DockDropHandler0}" />
-    </i:Interaction.Behaviors>
-
+  <Grid RowDefinitions="Auto,*" id:DockProperties.IsDropArea="True">
     <Grid Margin="0">
         <cont:ToolBar DataContext="{Binding StandardToolbar}" Grid.Row="1" Margin="7 0 4 4" IsVisible="{Binding !!StandardToolbar}" />
     </Grid>

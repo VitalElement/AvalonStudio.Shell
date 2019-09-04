@@ -6,8 +6,11 @@ namespace AvalonStudio.Menus
     public interface IMenuItem
     {
         string Label { get; }
+
         DrawingGroup Icon { get; }
 
         ICommand Command { get; }
+
+        string Gesture { get; }
     }
 }

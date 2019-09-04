@@ -8,6 +8,15 @@ namespace AvalonStudio.Commands
         public string Name { get; set; }
 
         [DefaultValue(null)]
-        public IEnumerable<string> DefaultKeyGestures { get; set; }
+        public string DefaultKeyGesture { get; set; }
+
+        [DefaultValue(null)]
+        public string WindowsKeyGesture { get; set; }
+
+        [DefaultValue(null)]
+        public string OSXKeyGesture { get; set; }
+
+        [DefaultValue(null)]
+        public string LinuxKeyGesture { get; set; }
     }
 }

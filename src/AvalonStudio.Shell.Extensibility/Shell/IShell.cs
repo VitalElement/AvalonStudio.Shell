@@ -18,11 +18,7 @@ namespace AvalonStudio.Shell
 
         IReadOnlyList<IToolViewModel> Tools { get; }
 
-        IView Root { get; }
-
-        ILayoutDock CenterPane { get; }
-
-        IDocumentDock DocumentDock { get; }
+        IRootDock Root { get; }
 
         IToolViewModel SelectedTool { get; set; }
     }

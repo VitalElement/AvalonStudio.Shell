@@ -14,6 +14,8 @@ namespace AvalonStudio.Menus.Models
 
         public ICommand Command => _menuItem.Value.Command;
 
+        public string Gesture => _menuItem.Value?.Gesture;
+
         public IEnumerable<MenuItemModel> Children { get; }
 
         private Lazy<IMenuItem> _menuItem;

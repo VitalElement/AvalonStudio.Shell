@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using AvalonStudio.Commands.Settings;
+using AvalonStudio.Shell.Extensibility.Platforms;
 
 namespace AvalonStudio.Commands
 {
@@ -15,7 +17,7 @@ namespace AvalonStudio.Commands
 
 		private readonly Lazy<IImmutableDictionary<string, Lazy<CommandDefinition>>> _resolvedCommands;
 
-		private IImmutableDictionary<CommandDefinition, IEnumerable<string>> _keyGestures;
+		private IImmutableDictionary<CommandDefinition, string> _keyGestures;
 
 		[ImportingConstructor]
 		public CommandService(
@@ -40,7 +42,17 @@ namespace AvalonStudio.Commands
 			return command;
 		}
 
-		public IImmutableDictionary<CommandDefinition, IEnumerable<string>> GetKeyGestures()
+        public string GetGesture (CommandDefinition definition)
+        {
+            if(_keyGestures.ContainsKey(definition))
+            {
+                return _keyGestures[definition];
+            }
+
+            return null;
+        }
+
+		public IImmutableDictionary<CommandDefinition, string> GetKeyGesture()
 		{
 			if (_keyGestures != null)
 			{
@@ -48,7 +60,7 @@ namespace AvalonStudio.Commands
 			}
 
 			var commandSettings = _commandSettingsService.GetCommandSettings();
-			var builder = ImmutableDictionary.CreateBuilder<CommandDefinition, IEnumerable<string>>();
+			var builder = ImmutableDictionary.CreateBuilder<CommandDefinition, string>();
 
 			foreach (var command in _commands)
 			{
@@ -58,15 +70,38 @@ namespace AvalonStudio.Commands
 					{
 						settings = new Command();
 
-						if (command.Metadata.DefaultKeyGestures != null)
-						{
-							settings.KeyGestures.AddRange(command.Metadata.DefaultKeyGestures);
-						}
+                        var gesture = command.Metadata.DefaultKeyGesture;
+
+                        switch(Platform.PlatformIdentifier)
+                        {
+                            case PlatformID.MacOSX:
+                                if(command.Metadata.OSXKeyGesture != null)
+                                {
+                                    gesture = command.Metadata.OSXKeyGesture;
+                                }
+                                break;
+
+                            case PlatformID.Unix:
+                                if (command.Metadata.LinuxKeyGesture != null)
+                                {
+                                    gesture = command.Metadata.LinuxKeyGesture;
+                                }
+                                break;
+
+                            case PlatformID.Win32NT:
+                                if (command.Metadata.WindowsKeyGesture != null)
+                                {
+                                    gesture = command.Metadata.WindowsKeyGesture;
+                                }
+                                break;
+                        }
+
+                        settings.Gesture = gesture;
 
 						commandSettings.Commands.Add(command.Metadata.Name, settings);
 					}
 
-					builder.Add(command.Value, settings.KeyGestures);
+					builder.Add(command.Value, settings.Gesture);
 				}
 			}
 

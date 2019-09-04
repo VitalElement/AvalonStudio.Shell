@@ -1,46 +1,47 @@
-﻿using AvaloniaDemo.ViewModels.Views;
+﻿using Avalonia.Data;
+using AvaloniaDemo.ViewModels.Views;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace AvalonStudio.Docking
 {
-    /// <inheritdoc/>
-    public class DefaultLayoutFactory : DockFactory
+    public class PerspectiveCompatibleDocumentDock : DocumentDock
     {
-        private ObservableCollection<IView> _documents;
-        private IDocumentDock _documentDock;
-        private ILayoutDock _centerPane;
+        public override IDockable Clone()
+        {
+            return this;
+        }
+    }
+
+    public class PerspectiveCompatibleRootDock : RootDock
+    {
+        public override IDockable Clone()
+        {
+            return this;
+        }
+    }
+
+    public class PerspectiveCompatibleProportionalDock : ProportionalDock
+    {
+        public override IDockable Clone()
+        {
+            return this;
+        }
+    }
+
+    /// <inheritdoc/>
+    public class DefaultLayoutFactory : Factory
+    {
+        private ObservableCollection<IDockable> _documents;
 
         public DefaultLayoutFactory()
         {
-            _documents = new ObservableCollection<IView>();
-
-            _documentDock = new DocumentDock
-            {
-                Id = "DocumentsPane",
-                Proportion = double.NaN,
-                Title = "DocumentsPane",
-                CurrentView = null,
-                IsCollapsable = false,
-                Views = _documents
-            };
-
-            _centerPane = new LayoutDock
-            {
-                Id = $"CenterPane",
-                Proportion = double.NaN,
-                Orientation = Orientation.Vertical,
-                Title = $"CenterPane",
-                CurrentView = null,
-                Views = CreateList<IView>
-                (
-                    _documentDock
-                )
-            };
+            _documents = new ObservableCollection<IDockable>();
         }
 
         public RootDock Root { get; private set; }
@@ -57,76 +58,96 @@ namespace AvalonStudio.Docking
 
         /// <inheritdoc/>
         public override IDock CreateLayout()
-        {
-          //  MainLayout = CreatePerspectiveLayout("Main").root;
-            // Root
+        {   
+            var documentDock = new PerspectiveCompatibleDocumentDock
+            {
+                Id = "DocumentsPane",
+                Proportion = double.NaN,
+                Title = "DocumentsPane",
+                ActiveDockable = null,
+                IsCollapsable = false,
+                VisibleDockables = _documents
+            };
+
+            var documentContainer = new RootDock
+            {
+                Id = "CenterPane",
+                Title = "CenterPane",
+                Proportion = double.NaN,
+                ActiveDockable = documentDock,
+                VisibleDockables = new ObservableCollection<IDockable>
+                {
+                    documentDock
+                }
+            };
+
+            var horizontalContainer = new ProportionalDock
+            {
+                Id = "HorizontalContainer",
+                Proportion = double.NaN,
+                Orientation = Orientation.Horizontal,
+                Title = "HorizontalContainer",
+                ActiveDockable = null,
+                VisibleDockables = new ObservableCollection<IDockable>
+                {
+                    documentContainer,
+                }
+            };
+
+            var mainLayout = new RootDock
+            {
+                Id = "Perspective",
+                Title = "Perspective",
+                ActiveDockable = horizontalContainer,
+                VisibleDockables = new ObservableCollection<IDockable>
+                {
+                    horizontalContainer
+                }
+            };
 
             Root = new RootDock
             {
                 Id = "Root",
                 Title = "Root",
-                Views = new ObservableCollection<IView>
+                Top = new PinDock
                 {
-                    
+                    Alignment = Alignment.Top
+                },
+                Bottom = new PinDock
+                {
+                    Alignment = Alignment.Bottom
+                },
+                Left = new PinDock
+                {
+                    Alignment = Alignment.Left
+                },
+                Right = new PinDock
+                {
+                    Alignment = Alignment.Right
+                },
+                ActiveDockable = mainLayout,
+                VisibleDockables = new ObservableCollection<IDockable>
+                {
+                    mainLayout
                 }
             };
 
             return Root;
-        }
+        }        
 
-        public (DockBase root, ILayoutDock centerPane, IDocumentDock documentDock) CreatePerspectiveLayout(string identifier)
+        public override void UpdateDockable(IDockable view, IDockable parent)
         {
-            var debugLayout = new LayoutDock
-            {
-                Id = $"{identifier}Layout",
-                Proportion = double.NaN,
-                Orientation = Orientation.Vertical,
-                Title = $"{identifier}Layout",
-                CurrentView = null,
-                Views = new ObservableCollection<IView>
-                {
-                    _centerPane
-                }
-            };
-
-            var container = new LayoutDock
-            {
-                Id = $"{identifier}Container",
-                Proportion = double.NaN,
-                Orientation = Orientation.Horizontal,
-                Title = $"{identifier}Container",
-                CurrentView = null,
-                Views = new ObservableCollection<IView>
-                {
-                    debugLayout
-                }
-            };
-
-            return (new MainView
-            {
-                Id = identifier,
-                Title = identifier,
-                CurrentView = container,
-                Views = new ObservableCollection<IView>
-                {
-                    container
-                }
-            }, debugLayout, _documentDock);
-        }
-
-        public override void Update(IView view, IView parent)
-        {
-            view.Parent = parent;
+            view.Owner = parent;
 
             if (view is IDock dock)
             {
                 dock.Factory = this;
 
-                if (dock.Views != null)
+                if (dock.VisibleDockables != null)
                 {
-                    foreach (var child in dock.Views)
+                    foreach (var child in dock.VisibleDockables)
                     {
-                        Update(child, view);
+                        UpdateDockable(child, view);
                     }
                 }
 
@@ -134,35 +155,48 @@ namespace AvalonStudio.Docking
                 {
                     foreach (var child in dock.Windows)
                     {
-                        Update(child, view);
+                        UpdateDockWindow(child, view);
                     }
                 }
             }
         }
 
         /// <inheritdoc/>
-        public override void InitLayout(IView layout)
+        public override void InitLayout(IDockable layout)
         {
-            this.HostLocator = new Dictionary<string, Func<IDockHost>>
+            this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
-                [nameof(IDockWindow)] = () => new HostWindow()
+                [nameof(IDockWindow)] = () =>
+                {
+                    var hostWindow = new HostWindow()
+                    {
+                        [!HostWindow.TitleProperty] = new Binding("ActiveDockable.Title")
+                    };
+
+                    hostWindow.Content = new DockControl()
+                    {
+                        [!DockControl.LayoutProperty] = hostWindow[!HostWindow.DataContextProperty]
+                    };
+
+                    return hostWindow;
+                }
             };
 
-            this.ViewLocator = new Dictionary<string, Func<IView>>
+            this.DockableLocator = new Dictionary<string, Func<IDockable>>
             {
                 //[nameof(DebugCenterPane)] = () => DebugCenterPane,
                 //[nameof(MainCenterPane)] = () => MainCenterPane,
             };
 
-            this.Update(layout, null);
+            this.UpdateDockable(layout, null);
 
             if (layout is IDock layoutWindowsHost)
             {
                 layoutWindowsHost.ShowWindows();
                 if (layout is IDock layoutViewsHost)
                 {
-                    layoutViewsHost.CurrentView = layoutViewsHost.DefaultView;
-                    if (layoutViewsHost.CurrentView is IDock currentViewWindowsHost)
+                    layoutViewsHost.ActiveDockable = layoutViewsHost.DefaultDockable;
+                    if (layoutViewsHost.ActiveDockable is IDock currentViewWindowsHost)
                     {
                         currentViewWindowsHost.ShowWindows();
                     }

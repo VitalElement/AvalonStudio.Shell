@@ -30,13 +30,14 @@ namespace AvalonStudio.Shell
     {
         public static ShellViewModel Instance { get; set; }
         private List<KeyBinding> _keyBindings;
+        private IPerspective _currentPerspective;
 
         private IDocumentTabViewModel _selectedDocument;
 
         private IEnumerable<Lazy<IExtension>> _extensions;
         private IEnumerable<Lazy<ToolViewModel>> _toolControls;
         private CommandService _commandService;
-        private Dictionary<IDocumentTabViewModel, IView> _documentViews;
+        private Dictionary<IDocumentTabViewModel, IDockable> _documentViews;
         private List<IDocumentTabViewModel> _documents;
         private List<IPerspective> _perspectives;
 
@@ -44,7 +45,7 @@ namespace AvalonStudio.Shell
 
         private ModalDialogViewModelBase modalDialog;
 
-        private IDockFactory _factory;
+        private IFactory _factory;
         private IRootDock _root;
         private IDock _layout;
 
@@ -74,14 +75,15 @@ namespace AvalonStudio.Shell
             ModalDialog = new ModalDialogViewModelBase("Dialog");
 
             _documents = new List<IDocumentTabViewModel>();
-            _documentViews = new Dictionary<IDocumentTabViewModel, IView>();
+            _documentViews = new Dictionary<IDocumentTabViewModel, IDockable>();
             _perspectives = new List<IPerspective>();
 
             this.WhenAnyValue(x => x.CurrentPerspective).Subscribe(perspective =>
             {
                 if (perspective != null)
                 {
-                    Root.Navigate(perspective.Root);
+                    //Root.Navigate(perspective.Root);
+                    ApplyPerspective(perspective.Root);
                 }
             });
         }
@@ -91,7 +93,7 @@ namespace AvalonStudio.Shell
             CurrentPerspective.RemoveDock(dock);
         }
 
-        public void Initialise(IDockFactory layoutFactory = null)
+        public void Initialise(IFactory layoutFactory = null)
         {
             if (layoutFactory == null)
             {
@@ -112,7 +114,7 @@ namespace AvalonStudio.Shell
                 }
             }
 
-            _layout.WhenAnyValue(l => l.FocusedView).Subscribe(focused =>
+            _layout.WhenAnyValue(l => l.ActiveDockable).Subscribe(focused =>
 			{
 				if (focused?.Context is IDocumentTabViewModel doc)
 				{
@@ -132,11 +134,11 @@ namespace AvalonStudio.Shell
                 }
             }
 
-            foreach (var command in _commandService.GetKeyGestures())
+            foreach (var command in _commandService.GetKeyGesture())
             {
-                foreach (var keyGesture in command.Value)
+                if (command.Value != null)
                 {
-                    _keyBindings.Add(new KeyBinding { Command = command.Key.Command, Gesture = KeyGesture.Parse(keyGesture) });
+                    _keyBindings.Add(new KeyBinding { Command = command.Key.Command, Gesture = KeyGesture.Parse(command.Value) });
                 }
             }
 
@@ -165,16 +167,22 @@ namespace AvalonStudio.Shell
             _layout = Factory.CreateLayout();
             Factory.InitLayout(_layout);
 
+            Factory.SetActiveDockable(_layout.VisibleDockables.First());
+
             Root = _layout as IRootDock;
 
-            MainPerspective = CreatePerspective();
+            MainPerspective = CreateInitialPerspective();
+
+            ApplyPerspective(MainPerspective.Root);
+
+            _documentDock = Root.Factory.FindDockable(Root, x => x.Id == "DocumentsPane") as IDock;
 
             CurrentPerspective = MainPerspective;
         }
 
         public IPerspective MainPerspective { get; private set; }
 
-        public IDockFactory Factory
+        public IFactory Factory
         {
             get => _factory;
             set => this.RaiseAndSetIfChanged(ref _factory, value);
@@ -199,30 +207,77 @@ namespace AvalonStudio.Shell
 
         public IEnumerable<KeyBinding> KeyBindings => _keyBindings;
 
-        public IPerspective CreatePerspective()
+        public IRootDock CreatePerspective(IDock dock)
         {
-            var newPerspectiveLayout = (Root.Factory as DefaultLayoutFactory).CreatePerspectiveLayout("Name");
-            Root.Factory.AddView(Root, newPerspectiveLayout.root);
+            if (dock != null && dock.Owner is IDock owner)
+            {
+                var clone = (IRootDock)dock.Clone();
+                
+                if (clone != null)
+                {
+                    owner.Factory.AddDockable(owner, clone);
+                    //ApplyPerspective(clone);
+                }
 
-            var result = new AvalonStudioPerspective(newPerspectiveLayout.root, newPerspectiveLayout.centerPane, newPerspectiveLayout.documentDock);
+                return clone;
+            }
+
+            throw new Exception();
+        }
+
+        public void ApplyPerspective(IRootDock dock)
+        {
+            if (dock != null)
+            {
+                if (Root is IDock root)
+                {
+                    root.Navigate(dock);
+                    root.Factory.SetFocusedDockable(root, dock);
+                    root.DefaultDockable = dock;
+                }
+            }
+        }
+
+        public IPerspective CreateInitialPerspective()
+        {
+            var result = new AvalonStudioPerspective(Root.ActiveDockable as IRootDock);
 
             _perspectives.Add(result);
 
             return result;
         }
 
-        private IPerspective _currentPerspective;
+        public IPerspective CreatePerspective()
+        {
+            var currentLayout = Root.ActiveDockable as IRootDock;
+            var root = CreatePerspective(currentLayout);
+            //ApplyPerspective(currentLayout);
+
+            root.Title = "NewPerspective";
+
+            _documentDock.Owner = currentLayout;
+            
+
+            var result = new AvalonStudioPerspective(root);
+
+            _perspectives.Add(result);
+
+            return result;
+        }
+
         public IPerspective CurrentPerspective
         {
             get => _currentPerspective;
             set => this.RaiseAndSetIfChanged(ref _currentPerspective, value);
         }
 
+        private IDock _documentDock;
+
         public void AddDocument(IDocumentTabViewModel document, bool temporary = false, bool select = true)
         {
 			if (!_documentViews.ContainsKey(document))
 			{
-				var view = CurrentPerspective.DocumentDock.Dock(document, !Documents.Contains(document));
+				var view = _documentDock.Dock(document, !Documents.Contains(document));
 
 				_documents.Add(document);
 
@@ -231,7 +286,7 @@ namespace AvalonStudio.Shell
 
 			if (select)
 			{
-				Factory.SetCurrentView(_documentViews[document]);
+				Factory.SetActiveDockable(_documentViews[document]);
 
 				document.OnOpen();
 			}
@@ -244,10 +299,10 @@ namespace AvalonStudio.Shell
                 return;
             }
 
-			if(_documentViews[document].Parent is IDock dock)
+			if(_documentViews[document].Owner is IDock dock)
 			{
-				dock.Views.Remove(_documentViews[document]);
-				dock.Factory.Update(_documentViews[document], dock);
+				dock.VisibleDockables.Remove(_documentViews[document]);
+				dock.Factory.UpdateDockable(_documentViews[document], dock);
 			}
 
             _documentViews.Remove(document);
@@ -278,11 +333,11 @@ namespace AvalonStudio.Shell
                 {
                     foreach(var perspective in _perspectives)
                     {
-                        if(_documentViews[value].Parent is IDock dock)
+                        if(_documentViews[value].Owner is IDock dock)
                         {
-                            if(dock.Views.Contains(_documentViews[value]))
+                            if(dock.VisibleDockables.Contains(_documentViews[value]))
                             {
-                                dock.CurrentView = _documentViews[value];
+                                dock.ActiveDockable = _documentViews[value];
                             }
                         }
                     }
