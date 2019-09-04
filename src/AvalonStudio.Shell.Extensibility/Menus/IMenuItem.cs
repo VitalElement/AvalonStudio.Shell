@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media;
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace AvalonStudio.Menus
@@ -9,5 +10,7 @@ namespace AvalonStudio.Menus
         DrawingGroup Icon { get; }
 
         ICommand Command { get; }
+
+        IEnumerable<string> Gestures { get; }
     }
 }

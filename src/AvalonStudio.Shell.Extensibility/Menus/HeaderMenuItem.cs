@@ -1,4 +1,5 @@
 ﻿using Avalonia.Media;
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace AvalonStudio.Menus
@@ -10,6 +11,7 @@ namespace AvalonStudio.Menus
 
         public ICommand Command => null;
 
+        public IEnumerable<string> Gestures => null;
         public HeaderMenuItem(string label, DrawingGroup icon)
         {
             Label = label;

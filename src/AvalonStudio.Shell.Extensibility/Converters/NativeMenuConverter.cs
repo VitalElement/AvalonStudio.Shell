@@ -23,6 +23,7 @@ namespace AvalonStudio.Extensibility.Converters
                 {
                     Header = item.Label,
                     Command = item.Command,
+                    Gesture = item.Gesture
                 };
 
                 if(item.Children != null && item.Children.Any())

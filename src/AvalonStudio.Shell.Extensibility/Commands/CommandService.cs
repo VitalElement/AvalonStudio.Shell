@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using AvalonStudio.Commands.Settings;
 
 namespace AvalonStudio.Commands
@@ -39,6 +40,16 @@ namespace AvalonStudio.Commands
 
 			return command;
 		}
+
+        public IEnumerable<string> GetGestures (CommandDefinition definition)
+        {
+            if(_keyGestures.ContainsKey(definition))
+            {
+                return _keyGestures[definition];
+            }
+
+            return Enumerable.Empty<string>();
+        }
 
 		public IImmutableDictionary<CommandDefinition, IEnumerable<string>> GetKeyGestures()
 		{
