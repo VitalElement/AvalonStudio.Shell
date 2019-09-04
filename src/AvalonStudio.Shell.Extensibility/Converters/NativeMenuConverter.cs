@@ -25,6 +25,11 @@ namespace AvalonStudio.Extensibility.Converters
                     Command = item.Command,
                 };
 
+                if(nativeItem.Header == null)
+                {
+                    nativeItem.Header = "";
+                }
+
                 if(item.Children != null && item.Children.Any())
                 {
                     nativeItem.Items = GetNativeItems(item.Children);
