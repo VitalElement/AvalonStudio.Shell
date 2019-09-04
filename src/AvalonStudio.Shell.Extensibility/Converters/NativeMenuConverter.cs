@@ -22,17 +22,16 @@ namespace AvalonStudio.Extensibility.Converters
             {
                 var gesture = item.Gesture;
 
-                if(gesture != null)
-                {
-                    var avaloniaGesture = KeyGesture.Parse(gesture);
-                }
-
                 var nativeItem = new NativeMenuItem
                 {
                     Header = item.Label,
                     Command = item.Command,
-                    Gesture = item.Gesture
                 };
+
+                if(gesture != null)
+                {
+                    nativeItem.Gesture = KeyGesture.Parse(gesture);
+                }
 
                 if(nativeItem.Header == null)
                 {
