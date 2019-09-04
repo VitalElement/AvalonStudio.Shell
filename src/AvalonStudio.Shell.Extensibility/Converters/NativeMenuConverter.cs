@@ -26,6 +26,11 @@ namespace AvalonStudio.Extensibility.Converters
                     Gesture = item.Gesture
                 };
 
+                if(nativeItem.Header == null)
+                {
+                    nativeItem.Header = "";
+                }
+
                 if(item.Children != null && item.Children.Any())
                 {
                     nativeItem.Items = GetNativeItems(item.Children);
