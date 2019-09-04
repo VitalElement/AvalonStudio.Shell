@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Data.Converters;
+using Avalonia.Input;
 using AvalonStudio.Menus.Models;
 using AvalonStudio.Menus.ViewModels;
 
@@ -19,6 +20,13 @@ namespace AvalonStudio.Extensibility.Converters
 
             foreach (var item in items)
             {
+                var gesture = item.Gesture;
+
+                if(gesture != null)
+                {
+                    var avaloniaGesture = KeyGesture.Parse(gesture);
+                }
+
                 var nativeItem = new NativeMenuItem
                 {
                     Header = item.Label,
