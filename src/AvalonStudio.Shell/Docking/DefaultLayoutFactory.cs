@@ -34,7 +34,7 @@ namespace AvalonStudio.Docking
         /// <inheritdoc/>
         public override IDock CreateLayout()
         {
-            var documentDock = new DocumentDock
+            var documentDock = new AvalonStudioDocumentDock
             {
                 Id = "DocumentsPane",
                 Proportion = double.NaN,
