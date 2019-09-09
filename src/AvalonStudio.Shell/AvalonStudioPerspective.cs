@@ -1,4 +1,5 @@
-﻿using AvalonStudio.MVVM;
+using AvalonStudio.Extensibility;
+using AvalonStudio.MVVM;
 using Dock.Model;
 using Dock.Model.Controls;
 using ReactiveUI;
@@ -61,7 +62,7 @@ namespace AvalonStudio.Shell
 
         public void AddTool(IToolViewModel tool)
         {
-            if(!_tabTools.ContainsKey(tool))
+            if (!_tabTools.ContainsKey(tool))
             {
                 _tabTools.Add(tool, DockOrCreate(tool));
                 _tools.Add(tool);
@@ -182,14 +183,7 @@ namespace AvalonStudio.Shell
 
             }
 
-            var factory = Root.Factory;
-            var root = Root.Owner as IDock;
-
-            var currentRoot = root.ActiveDockable;
-
-            root.Navigate(Root);
-            root.Factory.SetFocusedDockable(root, Root);
-            root.DefaultDockable = Root;
+            var documentDock = Root.Factory.FindDockable(Root, x => x.Id == "DocumentsPane") as IDock;
 
             var documentDock = Root.Factory.FindDockable(Root, x => x.Id == "CenterPane") as IDock;
 
