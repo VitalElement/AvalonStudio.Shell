@@ -1,4 +1,4 @@
-﻿using AvalonStudio.MVVM;
+using AvalonStudio.MVVM;
 using Dock.Model;
 using Dock.Model.Controls;
 using ReactiveUI;
@@ -189,17 +189,6 @@ namespace AvalonStudio.Shell
                     dockOperation = DockOperation.Bottom;
                     break;
 
-            }
-
-            IProportionalDock container = null;
-
-            if (orientation == Orientation.Horizontal)
-            {
-                container = Root.Factory.FindDockable(Root, x => x.Id == "HorizontalContainer") as IProportionalDock;
-            }
-            else
-            {
-                container = Root.Factory.FindDockable(Root, x => x.Id == "VerticalContainer") as IProportionalDock;
             }
 
             var documentDock = Root.Factory.FindDockable(Root, x => x.Id == "DocumentsPane") as IDock;
