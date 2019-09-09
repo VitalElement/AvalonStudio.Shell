@@ -1,3 +1,4 @@
+using AvalonStudio.Extensibility;
 using AvalonStudio.MVVM;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -61,7 +62,7 @@ namespace AvalonStudio.Shell
 
         public void AddTool(IToolViewModel tool)
         {
-            if(!_tabTools.ContainsKey(tool))
+            if (!_tabTools.ContainsKey(tool))
             {
                 _tabTools.Add(tool, DockOrCreate(tool));
                 _tools.Add(tool);
