@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace AvalonStudio.Shell
 {
-	public class AvalonStudioPerspective : IPerspective
+    public class AvalonStudioPerspective : IPerspective
     {
         private List<IToolViewModel> _tools;
         private Dictionary<IToolViewModel, IDockable> _tabTools;
@@ -17,7 +17,7 @@ namespace AvalonStudio.Shell
         private IDock _top;
         private IDock _bottom;
 
-        public AvalonStudioPerspective (IRootDock root)
+        public AvalonStudioPerspective(IRootDock root)
         {
             Root = root;
             _tools = new List<IToolViewModel>();
@@ -54,7 +54,7 @@ namespace AvalonStudio.Shell
             {
                 _bottom = null;
             }
-            else if(dock == _top)
+            else if (dock == _top)
             {
                 _top = null;
             }
@@ -74,32 +74,32 @@ namespace AvalonStudio.Shell
 
             Root.Factory.SetActiveDockable(_tabTools[tool]);
 
-			tool.OnOpen();
+            tool.OnOpen();
         }
 
         public void RemoveTool(IToolViewModel tool)
         {
-            if(_tabTools.ContainsKey(tool))
+            if (_tabTools.ContainsKey(tool))
             {
-                if(_tabTools[tool].Owner is IDock dock)
+                if (_tabTools[tool].Owner is IDock dock)
                 {
                     dock.Factory.RemoveDockable(_tabTools[tool], true);
 
-                    if(dock.VisibleDockables.Count == 0)
+                    if (dock.VisibleDockables.Count == 0)
                     {
-                        if(dock == _left)
+                        if (dock == _left)
                         {
                             _left = null;
                         }
-                        else if(dock == _right)
+                        else if (dock == _right)
                         {
                             _right = null;
                         }
-                        else if(dock == _top)
+                        else if (dock == _top)
                         {
                             _top = null;
                         }
-                        else if(dock == _bottom)
+                        else if (dock == _bottom)
                         {
                             _bottom = null;
                         }
@@ -164,7 +164,7 @@ namespace AvalonStudio.Shell
                     }
                     break;
             }
-
+            
             var dockOperation = DockOperation.Left;
 
             switch (view.DefaultLocation)
@@ -185,8 +185,7 @@ namespace AvalonStudio.Shell
 
             var documentDock = Root.Factory.FindDockable(Root, x => x.Id == "DocumentsPane") as IDock;
 
-            var documentDock = Root.Factory.FindDockable(Root, x => x.Id == "CenterPane") as IDock;
-
+            var factory = Root.Factory;
             var toolDock = factory.CreateToolDock();
             toolDock.Id = nameof(IToolDock);
             toolDock.Title = nameof(IToolDock);
@@ -194,13 +193,12 @@ namespace AvalonStudio.Shell
             toolDock.Factory = factory;
 
             var currentView = toolDock.Dock(view);
-            
+            //toolDock.CurrentView = view;
+            //toolDock.Views.Add(view);
+
+
             factory.SplitToDock(documentDock, toolDock, dockOperation);
             toolDock.Proportion = 0.2;
-
-            root.Navigate(currentRoot);
-            root.Factory.SetFocusedDockable(root, currentRoot);
-            root.DefaultDockable = currentRoot;
 
             switch (view.DefaultLocation)
             {

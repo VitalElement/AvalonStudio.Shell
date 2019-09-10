@@ -1,5 +1,4 @@
-﻿using Avalonia.Data;
-using AvaloniaDemo.ViewModels.Views;
+﻿using AvaloniaDemo.ViewModels.Views;
 using Dock.Avalonia.Controls;
 using Dock.Model;
 using Dock.Model.Controls;
@@ -10,30 +9,6 @@ using System.Collections.ObjectModel;
 
 namespace AvalonStudio.Docking
 {
-    public class PerspectiveCompatibleDocumentDock : DocumentDock
-    {
-        public override IDockable Clone()
-        {
-            return this;
-        }
-    }
-
-    public class PerspectiveCompatibleRootDock : RootDock
-    {
-        public override IDockable Clone()
-        {
-            return this;
-        }
-    }
-
-    public class PerspectiveCompatibleProportionalDock : ProportionalDock
-    {
-        public override IDockable Clone()
-        {
-            return this;
-        }
-    }
-
     /// <inheritdoc/>
     public class DefaultLayoutFactory : Factory
     {
@@ -69,15 +44,16 @@ namespace AvalonStudio.Docking
                 VisibleDockables = _documents
             };
 
-            var documentContainer = new RootDock
+            var verticalContainer = new ProportionalDock
             {
-                Id = "CenterPane",
-                Title = "CenterPane",
+                Id = "VerticalContainer",
                 Proportion = double.NaN,
-                ActiveDockable = documentDock,
+                Orientation = Orientation.Vertical,
+                Title = "VerticalContainer",
+                ActiveDockable = null,
                 VisibleDockables = new ObservableCollection<IDockable>
                 {
-                    documentDock
+                    documentDock,
                 }
             };
 
@@ -90,7 +66,7 @@ namespace AvalonStudio.Docking
                 ActiveDockable = null,
                 VisibleDockables = new ObservableCollection<IDockable>
                 {
-                    documentContainer,
+                    verticalContainer,
                 }
             };
 
@@ -132,8 +108,21 @@ namespace AvalonStudio.Docking
                 }
             };
 
+            Root.WhenAnyValue(x => x.VisibleDockables)
+                .Subscribe(x =>
+                {
+
+                });
+
+            (Root.VisibleDockables as ObservableCollection<IDockable>).CollectionChanged += DefaultLayoutFactory_CollectionChanged;
+
             return Root;
-        }        
+        }
+
+        private void DefaultLayoutFactory_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+
+        }
 
         public override void UpdateDockable(IDockable view, IDockable parent)
         {
@@ -166,20 +155,7 @@ namespace AvalonStudio.Docking
         {
             this.HostWindowLocator = new Dictionary<string, Func<IHostWindow>>
             {
-                [nameof(IDockWindow)] = () =>
-                {
-                    var hostWindow = new HostWindow()
-                    {
-                        [!HostWindow.TitleProperty] = new Binding("ActiveDockable.Title")
-                    };
-
-                    hostWindow.Content = new DockControl()
-                    {
-                        [!DockControl.LayoutProperty] = hostWindow[!HostWindow.DataContextProperty]
-                    };
-
-                    return hostWindow;
-                }
+                [nameof(IDockWindow)] = () => new HostWindow()
             };
 
             this.DockableLocator = new Dictionary<string, Func<IDockable>>

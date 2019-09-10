@@ -251,12 +251,6 @@ namespace AvalonStudio.Shell
         {
             var currentLayout = Root.ActiveDockable as IRootDock;
             var root = CreatePerspective(currentLayout);
-            //ApplyPerspective(currentLayout);
-
-            root.Title = "NewPerspective";
-
-            _documentDock.Owner = currentLayout;
-            
 
             var result = new AvalonStudioPerspective(root);
 
