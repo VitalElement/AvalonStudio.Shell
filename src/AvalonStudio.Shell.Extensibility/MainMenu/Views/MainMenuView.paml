@@ -11,8 +11,8 @@
   </UserControl.Styles>
 
   <Panel>
-    <NativeMenu x:Name="PART_NativeMenu" Items="{Binding Items, Converter={x:Static converters:NativeMenuConverter.Instance}}" />
-
+    <!--<NativeMenu x:Name="PART_NativeMenu" Items="{Binding Items, Converter={x:Static converters:NativeMenuConverter.Instance}}" />-->
+    
     <Menu Items="{Binding Items}" IsVisible="{Binding !#PART_NativeMenu.MenuExported}">
       <Menu.Styles>
         <Style Selector="AccessText">
