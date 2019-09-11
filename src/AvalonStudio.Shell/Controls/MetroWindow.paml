@@ -37,7 +37,7 @@
                       </Grid>
                     </DockPanel>
                     <Grid Grid.Row="1">
-                      <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" Margin="-5 0" />
+                      <ContentPresenter Name="PART_ContentPresenter" Content="{TemplateBinding Content}" Margin="0" />
                     </Grid>
                   </Grid>
                 </Grid>
