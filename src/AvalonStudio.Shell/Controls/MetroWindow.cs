@@ -3,7 +3,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
 using Avalonia.Input;
+using Avalonia.Media;
 using Avalonia.Styling;
+using AvalonStudio.Extensibility.Theme;
 using AvalonStudio.Extensibility.Utils;
 using System;
 using System.Runtime.InteropServices;
@@ -83,6 +85,15 @@ namespace AvalonStudio.Shell.Controls
             {
                 ClientDecorations = false;
             }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+ 			{
+ 				HasSystemDecorations = true;
+
+ 				// This will need implementing properly once this is supported by avalonia itself.
+ 				var color = (ColorTheme.CurrentTheme.Background as SolidColorBrush).Color;
+ 				(PlatformImpl as Avalonia.Native.WindowImpl).SetTitleBarColor(color);
+ 			}
         }
 
         public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
