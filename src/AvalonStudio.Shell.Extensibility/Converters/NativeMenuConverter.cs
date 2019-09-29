@@ -10,8 +10,6 @@ using AvalonStudio.Menus.ViewModels;
 
 namespace AvalonStudio.Extensibility.Converters
 {
-    
-
     public class NativeMenuConverter : IValueConverter
     {
         public static NativeMenuConverter Instance = new NativeMenuConverter();

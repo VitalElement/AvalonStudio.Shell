@@ -25,7 +25,10 @@
       </beh:AttachNativeMenuBehavior>
     </i:Interaction.Behaviors>
 
-    <Menu Items="{Binding Items}" IsVisible="{Binding !#PART_NativeMenu.MenuExported}">
+    <Menu Items="{Binding Items}">
+      <i:Interaction.Behaviors>
+        <beh:HideWhenNativeMenuExportedBehavior />
+      </i:Interaction.Behaviors>
       <Menu.Styles>
         <Style Selector="AccessText">
           <Setter Property="VerticalAlignment" Value="Center" />
