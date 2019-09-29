@@ -22,39 +22,53 @@ namespace AvalonStudio.Extensibility.Converters
 
             foreach (var item in items)
             {
-                var gesture = item.Gesture;
-
-                var nativeItem = new NativeMenuItem
+                if (item is MenuItemSeparatorModel)
                 {
-                    Header = item.Label,
-                    Command = item.Command,
-                };
-
-                if(gesture != null)
-                {
-                    nativeItem.Gesture = KeyGesture.Parse(gesture);
-                }
-
-                if(nativeItem.Header == null)
-                {
-                    nativeItem.Header = "";
-                }
-
-                if (item.Children != null && item.Children.Any())
-                {
-                    var nativeMenu = new NativeMenu();
-                    GetNativeItems(item.Children, nativeMenu);
-
-                    nativeItem.Menu = nativeMenu;
-                }
-
-                if (menu != null)
-                {
-                    menu.Add(nativeItem);
+                    if (menu != null)
+                    {
+                        menu.Add(new NativeMenuItemSeperator());
+                    }
+                    else
+                    {
+                        result.Add(new NativeMenuItemSeperator());
+                    }
                 }
                 else
                 {
-                    result.Add(nativeItem);
+                    var gesture = item.Gesture;
+
+                    var nativeItem = new NativeMenuItem
+                    {
+                        Header = item.Label,
+                        Command = item.Command,
+                    };
+
+                    if (gesture != null)
+                    {
+                        nativeItem.Gesture = KeyGesture.Parse(gesture);
+                    }
+
+                    if (nativeItem.Header == null)
+                    {
+                        nativeItem.Header = "";
+                    }
+
+                    if (item.Children != null && item.Children.Any())
+                    {
+                        var nativeMenu = new NativeMenu();
+                        GetNativeItems(item.Children, nativeMenu);
+
+                        nativeItem.Menu = nativeMenu;
+                    }
+
+                    if (menu != null)
+                    {
+                        menu.Add(nativeItem);
+                    }
+                    else
+                    {
+                        result.Add(nativeItem);
+                    }
                 }
             }
 
