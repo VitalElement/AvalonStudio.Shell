@@ -10,13 +10,15 @@ using AvalonStudio.Menus.ViewModels;
 
 namespace AvalonStudio.Extensibility.Converters
 {
+    
+
     public class NativeMenuConverter : IValueConverter
     {
         public static NativeMenuConverter Instance = new NativeMenuConverter();
 
-        private List<NativeMenuItem> GetNativeItems (IEnumerable<MenuItemModel> items)
+        private IList<NativeMenuItemBase> GetNativeItems (IEnumerable<MenuItemModel> items, NativeMenu menu = null)
         {
-            var result = new List<NativeMenuItem>();
+            var result = new List<NativeMenuItemBase>();
 
             foreach (var item in items)
             {
@@ -38,12 +40,22 @@ namespace AvalonStudio.Extensibility.Converters
                     nativeItem.Header = "";
                 }
 
-                if(item.Children != null && item.Children.Any())
+                if (item.Children != null && item.Children.Any())
                 {
-                    nativeItem.Items = GetNativeItems(item.Children);
+                    var nativeMenu = new NativeMenu();
+                    GetNativeItems(item.Children, nativeMenu);
+
+                    nativeItem.Menu = nativeMenu;
                 }
 
-                result.Add(nativeItem);
+                if (menu != null)
+                {
+                    menu.Add(nativeItem);
+                }
+                else
+                {
+                    result.Add(nativeItem);
+                }
             }
 
             return result;

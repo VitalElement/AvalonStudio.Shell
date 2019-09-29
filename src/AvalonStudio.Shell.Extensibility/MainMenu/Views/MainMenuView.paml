@@ -2,6 +2,8 @@
              xmlns="https://github.com/avaloniaui"
               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:converters="clr-namespace:AvalonStudio.Extensibility.Converters;assembly=AvalonStudio.Shell.Extensibility"
+             xmlns:beh="clr-namespace:AvalonStudio.Shell.Extensibility.Behaviors;assembly=AvalonStudio.Shell.Extensibility"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:mod="clr-namespace:AvalonStudio.Menus.Models;assembly=AvalonStudio.Shell.Extensibility">
 
   <UserControl.Styles>
@@ -11,7 +13,17 @@
   </UserControl.Styles>
 
   <Panel>
-    <NativeMenu x:Name="PART_NativeMenu" Items="{Binding Items, Converter={x:Static converters:NativeMenuConverter.Instance}}" />
+    <i:Interaction.Behaviors>
+      <beh:AttachNativeMenuBehavior>
+        <beh:AttachNativeMenuBehavior.Menu>
+          <NativeMenu>
+            <i:Interaction.Behaviors>
+              <beh:BindNativeMenuBehavior Items="{Binding Items, Converter={x:Static converters:NativeMenuConverter.Instance}}" />
+            </i:Interaction.Behaviors>
+          </NativeMenu>
+        </beh:AttachNativeMenuBehavior.Menu>
+      </beh:AttachNativeMenuBehavior>
+    </i:Interaction.Behaviors>
 
     <Menu Items="{Binding Items}" IsVisible="{Binding !#PART_NativeMenu.MenuExported}">
       <Menu.Styles>
