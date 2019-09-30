@@ -16,8 +16,9 @@
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="ReactiveUI" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
-    <PackageReference Include="System.Composition" Version="1.2.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.6.0" />
+    <PackageReference Include="System.Composition" />
+    <PackageReference Include="System.Composition.AttributedModel" />
     <PackageReference Include="Dock.Avalonia" />
     <PackageReference Include="Avalonia.Xaml.Interactivity" />
   </ItemGroup>

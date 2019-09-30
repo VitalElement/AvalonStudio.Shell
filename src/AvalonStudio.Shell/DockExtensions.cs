@@ -43,6 +43,7 @@ namespace AvalonStudio.Shell
         }
 
         public IDockable Owner { get; set; }
+        public IFactory Factory { get; set; }
 
         public bool OnClose()
         {

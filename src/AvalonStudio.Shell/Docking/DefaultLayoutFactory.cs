@@ -140,9 +140,14 @@ namespace AvalonStudio.Docking
                     }
                 }
 
-                if (dock.Windows != null)
+                
+            }
+            
+            if(view is IRootDock rootDock)
+            {
+                if (rootDock.Windows != null)
                 {
-                    foreach (var child in dock.Windows)
+                    foreach (var child in rootDock.Windows)
                     {
                         UpdateDockWindow(child, view);
                     }
@@ -166,13 +171,13 @@ namespace AvalonStudio.Docking
 
             this.UpdateDockable(layout, null);
 
-            if (layout is IDock layoutWindowsHost)
+            if (layout is IRootDock layoutWindowsHost)
             {
                 layoutWindowsHost.ShowWindows();
                 if (layout is IDock layoutViewsHost)
                 {
                     layoutViewsHost.ActiveDockable = layoutViewsHost.DefaultDockable;
-                    if (layoutViewsHost.ActiveDockable is IDock currentViewWindowsHost)
+                    if (layoutViewsHost.ActiveDockable is IRootDock currentViewWindowsHost)
                     {
                         currentViewWindowsHost.ShowWindows();
                     }

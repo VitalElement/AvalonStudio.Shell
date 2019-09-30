@@ -14,6 +14,8 @@
     <PackageReference Update="Dock.Model.ReactiveUI" Version="$(DockVersion)" />
     <PackageReference Update="Dock.Avalonia.Themes.Default" Version="$(DockVersion)" />
     <PackageReference Update="Dock.Avalonia.Themes.Metro" Version="$(DockVersion)" />
+    <PackageReference Update="System.Composition" Version="$(SystemCompositionVersion)" />
+    <PackageReference Update="System.Composition.AttributedModel" Version="$(SystemCompositionVersion)" />
   </ItemGroup>
 
 </Project>

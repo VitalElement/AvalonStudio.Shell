@@ -19,13 +19,13 @@
     <PackageReference Include="Avalonia.Xaml.Interactivity" />
     <PackageReference Include="Dock.Model.ReactiveUI" />
     <PackageReference Include="Dock.Avalonia" />
-    <PackageReference Include="System.Composition" Version="1.2.0" />
+    <PackageReference Include="System.Composition" />
     <PackageReference Include="Microsoft.Extensions.DependencyModel" Version="2.1.0" />
     <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="ReactiveUI" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.5.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.6.0" />
   </ItemGroup>  
 
   <ItemGroup>    
