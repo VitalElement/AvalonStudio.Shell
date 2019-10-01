@@ -1,9 +1,9 @@
 <Project>
 
   <PropertyGroup>
-    <AvaloniaBehaviorsVersion>0.9.0-build20190930-02</AvaloniaBehaviorsVersion>
-    <AvaloniaVersion>0.8.999-cibuild0004348-beta</AvaloniaVersion>
-    <DockVersion>0.9.0-build20190930-03</DockVersion>
+    <AvaloniaBehaviorsVersion>0.9.0-build20191001-04</AvaloniaBehaviorsVersion>
+    <AvaloniaVersion>0.8.999-cibuild0004378-beta</AvaloniaVersion>
+    <DockVersion>0.9.0-build20191001-06</DockVersion>
     <NewtonsoftJsonVersion>12.0.2</NewtonsoftJsonVersion>
     <ReactiveUIVersion>10.3.6</ReactiveUIVersion>
     <SystemCompositionVersion>1.0.31</SystemCompositionVersion>
