@@ -15,7 +15,7 @@ namespace AvalonStudio.Menus.Models
 
         private class EmptyMenuItem : IMenuItem
         {
-            public string Label => null;
+            public string Label => "-";
             public DrawingGroup Icon => null;
 
             public ICommand Command => null;
