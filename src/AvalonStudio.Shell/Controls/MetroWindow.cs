@@ -139,40 +139,46 @@ namespace AvalonStudio.Shell.Controls
         {
             if (_topHorizontalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.North);
+                BeginResizeDrag(WindowEdge.North, e);
             }
             else if (_bottomHorizontalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.South);
+                BeginResizeDrag(WindowEdge.South, e);
             }
             else if (_leftVerticalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.West);
+                BeginResizeDrag(WindowEdge.West, e);
             }
             else if (_rightVerticalGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.East);
+                BeginResizeDrag(WindowEdge.East, e);
             }
             else if (_topLeftGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.NorthWest);
+                BeginResizeDrag(WindowEdge.NorthWest, e);
             }
             else if (_bottomLeftGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.SouthWest);
+                BeginResizeDrag(WindowEdge.SouthWest, e);
             }
             else if (_topRightGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.NorthEast);
+                BeginResizeDrag(WindowEdge.NorthEast, e);
             }
             else if (_bottomRightGrip.IsPointerOver)
             {
-                BeginResizeDrag(WindowEdge.SouthEast);
+                BeginResizeDrag(WindowEdge.SouthEast, e);
             }
             else if (_titleBar.IsPointerOver)
             {
                 _mouseDown = true;
                 _mouseDownPosition = e.GetPosition(this);
+
+                if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+                {
+                    BeginMoveDrag(e);
+                    _mouseDown = false;
+                }
             }
             else
             {
@@ -186,21 +192,6 @@ namespace AvalonStudio.Shell.Controls
         {
             _mouseDown = false;
             base.OnPointerReleased(e);
-        }
-
-        protected override void OnPointerMoved(PointerEventArgs e)
-        {
-            if ((_titleBar.IsPointerOver || _topHorizontalGrip.IsPointerOver) && _mouseDown)
-            {
-                if (_mouseDownPosition.DistanceTo(e.GetPosition(this)) > 2)
-                {
-                    WindowState = WindowState.Normal;
-                    BeginMoveDrag();
-                    _mouseDown = false;
-                }
-            }
-
-            base.OnPointerMoved(e);
         }
 
         private void ToggleWindowState()
