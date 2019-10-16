@@ -103,7 +103,7 @@ namespace AvalonStudio.MainMenu
                 parentDepthMenuItems = currentDepthMenuItems;
             }
 
-            _menuSettingsService.SaveMenuSettings();
+            //_menuSettingsService.SaveMenuSettings();
 
             foreach (var itemModel in GetChildren(new MenuPath(Array.Empty<string>()), rootSettings, 1))
             {

@@ -36,11 +36,11 @@ namespace AvalonStudio.Menus.Settings
 
         private MenuSettings LoadMenuSettings()
         {
-            if (File.Exists(MenuSettingsFilePath))
-            {
-                return SerializedObject.Deserialize<MenuSettings>(MenuSettingsFilePath)
-                    ?? new MenuSettings();
-            }
+            //if (File.Exists(MenuSettingsFilePath))
+            //{
+            //    return SerializedObject.Deserialize<MenuSettings>(MenuSettingsFilePath)
+            //        ?? new MenuSettings();
+            //}
 
             return new MenuSettings();
         }

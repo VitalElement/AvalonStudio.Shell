@@ -90,7 +90,7 @@ namespace AvalonStudio.Toolbars
                     toolbarItemsByName.Add(itemName, item);
                 }
 
-                _menuSettingsService.SaveMenuSettings();
+                //_menuSettingsService.SaveMenuSettings();
 
                 var modelsBuilder = ImmutableList.CreateBuilder<MenuItemModel>();
 
