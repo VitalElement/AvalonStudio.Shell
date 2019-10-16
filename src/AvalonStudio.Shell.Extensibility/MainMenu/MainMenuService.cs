@@ -89,7 +89,7 @@ namespace AvalonStudio.MainMenu
                                 {
                                     parentItem.Groups.Add(itemSettings.Group, new MenuGroup());
                                 }
-                                else
+                                else if(group.Metadata.ExportOnCurrentPlatform)
                                 {
                                     parentItem.Groups.Add(itemSettings.Group, new MenuGroup() { Order = group.Metadata.DefaultOrder });
                                 }
@@ -120,6 +120,7 @@ namespace AvalonStudio.MainMenu
 
                 foreach (var group in itemSettings.Items
                     .GroupBy(i => i.Value.Group)
+                    .Where(g=>itemSettings.Groups.ContainsKey(g.Key))
                     .OrderBy(g => itemSettings.Groups[g.Key].Order))
                 {
                     if (!skipSeparator)
@@ -136,7 +137,8 @@ namespace AvalonStudio.MainMenu
                             continue;
                         }
 
-                        var menuItem = _menuItems.SingleOrDefault(
+                        var menuItem = _menuItems.Where(x=>x.Metadata.ExportOnCurrentPlatform)
+                            .SingleOrDefault(
                             i => i.Metadata.Path.Parent == parent && i.Metadata.Path[i.Metadata.Path.Count - 1] == item.Key);
 
                         if (menuItem != null)
