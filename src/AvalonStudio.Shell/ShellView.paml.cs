@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using AvalonStudio.Extensibility.Theme;
 using AvalonStudio.GlobalSettings;
@@ -22,17 +23,18 @@ namespace AvalonStudio.Shell
 
 			var generalSettings = Settings.GetSettings<GeneralSettings>();
 			ColorTheme.LoadTheme(generalSettings.Theme);
-
-            this.FindControl<DockControl>("Dock").TemplateApplied += ShellView_TemplateApplied;
 		}
-
-        private void ShellView_TemplateApplied(object sender, Avalonia.Controls.Primitives.TemplateAppliedEventArgs e)
-        {
-        }
 
         private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
 		}
-	}
+
+        protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+        {
+            base.OnAttachedToVisualTree(e);
+
+            Focus();
+        }
+    }
 }

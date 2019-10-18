@@ -9,7 +9,8 @@
                       xmlns:beh="clr-namespace:AvalonStudio.Utils.Behaviors;assembly=AvalonStudio.Utils"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       FontFamily="{DynamicResource UiFont}" FontSize="14"
-                      Foreground="{DynamicResource ThemeForegroundBrush}">
+                      Foreground="{DynamicResource ThemeForegroundBrush}"
+                      Focusable="True">
   <i:Interaction.Behaviors>
     <beh:OpenCloseWindowBehavior DataContext="{Binding ModalDialog}" WindowType="{x:Type cont:ModalDialog}" IsOpen="{Binding ModalDialog.IsVisible}" />
   </i:Interaction.Behaviors>
