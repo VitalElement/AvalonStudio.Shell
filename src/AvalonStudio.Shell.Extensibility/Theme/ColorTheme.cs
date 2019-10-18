@@ -41,9 +41,12 @@ namespace AvalonStudio.Extensibility.Theme
             BorderLow = Brush.Parse("#FFCCCEDB"),
             BorderMid = Brush.Parse("#9B9FB9"),
             BorderHigh = Brush.Parse("#9B9FB9"),
-            ControlLow = Brush.Parse("#686868"),
-            ControlMid = Brush.Parse("#FFC2C3C9"),
-            ControlHigh = Brush.Parse("#FFF5F5F5"),
+            ControlLow = Brush.Parse("#FF868999"),
+            ControlMediumLow = Brush.Parse("#FFCDCDCD"),
+            ControlMedium = Brush.Parse("#FFF5F5F5"),
+            ControlMediumHigh = Brush.Parse("#FFC2C3C9"),
+            ControlHigh = Brush.Parse("#FF686868"),
+            ControlVeryHigh = Brush.Parse("#FF5B5B5B"),            
             ControlBackground = Brush.Parse("#FFE6E7E8"),
             EditorBackground = Brush.Parse("#FFFFFFFF"),
             AccentLow = Brush.Parse("#FF007ACC"),
@@ -66,8 +69,11 @@ namespace AvalonStudio.Extensibility.Theme
             BorderMid = Brush.Parse("#FF888888"),
             BorderHigh = Brush.Parse("#FFAAAAAA"),
             ControlLow = Brush.Parse("#FF2D2D30"),
-            ControlMid = Brush.Parse("#FF3E3E42"),
+            ControlMediumLow = Brush.Parse("#FFCDCDCD"),
+            ControlMedium = Brush.Parse("#FF3E3E42"),
+            ControlMediumHigh = Brush.Parse("#FF686868"),
             ControlHigh = Brush.Parse("#FF888888"),
+            ControlVeryHigh = Brush.Parse("#FFEFEBEF"),
             ControlBackground = Brush.Parse("#FF252526"),
             EditorBackground = Brush.Parse("#FF1E1E1E"),
 			AccentLow = Brush.Parse("#FF007ACC"),
@@ -101,8 +107,11 @@ namespace AvalonStudio.Extensibility.Theme
             {
                 Application.Current.Resources["ThemeBackgroundBrush"] = theme.Background;
                 Application.Current.Resources["ThemeControlBackgroundBrush"] = theme.ControlBackground;
+                Application.Current.Resources["ThemeControlVeryHighBrush"] = theme.ControlVeryHigh;
                 Application.Current.Resources["ThemeControlHighBrush"] = theme.ControlHigh;
-                Application.Current.Resources["ThemeControlMidBrush"] = theme.ControlMid;
+                Application.Current.Resources["ThemeControlMidHighBrush"] = theme.ControlMediumHigh;
+                Application.Current.Resources["ThemeControlMidBrush"] = theme.ControlMedium;
+                Application.Current.Resources["ThemeControlMidLowBrush"] = theme.ControlMediumLow;
                 Application.Current.Resources["ThemeControlLowBrush"] = theme.ControlLow;
                 Application.Current.Resources["ThemeForegroundBrush"] = theme.Foreground;
                 Application.Current.Resources["ThemeBorderHighBrush"] = theme.BorderHigh;
@@ -149,9 +158,15 @@ namespace AvalonStudio.Extensibility.Theme
 
         public IBrush ControlLow { get; set; }
 
-        public IBrush ControlMid { get; set; }
+        public IBrush ControlMediumLow { get; set; }
+
+        public IBrush ControlMedium { get; set; }
+
+        public IBrush ControlMediumHigh { get; set; }
 
         public IBrush ControlHigh { get; set; }
+
+        public IBrush ControlVeryHigh { get; set; }
 
         public IBrush ControlBackground { get; set; }
 
