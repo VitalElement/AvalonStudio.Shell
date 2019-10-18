@@ -3,7 +3,7 @@
   <PropertyGroup>
     <AvaloniaBehaviorsVersion>0.9.0-preview2</AvaloniaBehaviorsVersion>
     <AvaloniaVersion>0.9.0-preview2</AvaloniaVersion>
-    <DockVersion>0.9.0-preview2</DockVersion>
+    <DockVersion>0.9.1-build20191018-06</DockVersion>
     <NewtonsoftJsonVersion>12.0.2</NewtonsoftJsonVersion>
     <ReactiveUIVersion>10.3.6</ReactiveUIVersion>
     <SystemCompositionVersion>1.0.31</SystemCompositionVersion>
