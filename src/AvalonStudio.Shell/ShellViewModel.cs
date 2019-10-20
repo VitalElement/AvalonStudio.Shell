@@ -283,6 +283,8 @@ namespace AvalonStudio.Shell
 				Factory.SetActiveDockable(_documentViews[document]);
 
 				document.OnOpen();
+
+                SelectedDocument = document;
 			}
         }
 
