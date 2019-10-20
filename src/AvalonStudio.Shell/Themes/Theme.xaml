@@ -1,5 +1,0 @@
-﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:AvalonEdit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
-        xmlns:Editing="clr-namespace:AvaloniaEdit.Editing;assembly=AvaloniaEdit">
-    <StyleInclude Source="avares://AvalonStudio.Shell/Themes/Scrollbar.xaml"/>
-</Styles>
