@@ -31,6 +31,7 @@ namespace AvalonStudio.Shell
         public static ShellViewModel Instance { get; set; }
         private List<KeyBinding> _keyBindings;
         private IPerspective _currentPerspective;
+        private IDisposable _selectedDockableChangedSubscription;
 
         private IDocumentTabViewModel _selectedDocument;
 
@@ -114,18 +115,6 @@ namespace AvalonStudio.Shell
                 }
             }
 
-            _layout.WhenAnyValue(l => l.ActiveDockable).Subscribe(focused =>
-			{
-				if (focused?.Context is IDocumentTabViewModel doc)
-				{
-					SelectedDocument = doc;
-				}
-				else
-				{
-					SelectedDocument = null;
-				}
-			});
-
             foreach (var extension in _extensions)
             {
                 if (extension.Value is IActivatableExtension activatable)
@@ -172,8 +161,6 @@ namespace AvalonStudio.Shell
             Root = _layout as IRootDock;
 
             MainPerspective = CreateInitialPerspective();
-
-            ApplyPerspective(MainPerspective.Root);
 
             _documentDock = Root.Factory.FindDockable(Root, x => x.Id == "DocumentsPane") as IDock;
 
@@ -234,6 +221,21 @@ namespace AvalonStudio.Shell
                     root.Navigate(dock);
                     root.Factory.SetFocusedDockable(root, dock);
                     root.DefaultDockable = dock;
+
+                    _selectedDockableChangedSubscription?.Dispose();
+
+                    _selectedDockableChangedSubscription = dock.WhenAnyValue(x => x.FocusedDockable)
+                        .Subscribe(x =>
+                    {
+                        if (x?.Context is IDocumentTabViewModel doc)
+                        {
+                            SelectedDocument = doc;
+                        }
+                        else
+                        {
+                            SelectedDocument = null;
+                        }
+                    });
                 }
             }
         }
