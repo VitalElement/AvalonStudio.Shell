@@ -4,7 +4,7 @@
     <Product>AvalonStudio.Shell</Product>
     <Owners>VitalElement, Dan Walmsley</Owners>
     <Authors>Dan Walmsley</Authors>
-    <Version>0.9.0-preview3</Version>
+    <Version>0.9.0-preview4</Version>
     <Copyright>Copyright 2019 &#169; VitalElement</Copyright>
     <PackageLicenseUrl>https://github.com/VitalElement/AvalonStudio.Shell/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/VitalElement/AvalonStudio/</PackageProjectUrl>
