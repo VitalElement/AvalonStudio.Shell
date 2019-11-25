@@ -82,5 +82,25 @@ namespace AvalonStudio.Shell
 
 			return document;
 		}
-	}
+
+        public static T GetOrCreate<T>(this IShell me, Func<T> retrieveExisting) where T : IDocumentTabViewModel
+        {
+            T document = default;
+
+            IDocumentTabViewModel doc = me.Documents.FirstOrDefault(x => x is T);
+
+            if (doc != default)
+            {
+                document = (T)doc;
+                me.SelectedDocument = doc;
+            }
+            else
+            {
+                document = retrieveExisting();
+                me.AddDocument(document);
+            }
+
+            return document;
+        }
+    }
 }
