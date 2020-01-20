@@ -408,6 +408,25 @@ namespace AvalonStudio.Shell
             return document;
         }
 
+        public IDocumentTabViewModel GetOrCreate(Type type, Func<IDocumentTabViewModel> create)
+        {
+            IDocumentTabViewModel document = default;
+
+            IDocumentTabViewModel doc = Documents.FirstOrDefault(x => x.GetType().IsAssignableFrom(type));
+
+            if (doc != default)
+            {
+                document = doc;
+                SelectedDocument = doc;
+            }
+            else
+            {
+                document = create();
+                AddDocument(document);
+            }
+            return document;
+        }
+
         public Avalonia.Controls.IPanel Overlay { get; internal set; }
     }
 }
