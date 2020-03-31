@@ -271,16 +271,16 @@ namespace AvalonStudio.Shell
 
         public void AddDocument(IDocumentTabViewModel document, bool temporary = false, bool select = true)
         {
-			if (!_documentViews.ContainsKey(document))
+			if (!_documents.Contains(document))
 			{
-				var view = _documentDock.Dock(document, !Documents.Contains(document));
+                _documents.Add(document);
 
-				_documents.Add(document);
+                var view = _documentDock.Dock(document, true);				
 
 				_documentViews.Add(document, view);
 			}
 
-			if (select)
+			if (select && _documentViews.ContainsKey(document))
 			{
 				Factory.SetActiveDockable(_documentViews[document]);
 
