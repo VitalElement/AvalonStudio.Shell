@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Xaml.Interactivity;
 using System;
 using System.Reactive.Disposables;
@@ -19,7 +20,7 @@ namespace AvalonStudio.Utils.Behaviors
 
             _disposables = new CompositeDisposable
             {
-                AssociatedObject.AddHandler(Control.PointerWheelChangedEvent, (sender, e) =>
+                AssociatedObject.AddDisposableHandler(Control.PointerWheelChangedEvent, (sender, e) =>
                 {
                     if (e.KeyModifiers == KeyModifiers)
                     {

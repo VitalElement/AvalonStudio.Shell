@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Media;
 using System;
@@ -8,15 +9,6 @@ namespace AvalonStudio.Controls
 {
     public class DocumentTabItem : ContentControl
     {
-        static DocumentTabItem()
-        {
-            PseudoClass<DocumentTabItem, bool>(IsFocusedProperty, o => o, ":focused");
-            PseudoClass<DocumentTabItem, Avalonia.Controls.Dock>(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Right, ":dockright");
-            PseudoClass<DocumentTabItem, Avalonia.Controls.Dock>(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Left, ":dockleft");
-            PseudoClass<DocumentTabItem, Avalonia.Controls.Dock>(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Top, ":docktop");
-            PseudoClass<DocumentTabItem, Avalonia.Controls.Dock>(DockPanel.DockProperty, o => o == Avalonia.Controls.Dock.Bottom, ":dockbottom");
-        }
-
         public DocumentTabItem()
         {
             this.GetObservable(DockPanel.DockProperty).Subscribe(dock =>
@@ -25,7 +17,7 @@ namespace AvalonStudio.Controls
             });
         }
 
-        public static readonly AvaloniaProperty<string> TitleProprty =
+        public static readonly StyledProperty<string> TitleProprty =
             AvaloniaProperty.Register<DocumentTabItem, string>(nameof(Title));
 
         public string Title
@@ -34,13 +26,41 @@ namespace AvalonStudio.Controls
             set { SetValue(TitleProprty, value); }
         }
 
-        public static readonly AvaloniaProperty<IBrush> HeaderBackgroundProperty =
+        public static readonly StyledProperty<IBrush> HeaderBackgroundProperty =
             AvaloniaProperty.Register<DocumentTabItem, IBrush>(nameof(HeaderBackground), defaultValue: Brushes.WhiteSmoke);
 
         public IBrush HeaderBackground
         {
             get { return GetValue(HeaderBackgroundProperty); }
             set { SetValue(HeaderBackgroundProperty, value); }
+        }
+
+        private void UpdatePseudoClasses (bool? isFocused, Avalonia.Controls.Dock? dock)
+        {
+            if(isFocused.HasValue)
+            {
+                PseudoClasses.Set(":focused", isFocused.Value);
+            }
+
+            if(dock.HasValue)
+            {
+                PseudoClasses.Set(":dockright", dock.Value == Avalonia.Controls.Dock.Right);
+                PseudoClasses.Set(":dockleft", dock.Value == Avalonia.Controls.Dock.Left);
+                PseudoClasses.Set(":docktop", dock.Value == Avalonia.Controls.Dock.Top);
+                PseudoClasses.Set(":dockbottom", dock.Value == Avalonia.Controls.Dock.Bottom);
+            }
+        }
+
+        protected override void OnPropertyChanged<T>(AvaloniaProperty<T> property, Optional<T> oldValue, BindingValue<T> newValue, BindingPriority priority)
+        {
+            if(property == IsFocusedProperty)
+            {
+                UpdatePseudoClasses(newValue.GetValueOrDefault<bool>(), null);
+            }
+            else if(property == DockPanel.DockProperty)
+            {
+                UpdatePseudoClasses(null, newValue.GetValueOrDefault<Avalonia.Controls.Dock>());
+            }
         }
     }
 }

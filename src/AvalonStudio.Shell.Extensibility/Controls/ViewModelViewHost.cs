@@ -20,11 +20,11 @@ namespace AvalonStudio.Controls
     {
         public static readonly AvaloniaProperty ViewModelProperty =
             AvaloniaProperty.Register<ViewModelViewHost, object>(nameof(ViewModel), null, false, BindingMode.OneWay, null,
-                somethingChanged);
+                 notifying: somethingChanged);
 
         public static readonly AvaloniaProperty DefaultContentProperty =
             AvaloniaProperty.Register<ViewModelViewHost, object>(nameof(DefaultContent), null, false, BindingMode.OneWay, null,
-                somethingChanged);
+                notifying: somethingChanged);
 
         public static readonly AvaloniaProperty ViewContractObservableProperty =
             AvaloniaProperty.Register<ViewModelViewHost, IObservable<string>>(nameof(ViewContractObservable),

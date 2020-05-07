@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 
 namespace AvalonStudio.Controls
 {
@@ -12,14 +13,15 @@ namespace AvalonStudio.Controls
         {
             this.GetObservable(SpansProperty).Subscribe(spans =>
             {
-                if(spans == null)
-                {
-                    FormattedText.Spans = null;
-                }
-                else
-                {
-                    FormattedText.Spans = spans;
-                }
+                Debug.WriteLine("Unimplemented feature,FormatTextBlock.cs");
+                //if(spans == null)
+                //{
+                //    FormattedText.Spans = null;
+                //}
+                //else
+                //{
+                //    FormattedText.Spans = spans;
+                //}
             });
 
             this.GetObservable(StyledTextProperty).Subscribe(styledText =>
@@ -37,7 +39,7 @@ namespace AvalonStudio.Controls
             });
         }
 
-        public static readonly AvaloniaProperty<StyledText> StyledTextProperty =
+        public static readonly StyledProperty<StyledText> StyledTextProperty =
             AvaloniaProperty.Register<FormattedTextBlock, StyledText>(nameof(StyledText));
 
         public StyledText StyledText
@@ -46,7 +48,7 @@ namespace AvalonStudio.Controls
             set => SetValue(StyledTextProperty, value);
         }
 
-        public static readonly AvaloniaProperty<IReadOnlyList<FormattedTextStyleSpan>> SpansProperty =
+        public static readonly StyledProperty<IReadOnlyList<FormattedTextStyleSpan>> SpansProperty =
             AvaloniaProperty.Register<FormattedTextBlock, IReadOnlyList<FormattedTextStyleSpan>>(nameof(Spans));
 
         public IReadOnlyList<FormattedTextStyleSpan> Spans

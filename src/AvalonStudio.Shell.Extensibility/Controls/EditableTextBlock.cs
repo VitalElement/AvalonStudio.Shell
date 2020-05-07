@@ -17,11 +17,6 @@ namespace AvalonStudio.Controls
         private TextBox _textBox;
         private DispatcherTimer _editClickTimer;
 
-        static EditableTextBlock()
-        {
-            PseudoClass<EditableTextBlock>(InEditModeProperty, ":editing");
-        }
-
         public EditableTextBlock()
         {
             _editClickTimer = new DispatcherTimer
@@ -167,6 +162,17 @@ namespace AvalonStudio.Controls
 
             InEditMode = false;
             (VisualRoot as IInputRoot).MouseDevice.Capture(null);
-        }        
+        }
+
+
+        protected override void OnPropertyChanged<T>(AvaloniaProperty<T> property, Optional<T> oldValue, BindingValue<T> newValue, BindingPriority priority)
+        {
+            base.OnPropertyChanged(property, oldValue, newValue, priority);
+
+            if(property == InEditModeProperty)
+            {
+                PseudoClasses.Set(":editing", newValue.GetValueOrDefault<bool>());
+            }            
+        }
     }
 }

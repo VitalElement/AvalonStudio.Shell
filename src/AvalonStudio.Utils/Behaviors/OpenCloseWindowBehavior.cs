@@ -58,7 +58,7 @@ namespace AvalonStudio.Utils.Behaviors
             base.OnDetaching();
         }
 
-        public static readonly AvaloniaProperty<Type> WindowTypeProperty =
+        public static readonly StyledProperty<Type> WindowTypeProperty =
             AvaloniaProperty.Register<OpenCloseWindowBehavior, Type>(nameof(WindowType), defaultBindingMode: BindingMode.TwoWay);
 
         public Type WindowType

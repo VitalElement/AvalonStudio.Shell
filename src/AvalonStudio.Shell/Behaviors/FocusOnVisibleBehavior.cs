@@ -11,7 +11,7 @@ namespace AvalonStudio.Shell.Behaviors
         private CompositeDisposable _disposables = new CompositeDisposable();
         private Control _attachedControl;
 
-        static readonly AvaloniaProperty<string> AttachedControlNameProperty = AvaloniaProperty.Register<FocusOnVisibleBehavior, string>(nameof(AttachedControlName));
+        static readonly StyledProperty<string> AttachedControlNameProperty = AvaloniaProperty.Register<FocusOnVisibleBehavior, string>(nameof(AttachedControlName));
 
         public string AttachedControlName
         {

@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Shapes;
+using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Styling;
@@ -57,12 +58,7 @@ namespace AvalonStudio.Shell.Controls
         public static extern uint GetClassLongPtr32(IntPtr hWnd, int nIndex);
 
         [DllImport("user32.dll", EntryPoint = "GetClassLongPtr")]
-        public static extern IntPtr GetClassLongPtr64(IntPtr hWnd, int nIndex);
-
-        static MetroWindow()
-        {
-            PseudoClass<MetroWindow, WindowState>(WindowStateProperty, x => x == WindowState.Maximized, ":maximised");
-        }
+        public static extern IntPtr GetClassLongPtr64(IntPtr hWnd, int nIndex);        
 
         public MetroWindow()
         {
@@ -96,10 +92,10 @@ namespace AvalonStudio.Shell.Controls
  			}
         }
 
-        public static readonly AvaloniaProperty<Control> TitleBarContentProperty =
+        public static readonly StyledProperty<Control> TitleBarContentProperty =
             AvaloniaProperty.Register<MetroWindow, Control>(nameof(TitleBarContent));
 
-        public static readonly AvaloniaProperty<bool> ClientDecorationsProperty =
+        public static readonly StyledProperty<bool> ClientDecorationsProperty =
             AvaloniaProperty.Register<MetroWindow, bool>(nameof(ClientDecorations));
 
         private Grid _bottomHorizontalGrip;
@@ -206,6 +202,16 @@ namespace AvalonStudio.Shell.Controls
                     WindowState = WindowState.Maximized;
                     break;
             }
+        }
+
+        protected override void OnPropertyChanged<T>(AvaloniaProperty<T> property, Optional<T> oldValue, BindingValue<T> newValue, BindingPriority priority)
+        {
+            base.OnPropertyChanged(property, oldValue, newValue, priority);
+
+            if(property == WindowStateProperty)
+            {                
+                PseudoClasses.Set(":maximised", newValue.HasValue && newValue.GetValueOrDefault<WindowState>() == WindowState.Maximized);
+            }            
         }
 
         protected override void OnTemplateApplied(TemplateAppliedEventArgs e)

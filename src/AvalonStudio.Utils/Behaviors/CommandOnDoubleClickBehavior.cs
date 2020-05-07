@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
 using System.Reactive.Disposables;
 
 namespace AvalonStudio.Utils.Behaviors
@@ -13,7 +14,7 @@ namespace AvalonStudio.Utils.Behaviors
 
             base.OnAttached();
 
-            _disposables.Add(AssociatedObject.AddHandler(Control.PointerPressedEvent, (sender, e) =>
+            _disposables.Add(AssociatedObject.AddDisposableHandler(Control.PointerPressedEvent, (sender, e) =>
             {
                 if(e.ClickCount == 2)
                 {

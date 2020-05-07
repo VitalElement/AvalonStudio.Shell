@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Interactivity;
 using System.Reactive.Disposables;
 
 namespace AvalonStudio.Utils.Behaviors
@@ -13,7 +14,7 @@ namespace AvalonStudio.Utils.Behaviors
 
             base.OnAttached();
 
-            _disposables.Add(AssociatedObject.AddHandler(TextBox.KeyDownEvent, (sender, e) => 
+            _disposables.Add(AssociatedObject.AddDisposableHandler(TextBox.KeyDownEvent, (sender, e) => 
             {
                 if(e.Key == Avalonia.Input.Key.Enter)
                 {
