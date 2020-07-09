@@ -51,15 +51,18 @@ namespace AvalonStudio.Controls
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaProperty<T> property, Optional<T> oldValue, BindingValue<T> newValue, BindingPriority priority)
+        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {
-            if(property == IsFocusedProperty)
+            base.OnPropertyChanged(change);
+
+
+            if (change.Property == IsFocusedProperty)
             {
-                UpdatePseudoClasses(newValue.GetValueOrDefault<bool>(), null);
+                UpdatePseudoClasses(change.NewValue.GetValueOrDefault<bool>(), null);
             }
-            else if(property == DockPanel.DockProperty)
+            else if (change.Property == DockPanel.DockProperty)
             {
-                UpdatePseudoClasses(null, newValue.GetValueOrDefault<Avalonia.Controls.Dock>());
+                UpdatePseudoClasses(null, change.NewValue.GetValueOrDefault<Avalonia.Controls.Dock>());
             }
         }
     }

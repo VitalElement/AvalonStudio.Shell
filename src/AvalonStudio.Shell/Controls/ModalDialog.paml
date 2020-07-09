@@ -7,7 +7,7 @@
               Icon="avares://AvalonStudio.Shell/Assets/logo-256.png"
               Title="{Binding Title}"
               FontFamily="{DynamicResource UiFont}" FontSize="14" Foreground="{DynamicResource ThemeForegroundBrush}"
-              SizeToContent="WidthAndHeight" RenderOptions.BitmapInterpolationMode="HighQuality" UseLayoutRounding="True">
+              RenderOptions.BitmapInterpolationMode="HighQuality" UseLayoutRounding="True">
   <DockPanel LastChildFill="True" Margin="0">
 
     <StackPanel Orientation="Horizontal" Spacing="20" HorizontalAlignment="Right" DockPanel.Dock="Bottom" Margin="8 0 8 8">

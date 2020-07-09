@@ -204,19 +204,19 @@ namespace AvalonStudio.Shell.Controls
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaProperty<T> property, Optional<T> oldValue, BindingValue<T> newValue, BindingPriority priority)
+        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {
-            base.OnPropertyChanged(property, oldValue, newValue, priority);
+            base.OnPropertyChanged(change);        
 
-            if(property == WindowStateProperty)
+            if(change.Property == WindowStateProperty)
             {                
-                PseudoClasses.Set(":maximised", newValue.HasValue && newValue.GetValueOrDefault<WindowState>() == WindowState.Maximized);
+                PseudoClasses.Set(":maximised", change.NewValue.HasValue && change.NewValue.GetValueOrDefault<WindowState>() == WindowState.Maximized);
             }            
         }
 
-        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-			base.OnTemplateApplied(e);
+			base.OnApplyTemplate(e);
 
             _titleBar = e.NameScope.Find<DockPanel>("titlebar");
             _minimiseButton = e.NameScope.Find<Button>("minimiseButton");

@@ -21,14 +21,14 @@ namespace AvalonStudio.Controls
         {
             _editClickTimer = new DispatcherTimer
             {
-                Interval = TimeSpan.FromMilliseconds(500),                
+                Interval = TimeSpan.FromMilliseconds(500),
             };
 
             _editClickTimer.Tick += (sender, e) =>
              {
                  _editClickTimer.Stop();
 
-                 if(IsFocused && !InEditMode)
+                 if (IsFocused && !InEditMode)
                  {
                      EnterEditMode();
                  }
@@ -47,7 +47,7 @@ namespace AvalonStudio.Controls
                 }
             });
 
-            AddHandler(PointerPressedEvent, (sender, e)=>
+            AddHandler(PointerPressedEvent, (sender, e) =>
             {
                 _editClickTimer.Stop();
 
@@ -57,7 +57,7 @@ namespace AvalonStudio.Controls
                     if (e.ClickCount == 1 && properties.IsLeftButtonPressed && IsFocused)
                     {
                         _editClickTimer.Start();
-                    }                    
+                    }
                 }
                 else
                 {
@@ -108,9 +108,9 @@ namespace AvalonStudio.Controls
             set { SetValue(InEditModeProperty, value); }
         }
 
-        protected override void OnTemplateApplied(TemplateAppliedEventArgs e)
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-            base.OnTemplateApplied(e);
+            base.OnApplyTemplate(e);
 
             _textBox = e.NameScope.Find<TextBox>("PART_TextBox");
 
@@ -164,15 +164,14 @@ namespace AvalonStudio.Controls
             (VisualRoot as IInputRoot).MouseDevice.Capture(null);
         }
 
-
-        protected override void OnPropertyChanged<T>(AvaloniaProperty<T> property, Optional<T> oldValue, BindingValue<T> newValue, BindingPriority priority)
+        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {
-            base.OnPropertyChanged(property, oldValue, newValue, priority);
+            base.OnPropertyChanged(change);
 
-            if(property == InEditModeProperty)
+            if (change.Property == InEditModeProperty)
             {
-                PseudoClasses.Set(":editing", newValue.GetValueOrDefault<bool>());
-            }            
+                PseudoClasses.Set(":editing", change.NewValue.GetValueOrDefault<bool>());
+            }
         }
     }
 }
