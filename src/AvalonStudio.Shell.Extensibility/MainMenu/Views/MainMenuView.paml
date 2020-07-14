@@ -4,21 +4,22 @@
              xmlns:converters="clr-namespace:AvalonStudio.Extensibility.Converters;assembly=AvalonStudio.Shell.Extensibility"
              xmlns:beh="clr-namespace:AvalonStudio.Shell.Extensibility.Behaviors;assembly=AvalonStudio.Shell.Extensibility"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-             xmlns:mod="clr-namespace:AvalonStudio.Menus.Models;assembly=AvalonStudio.Shell.Extensibility">
+             xmlns:mod="clr-namespace:AvalonStudio.Menus.Models;assembly=AvalonStudio.Shell.Extensibility"             
+             xmlns:vmod="clr-namespace:AvalonStudio.Menus.ViewModels;assembly=AvalonStudio.Shell.Extensibility">
   <Panel>
     <i:Interaction.Behaviors>
       <beh:AttachNativeMenuBehavior>
         <beh:AttachNativeMenuBehavior.Menu>
           <NativeMenu>
             <i:Interaction.Behaviors>
-              <beh:BindNativeMenuBehavior Items="{Binding Items, Converter={x:Static converters:NativeMenuConverter.Instance}}" />
+              <beh:BindNativeMenuBehavior x:DataType="vmod:MenuViewModel" Items="{CompiledBinding Items, Converter={x:Static converters:NativeMenuConverter.Instance}}" />
             </i:Interaction.Behaviors>
           </NativeMenu>
         </beh:AttachNativeMenuBehavior.Menu>
       </beh:AttachNativeMenuBehavior>
     </i:Interaction.Behaviors>
 
-    <Menu Items="{Binding Items}">
+    <Menu Items="{CompiledBinding Items}" x:DataType="vmod:MenuViewModel">
       <i:Interaction.Behaviors>
         <beh:HideWhenNativeMenuExportedBehavior />
       </i:Interaction.Behaviors>
@@ -27,17 +28,17 @@
           <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
-        <Style Selector="MenuItem">
-          <Setter Property="Command" Value="{Binding Command}" />
-          <Setter Property="Items" Value="{Binding Children}" />
+        <Style Selector="MenuItem" x:DataType="mod:MenuItemModel">
+          <Setter Property="Command" Value="{CompiledBinding Command}" />
+          <Setter Property="Items" Value="{CompiledBinding Children}" />
           <Setter Property="Icon">
             <Setter.Value>
               <Template>
-                <DrawingPresenter Drawing="{Binding Icon}" />
+                <DrawingPresenter Drawing="{CompiledBinding Icon}" />
               </Template>
             </Setter.Value>
           </Setter>
-          <Setter Property="Header" Value="{Binding Label}" />
+          <Setter Property="Header" Value="{CompiledBinding Label}" />
         </Style>
       </Menu.Styles>      
     </Menu>  
