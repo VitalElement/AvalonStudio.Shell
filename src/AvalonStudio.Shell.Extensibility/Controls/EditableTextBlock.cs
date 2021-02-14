@@ -155,7 +155,11 @@ namespace AvalonStudio.Controls
 
         private void ExitEditMode(bool restore = false)
         {
-            if (!restore)
+            if (restore)
+            {
+                EditText = Text;
+            }
+            else
             {
                 Text = EditText;
             }
