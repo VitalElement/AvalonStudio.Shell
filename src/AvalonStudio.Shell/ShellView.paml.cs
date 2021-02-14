@@ -21,8 +21,7 @@ namespace AvalonStudio.Shell
 
 			KeyBindings.AddRange(ShellViewModel.Instance.KeyBindings);
 
-			var generalSettings = Settings.GetSettings<GeneralSettings>();
-			ColorTheme.LoadTheme(generalSettings.Theme);
+			ColorTheme.LoadTheme(ColorTheme.VisualStudioLight);
 		}
 
         private void InitializeComponent()
