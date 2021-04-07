@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using AvalonStudio.Extensibility.Theme;
+using AvalonStudio.GlobalSettings;
 using AvalonStudio.Shell;
 using System;
 
@@ -18,7 +19,8 @@ namespace ShellExampleApp
 
         private static void AppMain(string[] args)
         {
-            Dispatcher.UIThread.InvokeAsync(() => { ColorTheme.LoadTheme(ColorTheme.VisualStudioLight); });
+            var generalSettings = Settings.GetSettings<GeneralSettings>();
+            Dispatcher.UIThread.InvokeAsync(() => { ColorTheme.LoadTheme(generalSettings.Theme); });
         }
 
         public static AppBuilder BuildAvaloniaApp()
