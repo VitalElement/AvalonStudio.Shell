@@ -87,8 +87,8 @@ namespace AvalonStudio.Shell.Controls
  				HasSystemDecorations = true;
 
  				// This will need implementing properly once this is supported by avalonia itself.
- 				var color = (ColorTheme.CurrentTheme.Background as SolidColorBrush).Color;
- 				(PlatformImpl as Avalonia.Native.WindowImpl).SetTitleBarColor(color);
+ 				//var color = (ColorTheme.CurrentTheme.Background as SolidColorBrush).Color;
+ 				//(PlatformImpl as Avalonia.Native.WindowImpl).SetTitleBarColor(color);
  			}
         }
 

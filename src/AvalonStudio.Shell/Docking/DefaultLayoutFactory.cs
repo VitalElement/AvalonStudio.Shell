@@ -85,22 +85,6 @@ namespace AvalonStudio.Docking
             {
                 Id = "Root",
                 Title = "Root",
-                Top = new PinDock
-                {
-                    Alignment = Alignment.Top
-                },
-                Bottom = new PinDock
-                {
-                    Alignment = Alignment.Bottom
-                },
-                Left = new PinDock
-                {
-                    Alignment = Alignment.Left
-                },
-                Right = new PinDock
-                {
-                    Alignment = Alignment.Right
-                },
                 ActiveDockable = mainLayout,
                 VisibleDockables = new ObservableCollection<IDockable>
                 {

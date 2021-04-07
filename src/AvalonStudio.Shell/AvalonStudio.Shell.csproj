@@ -12,7 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="Avalonia.Angle.Windows.Natives" Version="2.1.0.2019013001" />
+    <PackageReference Include="Avalonia.Angle.Windows.Natives" Version="2.1.0.2020091801" />
     <PackageReference Include="Avalonia.ReactiveUI" />
     <PackageReference Include="Avalonia.Xaml.Behaviors" />
     <PackageReference Include="Avalonia.Xaml.Interactions.Custom" />
