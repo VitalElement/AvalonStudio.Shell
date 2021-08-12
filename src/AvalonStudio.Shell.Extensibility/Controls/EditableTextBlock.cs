@@ -57,11 +57,11 @@ namespace AvalonStudio.Controls
                     if (e.ClickCount == 1 && properties.IsLeftButtonPressed && IsFocused)
                     {
                         _editClickTimer.Start();
-                   }
+                    }
                 }
                 else
                 {
-                   var hit = this.InputHitTest(e.GetPosition(this));
+                    var hit = this.InputHitTest(e.GetPosition(this));
 
                     if (hit == null)
                     {
@@ -142,7 +142,7 @@ namespace AvalonStudio.Controls
         {
             EditText = Text;
             InEditMode = true;
-            (VisualRoot as IPointer).Capture(null);
+            (VisualRoot as IInputRoot).MouseDevice.Capture(_textBox);
             _textBox.CaretIndex = Text.Length;
             _textBox.SelectionStart = 0;
             _textBox.SelectionEnd = Text.Length;
@@ -165,7 +165,7 @@ namespace AvalonStudio.Controls
             }
 
             InEditMode = false;
-            (VisualRoot as IPointer).Capture(null);
+            (VisualRoot as IInputRoot).MouseDevice.Capture(null);
         }
 
         protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
