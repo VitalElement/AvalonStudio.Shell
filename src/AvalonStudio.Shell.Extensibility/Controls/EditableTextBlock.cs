@@ -1,4 +1,4 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
@@ -53,7 +53,7 @@ namespace AvalonStudio.Controls
 
                 if (!InEditMode)
                 {
-                    var properties = e.GetPointerPoint(this).Properties;
+                    var properties = e.GetCurrentPoint(this).Properties;
                     if (e.ClickCount == 1 && properties.IsLeftButtonPressed && IsFocused)
                     {
                         _editClickTimer.Start();
